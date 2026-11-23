@@ -1,0 +1,3143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Spark Science Education（創智・未來）｜AI 創新課程系列</title>
+<meta name="description" content="Spark Science Education（創智・未來）由 Solar Trinity Science Limited 營運：AI 創新課程系列，專為香港中學而設。iGEM 金獎導師團隊任教，學生親身走進 AI 科研。">
+<meta property="og:title" content="Spark Science Education（創智・未來）｜AI 創新課程系列">
+<meta property="og:description" content="結合學生創意與科技，締造未來。AI 創新課程系列，專為香港中學而設，現正接受預約。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sparksciencehk.github.io/">
+<meta property="og:image" content="https://sparksciencehk.github.io/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Spark Science Education（創智・未來）｜AI 創新課程系列">
+<meta name="twitter:description" content="結合學生創意與科技，締造未來。AI 創新課程系列，專為香港中學而設，現正接受預約。">
+<meta name="twitter:image" content="https://sparksciencehk.github.io/assets/og.jpg">
+<meta name="theme-color" content="#0a2016">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preload" as="image" href="assets/bg-desktop.webp" media="(orientation: landscape)">
+<link rel="preload" as="image" href="assets/bg-phone.webp" media="(orientation: portrait)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#17352a;
+  --ink-soft:#c9dccd;
+  --green:#215f4d;
+  --green-deep:#14382c;
+  --mint:#7fc8a9;
+  --gold:#c9a227;
+  --gold-bright:#e3bc3f;
+  --paper:#faf6ec;
+  --paper-2:#f3ecd9;
+  --card:#fffdf6;
+  --line:#e3dcc4;
+  --intro-bg:#030b06;
+  --mono:"SF Mono","Cascadia Mono","JetBrains Mono",Consolas,"Courier New",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  color:#eef5f0;
+  background:var(--intro-bg);
+  font-size:17px;
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+body.locked{overflow:hidden}
+img{display:block;max-width:100%}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* ---------- 開場 ---------- */
+#intro{
+  position:fixed;inset:0;z-index:60;background:var(--intro-bg);
+  overflow:hidden;cursor:pointer;
+  transition:opacity .5s ease;
+}
+#intro .bgimg{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;
+  animation:introDrift 52s ease-in-out infinite alternate;
+  will-change:transform;
+}
+@media (orientation:landscape){
+  #intro .bgimg{object-fit:contain}
+}
+@keyframes introDrift{
+  from{transform:scale(1.004)}
+  to{transform:scale(1.028)}
+}
+#intro .glow{
+  position:absolute;left:50%;top:50%;width:62vmin;height:62vmin;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(94,234,180,.20) 0%,rgba(94,234,180,.06) 42%,transparent 68%);
+  animation:glowPulse 7s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes glowPulse{
+  0%,100%{opacity:.65;transform:translate(-50%,-50%) scale(1)}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.07)}
+}
+#introCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;transition:opacity .3s ease}
+#intro .hint{
+  position:absolute;left:50%;bottom:calc(26px + env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  color:rgba(255,255,255,.82);font-size:14px;letter-spacing:.35em;text-indent:.35em;
+  animation:hintFloat 3.2s ease-in-out infinite;white-space:nowrap;
+  text-shadow:0 1px 10px rgba(0,0,0,.6);
+  transition:opacity .25s ease;
+}
+@keyframes hintFloat{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,-7px)}}
+/* 㩒入嗰刻：帶品牌名嘅開場圖即刻淡出消失，唔俾個名旋轉住俾人睇；
+   展示艙同時喺底層淡入，兩邊重疊交接，一氣呵成 */
+#intro .diveWrap{position:absolute;inset:0;transition:opacity .3s ease}
+#intro.leaving{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .5s ease,visibility 0s linear .5s}
+#intro.leaving .diveWrap{opacity:0}
+#intro.leaving .hint{opacity:0}
+
+/* ---------- 展示艙（穿梭後成績卡） ---------- */
+#showcase{
+  position:fixed;inset:0;z-index:58;background:var(--intro-bg);
+  overflow:hidden;opacity:0;visibility:hidden;cursor:pointer;
+  transition:opacity .45s ease,visibility 0s linear .45s;
+}
+#showcase.play{opacity:1;visibility:visible;transition:opacity .45s ease}
+#showcase.bye{opacity:0;visibility:hidden;transition:opacity .55s ease,visibility 0s linear .55s}
+#showcase .sc-bg{
+  position:absolute;inset:0;overflow:hidden;
+  transform:scale(1.22);transition:transform 1.8s cubic-bezier(.22,.8,.3,1);
+}
+#showcase.play .sc-bg{transform:scale(1)}
+#showcase .sc-bg img{
+  width:100%;height:100%;object-fit:cover;object-position:center;
+  animation:scSwirl 44s ease-in-out infinite alternate;will-change:transform;
+}
+@keyframes scSwirl{
+  from{transform:scale(1.34) rotate(-2.5deg)}
+  to{transform:scale(1.44) rotate(2.5deg)}
+}
+#showcase .sc-shade{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 50% 44%,rgba(3,11,6,.16) 0%,rgba(3,11,6,.55) 62%,rgba(3,11,6,.84) 100%);
+}
+#showcase .sc-stage{position:absolute;inset:0;perspective:1300px}
+/* 真・3D 旋轉環：環容器 preserve-3d，五張卡沿圓環分布、成環一齊轉，真透視深度 */
+#showcase .sc-ring{position:absolute;inset:0;transform-style:preserve-3d}
+.sc-card{
+  position:absolute;left:50%;top:46%;width:min(74vw,520px);
+  border-radius:16px;background:#0a2016;
+  box-shadow:0 30px 70px rgba(0,0,0,.55),0 0 0 1px rgba(127,200,169,.28),0 0 44px rgba(94,234,180,.14);
+  pointer-events:none;will-change:transform;
+  transform-style:preserve-3d;
+  transition:transform 1.05s cubic-bezier(.25,.8,.25,1);
+}
+.sc-card.noanim{transition:none}
+/* 相片統一尺寸：開頭五張＋佳績四張，一律 16:9 相框 */
+.sc-media{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#0a2016}
+.sc-media img{width:100%;height:100%;object-fit:cover;display:block}
+.sc-media.pan img.bg{position:absolute;inset:0;object-fit:cover;filter:blur(16px) brightness(.55);transform:scale(1.15)}
+.sc-media.pan img.fg{position:relative;object-fit:contain;z-index:1}
+.result .sc-media{margin:0}
+
+/* 正面：成張卡內容包喺呢層，圓角裁切喺呢層做（figure 要 preserve-3d，唔可以 overflow:hidden） */
+.sc-card .sc-front{
+  position:relative;border-radius:16px;overflow:hidden;background:#0a2016;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+}
+/* 背面：品牌卡背——卡轉到後面嗰陣見到設計好嘅卡背，唔係鏡像字 */
+.sc-card .sc-back{
+  position:absolute;inset:0;border-radius:16px;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  background:radial-gradient(circle at 50% 38%,#1a4a33 0%,#0d2a1e 58%,#081c12 100%);
+  box-shadow:inset 0 0 0 1px rgba(127,200,169,.35),inset 0 0 60px rgba(94,234,180,.10);
+  transform:rotateY(180deg);
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+}
+.sc-card .sc-back svg{width:54px;height:54px;fill:var(--gold-bright)}
+.sc-card .sc-back svg .ray{stroke:var(--gold-bright);stroke-width:2.4;stroke-linecap:round;fill:none}
+.sc-card .sc-back span{color:#eaf3ec;font-size:13px;font-weight:700;letter-spacing:.42em;text-indent:.42em}
+/* 卡離開正面愈遠愈暗（用遮罩 opacity 做，唔用 filter） */
+.sc-card .sc-dim{
+  position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:#04160d;opacity:0;transition:opacity .55s ease;
+}
+@media (orientation:portrait){.sc-card{width:min(84vw,430px)}}
+.sc-card .sc-float{animation:scFloat 3.6s ease-in-out infinite}
+@keyframes scFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-8px) rotate(.4deg)}}
+.sc-card img{width:100%;height:auto}
+.sc-card .sc-media img{height:100%}
+.result .sc-media img{height:100%}
+.sc-card figcaption{
+  padding:12px 16px 14px;text-align:center;color:#eaf3ec;
+  font-weight:700;font-size:clamp(15px,2.3vw,19px);letter-spacing:.03em;line-height:1.5;
+  background:linear-gradient(180deg,#17402f,#0d2a1e);
+}
+.sc-card .shine{
+  position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:linear-gradient(115deg,transparent 32%,rgba(255,255,255,.38) 48%,transparent 64%);
+  transform:translateX(-130%);
+}
+.sc-card.enter .shine{animation:scShine .6s ease .15s 1 forwards}
+@keyframes scShine{to{transform:translateX(130%)}}
+.sc-card--team{width:min(80vw,580px)}
+@media (orientation:portrait){.sc-card--team{width:min(88vw,470px)}}
+.sc-card figcaption .sc-team-title{display:block}
+.sc-card figcaption .sc-members{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:3px 12px;
+  margin-top:6px;font-size:12.5px;font-weight:500;
+  color:#cfe3d6;line-height:1.6;letter-spacing:.02em;
+}
+.sc-card figcaption .sc-mem{white-space:nowrap}
+/* 跳過掣：開場同展示艙都有，右下角細嘅鬼掣，同主「㩒一下進入」分得開 */
+.skip-btn{
+  position:absolute;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:6;
+  font:inherit;font-size:12.5px;font-weight:700;letter-spacing:.16em;
+  color:rgba(234,243,236,.88);background:rgba(8,24,16,.55);
+  border:1px solid rgba(127,200,169,.45);border-radius:999px;
+  padding:8px 15px;cursor:pointer;text-shadow:0 1px 6px rgba(0,0,0,.5);
+  transition:opacity .3s ease,background .2s ease;
+}
+.skip-btn:hover,.skip-btn:active{background:rgba(20,52,36,.78)}
+#intro.leaving .skip-btn{opacity:0;pointer-events:none}
+#showcase .sc-lead{
+  position:absolute;left:16px;right:16px;top:calc(8% + env(safe-area-inset-top));z-index:2;
+  text-align:center;pointer-events:none;
+  color:#eaf3ec;font-weight:700;letter-spacing:.08em;line-height:1.6;
+  font-size:clamp(17px,3.4vw,27px);
+  text-shadow:0 2px 14px rgba(0,0,0,.65);
+  opacity:0;transform:translateY(10px);
+  transition:opacity .6s ease,transform .6s ease;
+}
+#showcase .sc-lead strong{color:var(--gold-bright);font-weight:900}
+#showcase .sc-lead.on{opacity:1;transform:none}
+#showcase .sc-lead.off{opacity:0;transform:translateY(-6px)}
+
+/* ---------- 全站綠色郁動底板 ---------- */
+.site-bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:var(--intro-bg);pointer-events:none}
+.site-bg img{
+  width:100%;height:100%;object-fit:cover;object-position:center;
+  animation:siteDrift 64s ease-in-out infinite alternate;will-change:transform;
+}
+@keyframes siteDrift{
+  from{transform:scale(1.12) rotate(-1.2deg)}
+  to{transform:scale(1.22) rotate(1.2deg)}
+}
+.site-bg .shade{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(120% 90% at 50% 0%,rgba(3,11,6,.28) 0%,rgba(3,11,6,.60) 55%,rgba(3,11,6,.80) 100%),
+    linear-gradient(180deg,rgba(4,16,10,.40),rgba(4,16,10,.56));
+}
+.site-bg::after{
+  content:"";position:absolute;inset:0;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+/* C・實驗室精密風：深綠儀器屏幕上嘅幼格線（44px，薄荷極淡，全站一致） */
+.site-bg .grid-overlay{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(127,200,169,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(127,200,169,.05) 1px,transparent 1px);
+  background-size:44px 44px;
+  background-position:center top;
+}
+
+/* ---------- 內容 ---------- */
+#site{position:relative;z-index:1;opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+#site.show{opacity:1;transform:none}
+.topbar{
+  position:sticky;top:0;z-index:45;
+  background:rgba(10,30,21,.84);color:#eaf3ec;
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  font-size:14px;letter-spacing:.06em;
+  border-bottom:1px solid rgba(127,200,169,.22);
+}
+section[id]{scroll-margin-top:84px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:9px;padding-bottom:9px;gap:12px;flex-wrap:wrap}
+/* 頂欄品牌：接合返開場畫面嘅品牌組合——火花標誌＋襯線字名＋細字副題 */
+.topbar .brand{display:flex;align-items:center;gap:11px}
+.topbar .brand-mark{width:30px;height:30px;flex:0 0 auto;fill:var(--gold-bright)}
+.topbar .brand-mark .ray{stroke:var(--gold-bright);stroke-width:2.4;stroke-linecap:round;fill:none}
+.topbar .brand-lockup{display:flex;flex-direction:column;line-height:1.15}
+.topbar .brand-name{
+  font-family:"Cormorant Garamond","Noto Sans TC",serif;
+  font-size:23px;font-weight:600;letter-spacing:.045em;color:#f6fbf7;
+}
+.topbar .brand-sub{font-size:9.5px;letter-spacing:.42em;color:var(--mint);margin-top:2px}
+.topbar nav a{color:#cfe3d6;text-decoration:none;margin-left:18px;font-family:var(--mono);font-size:13px;letter-spacing:.08em}
+.topbar nav a:hover{color:#fff}
+@media(max-width:640px){.topbar nav{display:none}}
+
+.hero{padding:72px 0 8px;text-align:left}
+.eyebrow{
+  display:inline-block;color:var(--mint);font-family:var(--mono);font-weight:400;
+  letter-spacing:.14em;font-size:12.5px;text-transform:uppercase;
+  border:1px solid rgba(127,200,169,.30);border-radius:3px;padding:5px 12px;
+  background:rgba(10,30,21,.55);
+}
+.hero h1{
+  font-size:clamp(30px,5.6vw,52px);font-weight:900;line-height:1.3;
+  color:#f4faf5;margin:18px 0 10px;letter-spacing:.01em;
+}
+.hero .sub{font-size:clamp(16px,2.4vw,20px);color:var(--ink-soft);font-weight:500}
+.hero .sub b{color:var(--mint)}
+.hero figure{margin:34px auto 0;max-width:960px}
+.hero figure img{width:100%;border-radius:5px;border:1px solid rgba(127,200,169,.22);box-shadow:0 22px 50px rgba(0,0,0,.5)}
+.hero figcaption{font-size:12.5px;color:var(--ink-soft);margin-top:10px;font-family:var(--mono);letter-spacing:.06em}
+
+section{padding:66px 0 6px;position:relative}
+section+section::before{
+  content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:min(1120px,calc(100% - 40px));height:1px;
+  background:linear-gradient(90deg,transparent,rgba(127,200,169,.30) 12%,rgba(127,200,169,.30) 88%,transparent);
+}
+section+section::after{
+  content:"+";position:absolute;top:-9px;left:50%;transform:translateX(-50%);
+  font-family:var(--mono);font-size:13px;line-height:1;color:rgba(127,200,169,.55);
+}
+.sec-title{font-size:clamp(23px,3.6vw,32px);font-weight:900;color:#f4faf5;text-align:left;letter-spacing:.01em}
+.sec-title .en{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;color:var(--mint);
+  font-weight:400;margin-bottom:12px;text-transform:uppercase;
+}
+.sec-title .en::before,.sec-title .en::after{
+  content:"+";font-size:13px;color:rgba(127,200,169,.55);line-height:1;
+}
+.sec-title .en::after{margin-left:auto}
+.sec-lead{max-width:820px;margin:16px 0 0;color:var(--ink-soft);font-size:17.5px}
+.sec-sub{margin-top:10px;color:var(--mint);font-weight:700;font-size:15px;letter-spacing:.05em}
+.sec-lead p+p{margin-top:12px}
+
+.tip{
+  max-width:820px;margin:26px 0 0;background:rgba(201,162,39,.05);
+  border:1px solid rgba(201,162,39,.24);border-left:3px solid var(--gold);
+  border-radius:5px;padding:18px 22px;font-size:16.5px;color:#dceadf;text-align:left;
+}
+.tip b{color:var(--gold-bright)}
+
+.cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+  font-weight:700;font-size:16px;border-radius:5px;padding:13px 28px;
+  transition:transform .15s ease,box-shadow .15s ease;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-gold{background:linear-gradient(180deg,var(--gold-bright),var(--gold));color:#2c2303;box-shadow:0 8px 20px rgba(201,162,39,.35)}
+.btn-green{background:var(--green);color:#fff;box-shadow:0 8px 20px rgba(33,95,77,.30)}
+.btn-line{border:1px solid rgba(127,200,169,.5);color:#eaf5ee;background:transparent}
+
+.grid{display:grid;gap:22px;margin-top:36px}
+.grid.c4{grid-template-columns:repeat(4,1fr)}
+.grid.c3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:900px){.grid.c4{grid-template-columns:repeat(2,1fr)}.grid.c3{grid-template-columns:1fr}}
+@media(max-width:520px){.grid.c4{grid-template-columns:1fr}}
+.card{
+  background:linear-gradient(180deg,rgba(14,38,26,.82),rgba(8,24,16,.88));
+  border:1px solid rgba(127,200,169,.24);border-radius:5px;
+  padding:24px 22px;box-shadow:0 10px 24px rgba(0,0,0,.28);
+}
+.card h3{font-size:19px;font-weight:900;color:#eef6f0;margin-bottom:8px}
+.card p{font-size:16.5px;color:var(--ink-soft)}
+.card .ic{margin-bottom:12px;color:var(--mint)}
+.card .ic svg{width:26px;height:26px;display:block;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+
+.course{display:flex;flex-direction:column;overflow:hidden;padding:0}
+.course .body{padding:24px 22px;display:flex;flex-direction:column;gap:8px;flex:1}
+.course .tag{
+  font-family:var(--mono);font-size:12px;letter-spacing:.2em;color:var(--mint);font-weight:400;
+  border-bottom:1px solid rgba(127,200,169,.22);padding-bottom:9px;
+  display:flex;justify-content:space-between;align-items:baseline;
+}
+.course .tag .idx{color:rgba(185,206,192,.75)}
+.course h3{font-size:22px;margin:0}
+.course .en{font-size:13.5px;color:var(--ink-soft);letter-spacing:.02em}
+.course p{flex:1}
+.course .meta{
+  order:6;margin-top:auto;padding-top:12px;
+  border-top:1px solid rgba(127,200,169,.22);
+  font-size:14.5px;
+}
+.course .meta .row{
+  display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  padding:7px 0;border-bottom:1px solid rgba(127,200,169,.14);
+}
+.course .meta .row:last-child{border-bottom:none}
+.course .meta .k{font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--ink-soft)}
+.course .meta .v{font-family:var(--mono);font-weight:700;color:#e6f4ea;letter-spacing:.04em;text-align:right;white-space:nowrap}
+.course img.shot{width:100%;height:auto;border-top:1px solid rgba(127,200,169,.22)}
+.course img.cover{width:100%;height:210px;object-fit:cover;border-bottom:1px solid rgba(127,200,169,.22)}
+.course .platform-link{order:5;margin-top:14px;margin-bottom:16px;align-self:flex-start}
+.fee-note{color:var(--ink-soft);font-size:13px;margin-top:18px;font-family:var(--mono);letter-spacing:.05em}
+
+/* MODEL VIEWER 面板：真實 PDB 數據，儀器讀數式排版 */
+.viewer{
+  margin-top:42px;border:1px solid rgba(127,200,169,.30);border-radius:5px;
+  background:rgba(6,18,12,.88);overflow:hidden;text-align:left;
+}
+.viewer .v-head{
+  display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;
+  padding:12px 18px;border-bottom:1px solid rgba(127,200,169,.22);
+  font-family:var(--mono);font-size:12.5px;letter-spacing:.18em;color:var(--mint);
+}
+.viewer .v-head .ref{color:rgba(185,206,192,.75);letter-spacing:.1em}
+.viewer .v-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr)}
+.viewer figure{margin:0;border-right:1px solid rgba(127,200,169,.18);background:#000;display:flex;flex-direction:column}
+.viewer .mol3d{position:relative;width:100%;height:430px;overflow:hidden;background:#000}
+.viewer .mol3d canvas{display:block}
+.viewer .mol-fallback{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:1}
+.viewer .mol3d.mol-ready .mol-fallback{display:none}
+.viewer .mol-hint{
+  position:absolute;left:50%;bottom:12px;transform:translateX(-50%);z-index:2;pointer-events:none;
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:rgba(230,244,234,.85);
+  background:rgba(6,18,12,.72);border:1px solid rgba(127,200,169,.35);border-radius:3px;
+  padding:5px 12px;white-space:nowrap;
+}
+.viewer .mol3d.mol-failed .mol-hint{display:none}
+@media(max-width:760px){.viewer .mol3d{height:330px}}
+.viewer .v-data{padding:22px 24px}
+.viewer .v-points{margin-top:20px;border-top:1px solid rgba(127,200,169,.22)}
+.viewer .v-points-title{
+  font-family:var(--mono);font-size:12px;letter-spacing:.22em;color:var(--mint);
+  padding-top:14px;text-transform:uppercase;
+}
+.viewer .vp{display:flex;gap:14px;align-items:baseline;padding:11px 0;border-bottom:1px solid rgba(127,200,169,.14)}
+.viewer .vp:last-child{border-bottom:none}
+.viewer .vp .vn{
+  flex:0 0 auto;font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;color:var(--mint);
+  border:1px solid rgba(127,200,169,.4);border-radius:3px;padding:2px 8px;
+}
+.viewer .vp p{font-size:16.5px;color:#dceadf;line-height:1.65}
+.viewer .v-data h3{font-size:22px;font-weight:900;color:#eef6f0;margin-bottom:2px}
+.viewer .v-sub{font-size:15px;color:var(--ink-soft);margin-bottom:14px}
+.viewer .v-rows{border-top:1px solid rgba(127,200,169,.22);font-size:15.5px}
+.viewer .v-rows .row{display:flex;justify-content:space-between;gap:14px;padding:8px 0;border-bottom:1px solid rgba(127,200,169,.14)}
+.viewer .v-rows .k{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--ink-soft);flex:0 0 auto;padding-top:2px}
+.viewer .v-rows .v{font-family:var(--mono);color:#eef7f1;text-align:right;letter-spacing:.02em}
+@media(max-width:760px){
+  .viewer .v-grid{grid-template-columns:1fr}
+  .viewer figure{border-right:none;border-bottom:1px solid rgba(127,200,169,.18)}
+}
+
+/* 手風琴：賣點收編入可㩒開嘅面板，令成頁短一截 */
+.acc{max-width:820px;margin:34px 0 0;text-align:left}
+.acc .acc-label{
+  font-family:var(--mono);font-size:12px;letter-spacing:.22em;color:var(--mint);
+  text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:10px;
+}
+.acc .acc-label::before,.acc .acc-label::after{content:"+";font-size:13px;color:rgba(127,200,169,.55);line-height:1}
+.acc .acc-label::after{margin-left:auto}
+.acc-item{
+  border:1px solid rgba(127,200,169,.26);border-radius:5px;margin-bottom:10px;
+  background:linear-gradient(180deg,rgba(14,38,26,.82),rgba(8,24,16,.88));
+  overflow:hidden;
+}
+.acc-head{
+  width:100%;display:flex;justify-content:space-between;align-items:center;gap:14px;
+  background:none;border:none;cursor:pointer;text-align:left;
+  padding:17px 20px;color:#eef6f0;font-family:inherit;
+  font-size:18px;font-weight:900;letter-spacing:.02em;
+}
+.acc-head .acc-idx{font-family:var(--mono);font-size:12px;font-weight:400;letter-spacing:.18em;color:var(--mint);margin-right:12px}
+.acc-head .acc-mark{
+  flex:0 0 auto;font-family:var(--mono);font-size:19px;line-height:1;color:var(--mint);
+  transition:transform .35s ease;
+}
+.acc-item.open .acc-mark{transform:rotate(45deg)}
+.acc-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s ease}
+.acc-item.open .acc-body{grid-template-rows:1fr}
+.acc-body-in{overflow:hidden;min-height:0}
+.acc-body-in p{
+  padding:0 20px 18px;font-size:16.5px;color:var(--ink-soft);line-height:1.75;
+}
+.acc-body-in p b{color:#e6f4ea}
+
+.team-photo{margin:30px 0 0}
+.team-photo img{width:100%;border-radius:5px;border:1px solid rgba(127,200,169,.22);box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.team-names{
+  margin:0;display:grid;gap:0;
+  grid-template-columns:repeat(5,1fr);text-align:left;
+  border:1px solid rgba(127,200,169,.22);border-top:none;border-radius:0 0 5px 5px;
+  background:rgba(8,24,16,.82);
+}
+.team-names .tn{padding:14px 12px;border-left:1px solid rgba(127,200,169,.14)}
+.team-names .tn:first-child{border-left:none}
+@media(max-width:760px){
+  .team-names{grid-template-columns:repeat(2,1fr)}
+  .team-names .tn{border-left:none;border-top:1px solid rgba(127,200,169,.14)}
+  .team-names .tn:nth-child(-n+2){border-top:none}
+  .team-names .tn:nth-child(even){border-left:1px solid rgba(127,200,169,.14)}
+  .team-names .tn:last-child{grid-column:1/-1;border-left:none}
+}
+.team-names .nm{font-weight:900;color:#eef6f0;font-size:16px}
+.team-names .ti{font-size:12.5px;color:var(--ink-soft);margin-top:2px;font-family:var(--mono);letter-spacing:.05em}
+
+.result{overflow:hidden;padding:0;display:flex;flex-direction:column}
+.result img{width:100%;height:100%;object-fit:cover}
+/* 新聞截圖類相片：完整顯示唔切字，深綠底填滿剩餘空間 */
+.result img.fit{object-fit:contain;background:#0a2016}
+.result .body{padding:20px 22px}
+.result .yr{font-family:var(--mono);font-weight:400;color:var(--mint);letter-spacing:.16em;font-size:12.5px}
+.result h3{margin:4px 0 6px}
+
+.steps{margin:32px 0 0;counter-reset:step;display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.step{
+  display:flex;flex-direction:column;gap:10px;align-items:flex-start;
+  background:linear-gradient(180deg,rgba(14,38,26,.82),rgba(8,24,16,.88));
+  border:1px solid rgba(127,200,169,.24);border-radius:5px;padding:18px;
+}
+@media(max-width:900px){.steps{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.steps{grid-template-columns:1fr}.step{flex-direction:row;gap:18px}}
+.step .n{
+  flex:0 0 auto;font-family:var(--mono);font-weight:700;font-size:14px;
+  color:var(--mint);border:1px solid rgba(127,200,169,.4);border-radius:3px;
+  padding:3px 9px;letter-spacing:.1em;margin-top:3px;
+}
+.step p{font-size:16.5px;color:var(--ink-soft);padding-top:4px}
+
+.contact-box{
+  max-width:820px;margin:30px 0 0;background:rgba(9,26,18,.94);color:#eaf3ec;
+  border:1px solid rgba(127,200,169,.30);
+  border-radius:5px;padding:38px 30px;text-align:center;position:relative;
+}
+.contact-box::before,.contact-box::after{
+  content:"+";position:absolute;font-family:var(--mono);font-size:14px;line-height:1;
+  color:rgba(127,200,169,.6);
+}
+.contact-box::before{top:8px;left:10px}
+.contact-box::after{bottom:8px;right:10px}
+.contact-box h3{font-size:24px;font-weight:900;margin-bottom:8px}
+.contact-box p{color:#dceadf;font-size:16.5px}
+.contact-box .cta-row{margin-top:24px}
+.btn-wa{background:#25d366;color:#08351a;box-shadow:0 8px 20px rgba(37,211,102,.3)}
+.btn-mail{background:#fff;color:var(--green-deep)}
+
+footer{
+  margin-top:64px;background:rgba(9,26,18,.92);color:#cfe3d6;
+  border-top:1px solid rgba(127,200,169,.22);
+  padding:30px 0 calc(96px + env(safe-area-inset-bottom));font-size:14px;text-align:center;
+}
+footer .fb{color:#fff;font-weight:700}
+footer .star{color:var(--gold-bright)}
+footer .fmeta{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em}
+
+.stickybar{
+  position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:40;
+  display:none;gap:10px;
+}
+.stickybar a{
+  flex:1;text-align:center;text-decoration:none;font-weight:700;font-size:15.5px;
+  border-radius:5px;padding:13px 10px;box-shadow:0 10px 24px rgba(10,30,20,.28);
+}
+.stickybar .wa{background:#25d366;color:#08351a}
+.stickybar .bk{background:linear-gradient(180deg,var(--gold-bright),var(--gold));color:#2c2303}
+@media(max-width:760px){.stickybar{display:flex}}
+body.locked .stickybar{display:none}
+
+/* 段落入場：柔和淡入＋輕微上移，克制唔花 */
+.rv{opacity:0;transform:translateY(12px);transition:opacity .6s ease,transform .6s ease}
+.rv.in{opacity:1;transform:none}
+
+@media (prefers-reduced-motion: reduce){
+  #intro .bgimg,#intro .glow,#intro .hint{animation:none}
+  #showcase .sc-bg img,.sc-card .sc-float{animation:none}
+  .site-bg img{animation:none}
+  .rv{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+}
+
+/* === 課程智能問答浮窗（QA WIDGET）=== */
+#qaFab{
+  position:fixed;right:16px;bottom:24px;z-index:60;
+  display:flex;align-items:center;gap:8px;cursor:pointer;
+  background:rgba(9,26,18,.96);color:#eaf3ec;
+  border:1px solid rgba(127,200,169,.45);border-radius:5px;
+  padding:11px 15px;font-family:var(--mono);font-size:13px;letter-spacing:.12em;
+  box-shadow:0 12px 28px rgba(4,16,10,.45);
+  transition:transform .3s ease,opacity .3s ease,border-color .3s ease;
+}
+#qaFab:hover{border-color:rgba(127,200,169,.85)}
+#qaFab svg{width:17px;height:17px;stroke:var(--mint);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+#qaFab .dot{width:7px;height:7px;border-radius:50%;background:#25d366;flex:0 0 auto}
+@media(max-width:760px){
+  #qaFab{bottom:calc(86px + env(safe-area-inset-bottom));right:12px}
+}
+#qaPanel{
+  position:fixed;right:16px;bottom:92px;z-index:61;
+  width:min(384px,calc(100vw - 24px));height:min(540px,calc(100dvh - 190px));
+  display:flex;flex-direction:column;overflow:hidden;
+  background:rgba(7,22,14,.985);color:#eaf3ec;
+  border:1px solid rgba(127,200,169,.4);border-radius:5px;
+  box-shadow:0 24px 60px rgba(2,10,6,.55);
+  opacity:0;transform:translateY(16px);pointer-events:none;
+  transition:opacity .32s ease,transform .32s ease;
+}
+#qaPanel.open{opacity:1;transform:none;pointer-events:auto}
+@media(max-width:760px){
+  #qaPanel{
+    left:10px;right:10px;top:10px;width:auto;
+    bottom:calc(150px + env(safe-area-inset-bottom));height:auto;
+  }
+}
+.qa-head{
+  flex:0 0 auto;padding:14px 16px 10px;border-bottom:1px solid rgba(127,200,169,.25);
+  display:flex;align-items:flex-start;gap:10px;
+}
+.qa-head .tt{flex:1}
+.qa-head .lab{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--mint)}
+.qa-head h3{font-size:18px;font-weight:900;margin-top:3px}
+.qa-head .note{font-size:12px;color:#b9d2c2;margin-top:4px;line-height:1.55}
+.qa-close{
+  flex:0 0 auto;cursor:pointer;background:none;color:#cfe3d6;
+  border:1px solid rgba(127,200,169,.35);border-radius:3px;
+  width:30px;height:30px;font-size:16px;line-height:1;font-family:var(--mono);
+}
+.qa-close:hover{border-color:rgba(127,200,169,.8);color:#fff}
+.qa-msgs{flex:1;overflow-y:auto;padding:14px 14px 6px;display:flex;flex-direction:column;gap:10px}
+.qa-msg{max-width:88%;padding:10px 12px;border-radius:5px;font-size:14.5px;line-height:1.65;white-space:pre-wrap;word-break:break-word}
+.qa-msg.bot{align-self:flex-start;background:rgba(16,44,29,.9);border:1px solid rgba(127,200,169,.22)}
+.qa-msg.user{align-self:flex-end;background:rgba(127,200,169,.16);border:1px solid rgba(127,200,169,.45);color:#fff}
+.qa-msg a{color:var(--gold-bright);text-decoration:underline}
+.qa-msg .qa-cta{display:inline-block;margin-top:8px;margin-right:8px;padding:7px 12px;border:1px solid rgba(127,200,169,.55);border-radius:3px;color:#eaf3ec;text-decoration:none;font-family:var(--mono);font-size:12.5px;letter-spacing:.08em}
+.qa-msg .qa-cta.wa{border-color:#25d366;color:#7ee2a8}
+.qa-chips{flex:0 0 auto;display:flex;flex-wrap:wrap;gap:7px;padding:10px 14px;border-top:1px solid rgba(127,200,169,.18)}
+.qa-chip{
+  cursor:pointer;background:none;color:#cfe3d6;font-size:13px;
+  border:1px solid rgba(127,200,169,.35);border-radius:3px;padding:6px 10px;
+  transition:border-color .2s ease,color .2s ease;
+}
+.qa-chip:hover{border-color:rgba(127,200,169,.85);color:#fff}
+.qa-form{flex:0 0 auto;display:flex;gap:8px;padding:12px 14px calc(12px + env(safe-area-inset-bottom));border-top:1px solid rgba(127,200,169,.25)}
+.qa-form input{
+  flex:1;min-width:0;background:rgba(16,44,29,.85);color:#fff;font-size:15px;
+  border:1px solid rgba(127,200,169,.35);border-radius:3px;padding:10px 12px;outline:none;
+}
+.qa-form input:focus{border-color:rgba(127,200,169,.85)}
+.qa-form button{
+  flex:0 0 auto;cursor:pointer;background:var(--gold);color:#2c2303;font-weight:700;font-size:14.5px;
+  border:none;border-radius:3px;padding:10px 18px;
+}
+body.locked #qaFab,body.locked #qaPanel{opacity:0!important;pointer-events:none!important}
+@media (prefers-reduced-motion: reduce){
+  #qaFab,#qaPanel{transition:none}
+}
+
+/* === 第十一輪：課程卡「包括」清單 === */
+.course .inc{margin-top:10px;padding-top:10px;border-top:1px dashed rgba(127,200,169,.25)}
+.course .inc-h{
+  font-family:var(--mono);font-size:12px;letter-spacing:.2em;color:var(--gold-bright);margin-bottom:7px;
+}
+.course .inc ul{list-style:none}
+.course .inc li{
+  font-size:14.5px;line-height:1.6;color:var(--ink-soft);
+  padding:3px 0 3px 18px;position:relative;
+}
+.course .inc li::before{
+  content:"";position:absolute;left:1px;top:.72em;width:7px;height:7px;
+  background:var(--gold);transform:rotate(45deg);
+}
+
+/* === 第十一輪：聯絡區查詢表格 === */
+.enq{
+  margin-top:28px;padding-top:24px;border-top:1px solid rgba(127,200,169,.25);
+  text-align:left;
+}
+.enq-h{
+  font-family:var(--mono);font-size:13px;letter-spacing:.22em;color:var(--gold-bright);
+  text-align:center;margin-bottom:18px;
+}
+.enq-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.enq .fld{display:flex;flex-direction:column;gap:6px}
+.enq .fld.wide{grid-column:1 / -1}
+.enq .fld span{font-size:15px;font-weight:700;color:#eaf3ec}
+.enq .fld input,.enq .fld select,.enq .fld textarea{
+  font:inherit;font-size:16px;color:#fff;color-scheme:dark;
+  background:rgba(16,44,29,.85);border:1px solid rgba(127,200,169,.35);border-radius:3px;
+  padding:12px;min-height:48px;outline:none;width:100%;
+}
+.enq .fld textarea{min-height:84px;resize:vertical}
+.enq .fld input:focus,.enq .fld select:focus,.enq .fld textarea:focus{border-color:rgba(127,200,169,.9)}
+.enq .fld input.invalid,.enq .fld select.invalid,.enq .fld textarea.invalid{border-color:#e0655f}
+.enq-err{color:#f0928c;font-size:15px;margin-top:14px}
+.enq-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+.enq-actions .btn{flex:1;text-align:center;cursor:pointer;border:none;font:inherit;min-height:48px}
+@media(max-width:640px){.enq-grid{grid-template-columns:1fr}}
+</style>
+<style>
+/* ================= 第十輪：雙語＋設計＋可讀性覆蓋層 ================= */
+/* 語言專屬字體棧：日韓文優先用返自己嘅 Noto Sans，避免漢字字形錯版 */
+html[lang="ja"] body{font-family:"Noto Sans JP","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
+html[lang="ko"] body{font-family:"Noto Sans KR","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
+html[lang="zh-Hans"] body{font-family:"Noto Sans TC","PingFang SC","Microsoft YaHei","PingFang TC",sans-serif}
+/* 襯線展示字（引子句、品牌）：拉丁 Cormorant Garamond＋中文 Noto Serif TC＋日韓系統襯線 */
+.serif-d{font-family:"Cormorant Garamond","Noto Serif TC","Hiragino Mincho ProN","Yu Mincho","Nanum Myeongjo",serif}
+
+/* ---------- 長者／近視可讀性：字級下限 ---------- */
+@media(max-width:760px){body{font-size:16.5px}}
+.eyebrow{font-size:13px}
+.sec-title .en{font-size:13px}
+.hero figcaption{font-size:13px}
+#intro .hint{font-size:15px}
+.course .tag{font-size:13px}
+.course .tag .idx{color:#c9dccd}
+.course .en{font-size:14.5px}
+.course .meta .k{font-size:13px}
+.card p{font-size:17px}
+.tip{font-size:17px}
+.acc-label{font-size:13px}
+.acc .acc-label{font-size:13px}
+.acc-head .acc-idx{font-size:13px}
+.acc-body-in p{font-size:17px}
+.viewer .v-head{font-size:13px}
+.viewer .mol-hint{font-size:13px}
+.viewer .v-sub{font-size:15.5px}
+.viewer .v-points-title{font-size:13px}
+.viewer .vp .vn{font-size:13px}
+.viewer .vp p{font-size:17px}
+.team-names .ti{font-size:13px}
+.result .yr{font-size:13px}
+.step p{font-size:17px}
+.contact-box p{font-size:17px}
+footer .fmeta{font-size:13px}
+.topbar .brand-sub{font-size:11px}
+.sc-card figcaption .sc-members{font-size:13px}
+.fee-note{font-size:13.5px}
+/* 跳過掣：文字夠大、點擊範圍至少 44px 高 */
+.skip-btn{font-size:14px;min-height:44px;display:inline-flex;align-items:center}
+.btn{min-height:48px}
+
+/* ---------- 引子句執靚（展示艙＋佳績區共用 lead.main） ---------- */
+#showcase .sc-lead{
+  font-family:"Cormorant Garamond","Noto Serif TC","Hiragino Mincho ProN","Yu Mincho","Nanum Myeongjo",serif;
+  font-weight:600;letter-spacing:.14em;line-height:1.7;
+  font-size:clamp(19px,3.6vw,30px);color:#f2f7f3;
+}
+#showcase .sc-lead::before{
+  content:"";display:block;width:56px;height:1px;margin:0 auto 16px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+#showcase .sc-lead strong{font-weight:700}
+.sec-sub{
+  font-family:"Cormorant Garamond","Noto Serif TC","Hiragino Mincho ProN","Yu Mincho","Nanum Myeongjo",serif;
+  font-size:clamp(19px,2.8vw,24px);font-weight:600;letter-spacing:.08em;line-height:1.6;
+  color:#f2f7f3;margin-top:14px;
+  display:flex;align-items:center;gap:16px;
+}
+.sec-sub::before{content:"";flex:0 0 auto;width:40px;height:1px;background:linear-gradient(90deg,var(--gold),rgba(201,162,39,.15))}
+.sec-sub strong{color:var(--gold-bright);font-weight:700}
+
+/* ---------- 語言選單（頂欄） ---------- */
+.lang-box{display:flex;align-items:center;gap:9px}
+.lang-box .lang-lab{font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;color:var(--mint)}
+#langSel{
+  font:inherit;font-size:14.5px;font-weight:700;color:#eaf3ec;cursor:pointer;
+  background:rgba(8,24,16,.85);border:1px solid rgba(127,200,169,.5);border-radius:4px;
+  min-height:42px;padding:7px 10px;max-width:46vw;
+}
+#langSel:focus{border-color:rgba(127,200,169,.9);outline:none}
+#langSel option{color:#17352a;background:#fff}
+
+/* ---------- 問答浮窗改版：一眼知係 AI＋大粒易㩒 ---------- */
+#qaFab{
+  font-family:inherit;font-size:15.5px;font-weight:700;letter-spacing:.05em;
+  min-height:56px;padding:13px 20px;border-radius:6px;gap:10px;
+}
+#qaFab svg{width:24px;height:24px;stroke:var(--mint)}
+#qaFab .dot{width:8px;height:8px}
+#qaHint{
+  position:fixed;right:16px;bottom:calc(24px + 66px);z-index:59;
+  background:#eef5f0;color:#14382c;font-size:14.5px;font-weight:700;line-height:1.5;
+  padding:11px 15px;border-radius:8px;max-width:min(260px,72vw);
+  box-shadow:0 14px 32px rgba(2,10,6,.5);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .45s ease,transform .45s ease;
+}
+#qaHint::after{
+  content:"";position:absolute;right:34px;bottom:-7px;width:14px;height:14px;
+  background:#eef5f0;transform:rotate(45deg);
+}
+#qaHint.show{opacity:1;transform:none}
+@media(max-width:760px){
+  #qaHint{right:12px;bottom:calc(86px + env(safe-area-inset-bottom) + 66px)}
+}
+body.locked #qaHint{opacity:0!important;pointer-events:none!important}
+.qa-head .lab{font-size:13px}
+.qa-head .note{font-size:13.5px;color:#cfe3d6}
+.qa-close{width:44px;height:44px;font-size:17px}
+.qa-msg{font-size:15.5px}
+.qa-chips{flex-direction:column;flex-wrap:nowrap;gap:8px}
+.qa-chip{
+  width:100%;min-height:48px;display:flex;align-items:center;text-align:left;
+  font-size:15px;padding:12px 14px;color:#e6f2ea;line-height:1.45;
+}
+.qa-form{align-items:stretch}
+.qa-form input{min-height:48px;font-size:16px}
+.qa-form button[type="submit"]{min-height:48px;font-size:15px;padding:10px 16px}
+.qa-tool{
+  flex:0 0 48px;width:48px;min-height:48px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(16,44,29,.85);color:#cfe3d6;
+  border:1px solid rgba(127,200,169,.35);border-radius:3px;padding:0;
+  transition:border-color .2s ease,color .2s ease,background .2s ease;
+}
+.qa-tool:hover{border-color:rgba(127,200,169,.85);color:#fff}
+.qa-tool svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.qa-tool.listening{
+  color:#2c2303;background:linear-gradient(180deg,var(--gold-bright),var(--gold));border-color:var(--gold);
+  animation:qaPulse 1.1s ease-in-out infinite;
+}
+@keyframes qaPulse{0%,100%{box-shadow:0 0 0 0 rgba(227,188,63,.45)}50%{box-shadow:0 0 0 8px rgba(227,188,63,0)}}
+.qa-msg img.qa-attached{max-width:190px;max-height:190px;border-radius:5px;border:1px solid rgba(127,200,169,.4)}
+.qa-msg .qa-imgcap{display:block;font-size:13px;color:#cfe3d6;margin-top:6px}
+@media (prefers-reduced-motion: reduce){
+  .qa-tool.listening{animation:none}
+  #qaHint{transition:none}
+}
+/* 10) 頂欄可㩒元素補足 44px：導覽連結＋語言選單 */
+.topbar .links a{padding:12px 14px}
+#langSel{padding-top:12px;padding-bottom:12px}
+</style>
+
+</head>
+<body class="locked">
+
+<!-- ================= 開場 ================= -->
+<div id="intro" role="button" data-i18n-aria="intro.aria" aria-label="進入 Spark Science Education 網站">
+  <div class="diveWrap">
+    <picture>
+      <source media="(orientation: portrait)" srcset="assets/hero-phone.webp">
+      <source media="(max-width: 1280px)" srcset="assets/hero-tablet.webp">
+      <img class="bgimg" src="assets/hero-desktop.webp" alt="Spark Science Education — 創智・未來" fetchpriority="high">
+    </picture>
+    <div class="glow"></div>
+    <canvas id="introCanvas"></canvas>
+  </div>
+  <div class="hint" data-i18n="intro.hint">㩒 一 下 進 入</div>
+  <button type="button" class="skip-btn skip-btn--intro" id="introSkip" data-i18n="skip">跳過 SKIP →</button>
+</div>
+
+<!-- ================= 展示艙（穿梭後成績卡） ================= -->
+<div id="showcase" aria-hidden="true" data-i18n-aria="showcase.aria" aria-label="科研團隊與比賽佳績展示">
+  <div class="sc-bg">
+    <picture>
+      <source media="(orientation: portrait)" srcset="assets/bg-phone.webp">
+      <img src="assets/bg-desktop.webp" alt="" aria-hidden="true">
+    </picture>
+    <div class="sc-shade"></div>
+  </div>
+  <div class="sc-stage">
+    <div class="sc-ring" id="scRing">
+    <figure class="sc-card sc-card--team">
+      <div class="sc-front">      <div class="sc-float">
+        <div class="sc-media"><img style="object-position:center 30%" src="assets/team-official-nostrip.webp" width="1200" height="798" data-i18n-alt="sc.alt.team" alt="Spark Science Education 科研團隊五人合照"></div>
+        <figcaption><span class="sc-team-title" data-i18n="sc.team.title">科研團隊</span><span class="sc-members"><span class="sc-mem" data-i18n="sc.mem1">林文傑教授・首席科學顧問</span><span class="sc-mem" data-i18n="sc.mem2">黎卓賢博士・科學主任</span><span class="sc-mem" data-i18n="sc.mem3">鄺緯陽博士・創辦人・首席科學官</span><span class="sc-mem" data-i18n="sc.mem4">宋振州博士・研究總監</span><span class="sc-mem" data-i18n="sc.mem5">黃桂林博士・教育顧問</span></span></figcaption>
+      </div>
+      <div class="sc-dim"></div>
+      <div class="shine"></div>
+    
+      </div>
+      <div class="sc-back" aria-hidden="true"><svg viewBox="0 0 240 240"><g fill="none" stroke-linecap="round"><path d="M 120.0 53.0 L 122.2 54.0 L 124.3 54.9 L 126.4 55.9 L 128.6 56.8 L 130.7 57.8 L 132.8 58.7 L 134.8 59.7 L 136.9 60.7 L 138.9 61.6 L 140.8 62.6 L 142.7 63.5 L 144.6 64.5 L 146.4 65.4 L 148.2 66.4 L 149.9 67.4 L 151.6 68.3 L 153.2 69.3 L 154.7 70.2 L 156.1 71.2 L 157.5 72.1 L 158.8 73.1 L 160.1 74.1 L 161.2 75.0 L 162.3 76.0 L 163.2 76.9 L 164.1 77.9 L 164.9 78.8 L 165.7 79.8 L 166.3 80.8 L 166.8 81.7 L 167.2 82.7 L 167.6 83.6 L 167.8 84.6 L 168.0 85.5 L 168.0 86.5 L 168.0 87.5 L 167.8 88.4 L 167.6 89.4 L 167.2 90.3 L 166.8 91.3 L 166.3 92.2 L 165.7 93.2 L 164.9 94.2 L 164.1 95.1 L 163.2 96.1 L 162.3 97.0 L 161.2 98.0 L 160.1 98.9 L 158.8 99.9 L 157.5 100.9 L 156.1 101.8 L 154.7 102.8 L 153.2 103.7 L 151.6 104.7 L 149.9 105.6 L 148.2 106.6 L 146.4 107.6 L 144.6 108.5 L 142.7 109.5 L 140.8 110.4 L 138.9 111.4 L 136.9 112.3 L 134.8 113.3 L 132.8 114.3 L 130.7 115.2 L 128.6 116.2 L 126.4 117.1 L 124.3 118.1 L 122.2 119.0 L 120.0 120.0 L 117.8 121.0 L 115.7 121.9 L 113.6 122.9 L 111.4 123.8 L 109.3 124.8 L 107.2 125.7 L 105.2 126.7 L 103.1 127.7 L 101.1 128.6 L 99.2 129.6 L 97.3 130.5 L 95.4 131.5 L 93.6 132.4 L 91.8 133.4 L 90.1 134.4 L 88.4 135.3 L 86.8 136.3 L 85.3 137.2 L 83.9 138.2 L 82.5 139.1 L 81.2 140.1 L 79.9 141.1 L 78.8 142.0 L 77.7 143.0 L 76.8 143.9 L 75.9 144.9 L 75.1 145.8 L 74.3 146.8 L 73.7 147.8 L 73.2 148.7 L 72.8 149.7 L 72.4 150.6 L 72.2 151.6 L 72.0 152.5 L 72.0 153.5 L 72.0 154.5 L 72.2 155.4 L 72.4 156.4 L 72.8 157.3 L 73.2 158.3 L 73.7 159.2 L 74.3 160.2 L 75.1 161.2 L 75.9 162.1 L 76.8 163.1 L 77.7 164.0 L 78.8 165.0 L 79.9 165.9 L 81.2 166.9 L 82.5 167.9 L 83.9 168.8 L 85.3 169.8 L 86.8 170.7 L 88.4 171.7 L 90.1 172.6 L 91.8 173.6 L 93.6 174.6 L 95.4 175.5 L 97.3 176.5 L 99.2 177.4 L 101.1 178.4 L 103.1 179.3 L 105.2 180.3 L 107.2 181.3 L 109.3 182.2 L 111.4 183.2 L 113.6 184.1 L 115.7 185.1 L 117.8 186.0 L 120.0 187.0" stroke="#d8a441" stroke-width="14.0"/><path d="M 120.0 53.0 L 117.8 54.0 L 115.7 54.9 L 113.6 55.9 L 111.4 56.8 L 109.3 57.8 L 107.2 58.7 L 105.2 59.7 L 103.1 60.7 L 101.1 61.6 L 99.2 62.6 L 97.3 63.5 L 95.4 64.5 L 93.6 65.4 L 91.8 66.4 L 90.1 67.4 L 88.4 68.3 L 86.8 69.3 L 85.3 70.2 L 83.9 71.2 L 82.5 72.1 L 81.2 73.1 L 79.9 74.1 L 78.8 75.0 L 77.7 76.0 L 76.8 76.9 L 75.9 77.9 L 75.1 78.8 L 74.3 79.8 L 73.7 80.8 L 73.2 81.7 L 72.8 82.7 L 72.4 83.6 L 72.2 84.6 L 72.0 85.5 L 72.0 86.5 L 72.0 87.5 L 72.2 88.4 L 72.4 89.4 L 72.8 90.3 L 73.2 91.3 L 73.7 92.2 L 74.3 93.2 L 75.1 94.2 L 75.9 95.1 L 76.8 96.1 L 77.7 97.0 L 78.8 98.0 L 79.9 98.9 L 81.2 99.9 L 82.5 100.9 L 83.9 101.8 L 85.3 102.8 L 86.8 103.7 L 88.4 104.7 L 90.1 105.6 L 91.8 106.6 L 93.6 107.6 L 95.4 108.5 L 97.3 109.5 L 99.2 110.4 L 101.1 111.4 L 103.1 112.3 L 105.2 113.3 L 107.2 114.3 L 109.3 115.2 L 111.4 116.2 L 113.6 117.1 L 115.7 118.1 L 117.8 119.0 L 120.0 120.0 L 122.2 121.0 L 124.3 121.9 L 126.4 122.9 L 128.6 123.8 L 130.7 124.8 L 132.8 125.7 L 134.8 126.7 L 136.9 127.7 L 138.9 128.6 L 140.8 129.6 L 142.7 130.5 L 144.6 131.5 L 146.4 132.4 L 148.2 133.4 L 149.9 134.4 L 151.6 135.3 L 153.2 136.3 L 154.7 137.2 L 156.1 138.2 L 157.5 139.1 L 158.8 140.1 L 160.1 141.1 L 161.2 142.0 L 162.3 143.0 L 163.2 143.9 L 164.1 144.9 L 164.9 145.8 L 165.7 146.8 L 166.3 147.8 L 166.8 148.7 L 167.2 149.7 L 167.6 150.6 L 167.8 151.6 L 168.0 152.5 L 168.0 153.5 L 168.0 154.5 L 167.8 155.4 L 167.6 156.4 L 167.2 157.3 L 166.8 158.3 L 166.3 159.2 L 165.7 160.2 L 164.9 161.2 L 164.1 162.1 L 163.2 163.1 L 162.3 164.0 L 161.2 165.0 L 160.1 165.9 L 158.8 166.9 L 157.5 167.9 L 156.1 168.8 L 154.7 169.8 L 153.2 170.7 L 151.6 171.7 L 149.9 172.6 L 148.2 173.6 L 146.4 174.6 L 144.6 175.5 L 142.7 176.5 L 140.8 177.4 L 138.9 178.4 L 136.9 179.3 L 134.8 180.3 L 132.8 181.3 L 130.7 182.2 L 128.6 183.2 L 126.4 184.1 L 124.3 185.1 L 122.2 186.0 L 120.0 187.0" stroke="#6ee7c4" stroke-width="14.0"/><polygon points="120.0,96.0 125.1,114.9 144.0,120.0 125.1,125.1 120.0,144.0 114.9,125.1 96.0,120.0 114.9,114.9" fill="#f6d678"/></g></svg><span>SPARK SCIENCE</span></div>
+    </figure>
+    <figure class="sc-card">
+      <div class="sc-front">      <div class="sc-float">
+        <div class="sc-media"><img style="object-position:center" src="assets/award-innohealth.webp" width="1080" height="605" data-i18n-alt="sc.alt.inno" alt="合作學校九龍真光中學勇奪 InnoHealth Cup 2025 冠軍頒獎禮合照"></div>
+        <figcaption data-i18n="sc.cap.inno">InnoHealth Cup 2025 冠軍（九龍真光中學）</figcaption>
+      </div>
+      <div class="sc-dim"></div>
+      <div class="shine"></div>
+    
+      </div>
+      <div class="sc-back" aria-hidden="true"><svg viewBox="0 0 240 240"><g fill="none" stroke-linecap="round"><path d="M 120.0 53.0 L 122.2 54.0 L 124.3 54.9 L 126.4 55.9 L 128.6 56.8 L 130.7 57.8 L 132.8 58.7 L 134.8 59.7 L 136.9 60.7 L 138.9 61.6 L 140.8 62.6 L 142.7 63.5 L 144.6 64.5 L 146.4 65.4 L 148.2 66.4 L 149.9 67.4 L 151.6 68.3 L 153.2 69.3 L 154.7 70.2 L 156.1 71.2 L 157.5 72.1 L 158.8 73.1 L 160.1 74.1 L 161.2 75.0 L 162.3 76.0 L 163.2 76.9 L 164.1 77.9 L 164.9 78.8 L 165.7 79.8 L 166.3 80.8 L 166.8 81.7 L 167.2 82.7 L 167.6 83.6 L 167.8 84.6 L 168.0 85.5 L 168.0 86.5 L 168.0 87.5 L 167.8 88.4 L 167.6 89.4 L 167.2 90.3 L 166.8 91.3 L 166.3 92.2 L 165.7 93.2 L 164.9 94.2 L 164.1 95.1 L 163.2 96.1 L 162.3 97.0 L 161.2 98.0 L 160.1 98.9 L 158.8 99.9 L 157.5 100.9 L 156.1 101.8 L 154.7 102.8 L 153.2 103.7 L 151.6 104.7 L 149.9 105.6 L 148.2 106.6 L 146.4 107.6 L 144.6 108.5 L 142.7 109.5 L 140.8 110.4 L 138.9 111.4 L 136.9 112.3 L 134.8 113.3 L 132.8 114.3 L 130.7 115.2 L 128.6 116.2 L 126.4 117.1 L 124.3 118.1 L 122.2 119.0 L 120.0 120.0 L 117.8 121.0 L 115.7 121.9 L 113.6 122.9 L 111.4 123.8 L 109.3 124.8 L 107.2 125.7 L 105.2 126.7 L 103.1 127.7 L 101.1 128.6 L 99.2 129.6 L 97.3 130.5 L 95.4 131.5 L 93.6 132.4 L 91.8 133.4 L 90.1 134.4 L 88.4 135.3 L 86.8 136.3 L 85.3 137.2 L 83.9 138.2 L 82.5 139.1 L 81.2 140.1 L 79.9 141.1 L 78.8 142.0 L 77.7 143.0 L 76.8 143.9 L 75.9 144.9 L 75.1 145.8 L 74.3 146.8 L 73.7 147.8 L 73.2 148.7 L 72.8 149.7 L 72.4 150.6 L 72.2 151.6 L 72.0 152.5 L 72.0 153.5 L 72.0 154.5 L 72.2 155.4 L 72.4 156.4 L 72.8 157.3 L 73.2 158.3 L 73.7 159.2 L 74.3 160.2 L 75.1 161.2 L 75.9 162.1 L 76.8 163.1 L 77.7 164.0 L 78.8 165.0 L 79.9 165.9 L 81.2 166.9 L 82.5 167.9 L 83.9 168.8 L 85.3 169.8 L 86.8 170.7 L 88.4 171.7 L 90.1 172.6 L 91.8 173.6 L 93.6 174.6 L 95.4 175.5 L 97.3 176.5 L 99.2 177.4 L 101.1 178.4 L 103.1 179.3 L 105.2 180.3 L 107.2 181.3 L 109.3 182.2 L 111.4 183.2 L 113.6 184.1 L 115.7 185.1 L 117.8 186.0 L 120.0 187.0" stroke="#d8a441" stroke-width="14.0"/><path d="M 120.0 53.0 L 117.8 54.0 L 115.7 54.9 L 113.6 55.9 L 111.4 56.8 L 109.3 57.8 L 107.2 58.7 L 105.2 59.7 L 103.1 60.7 L 101.1 61.6 L 99.2 62.6 L 97.3 63.5 L 95.4 64.5 L 93.6 65.4 L 91.8 66.4 L 90.1 67.4 L 88.4 68.3 L 86.8 69.3 L 85.3 70.2 L 83.9 71.2 L 82.5 72.1 L 81.2 73.1 L 79.9 74.1 L 78.8 75.0 L 77.7 76.0 L 76.8 76.9 L 75.9 77.9 L 75.1 78.8 L 74.3 79.8 L 73.7 80.8 L 73.2 81.7 L 72.8 82.7 L 72.4 83.6 L 72.2 84.6 L 72.0 85.5 L 72.0 86.5 L 72.0 87.5 L 72.2 88.4 L 72.4 89.4 L 72.8 90.3 L 73.2 91.3 L 73.7 92.2 L 74.3 93.2 L 75.1 94.2 L 75.9 95.1 L 76.8 96.1 L 77.7 97.0 L 78.8 98.0 L 79.9 98.9 L 81.2 99.9 L 82.5 100.9 L 83.9 101.8 L 85.3 102.8 L 86.8 103.7 L 88.4 104.7 L 90.1 105.6 L 91.8 106.6 L 93.6 107.6 L 95.4 108.5 L 97.3 109.5 L 99.2 110.4 L 101.1 111.4 L 103.1 112.3 L 105.2 113.3 L 107.2 114.3 L 109.3 115.2 L 111.4 116.2 L 113.6 117.1 L 115.7 118.1 L 117.8 119.0 L 120.0 120.0 L 122.2 121.0 L 124.3 121.9 L 126.4 122.9 L 128.6 123.8 L 130.7 124.8 L 132.8 125.7 L 134.8 126.7 L 136.9 127.7 L 138.9 128.6 L 140.8 129.6 L 142.7 130.5 L 144.6 131.5 L 146.4 132.4 L 148.2 133.4 L 149.9 134.4 L 151.6 135.3 L 153.2 136.3 L 154.7 137.2 L 156.1 138.2 L 157.5 139.1 L 158.8 140.1 L 160.1 141.1 L 161.2 142.0 L 162.3 143.0 L 163.2 143.9 L 164.1 144.9 L 164.9 145.8 L 165.7 146.8 L 166.3 147.8 L 166.8 148.7 L 167.2 149.7 L 167.6 150.6 L 167.8 151.6 L 168.0 152.5 L 168.0 153.5 L 168.0 154.5 L 167.8 155.4 L 167.6 156.4 L 167.2 157.3 L 166.8 158.3 L 166.3 159.2 L 165.7 160.2 L 164.9 161.2 L 164.1 162.1 L 163.2 163.1 L 162.3 164.0 L 161.2 165.0 L 160.1 165.9 L 158.8 166.9 L 157.5 167.9 L 156.1 168.8 L 154.7 169.8 L 153.2 170.7 L 151.6 171.7 L 149.9 172.6 L 148.2 173.6 L 146.4 174.6 L 144.6 175.5 L 142.7 176.5 L 140.8 177.4 L 138.9 178.4 L 136.9 179.3 L 134.8 180.3 L 132.8 181.3 L 130.7 182.2 L 128.6 183.2 L 126.4 184.1 L 124.3 185.1 L 122.2 186.0 L 120.0 187.0" stroke="#6ee7c4" stroke-width="14.0"/><polygon points="120.0,96.0 125.1,114.9 144.0,120.0 125.1,125.1 120.0,144.0 114.9,125.1 96.0,120.0 114.9,114.9" fill="#f6d678"/></g></svg><span>SPARK SCIENCE</span></div>
+    </figure>
+    <figure class="sc-card">
+      <div class="sc-front">      <div class="sc-float">
+        <div class="sc-media"><img src="assets/award-kapi-169.webp" width="1080" height="605" data-i18n-alt="sc.alt.kapi" alt="輔導隊伍 KAPI 於 iGEM 2024 奪得金獎的報道相片"></div>
+        <figcaption data-i18n="sc.cap.kapi">iGEM 2024 金獎・KAPI（AI 抗癌肽）</figcaption>
+      </div>
+      <div class="sc-dim"></div>
+      <div class="shine"></div>
+    
+      </div>
+      <div class="sc-back" aria-hidden="true"><svg viewBox="0 0 240 240"><g fill="none" stroke-linecap="round"><path d="M 120.0 53.0 L 122.2 54.0 L 124.3 54.9 L 126.4 55.9 L 128.6 56.8 L 130.7 57.8 L 132.8 58.7 L 134.8 59.7 L 136.9 60.7 L 138.9 61.6 L 140.8 62.6 L 142.7 63.5 L 144.6 64.5 L 146.4 65.4 L 148.2 66.4 L 149.9 67.4 L 151.6 68.3 L 153.2 69.3 L 154.7 70.2 L 156.1 71.2 L 157.5 72.1 L 158.8 73.1 L 160.1 74.1 L 161.2 75.0 L 162.3 76.0 L 163.2 76.9 L 164.1 77.9 L 164.9 78.8 L 165.7 79.8 L 166.3 80.8 L 166.8 81.7 L 167.2 82.7 L 167.6 83.6 L 167.8 84.6 L 168.0 85.5 L 168.0 86.5 L 168.0 87.5 L 167.8 88.4 L 167.6 89.4 L 167.2 90.3 L 166.8 91.3 L 166.3 92.2 L 165.7 93.2 L 164.9 94.2 L 164.1 95.1 L 163.2 96.1 L 162.3 97.0 L 161.2 98.0 L 160.1 98.9 L 158.8 99.9 L 157.5 100.9 L 156.1 101.8 L 154.7 102.8 L 153.2 103.7 L 151.6 104.7 L 149.9 105.6 L 148.2 106.6 L 146.4 107.6 L 144.6 108.5 L 142.7 109.5 L 140.8 110.4 L 138.9 111.4 L 136.9 112.3 L 134.8 113.3 L 132.8 114.3 L 130.7 115.2 L 128.6 116.2 L 126.4 117.1 L 124.3 118.1 L 122.2 119.0 L 120.0 120.0 L 117.8 121.0 L 115.7 121.9 L 113.6 122.9 L 111.4 123.8 L 109.3 124.8 L 107.2 125.7 L 105.2 126.7 L 103.1 127.7 L 101.1 128.6 L 99.2 129.6 L 97.3 130.5 L 95.4 131.5 L 93.6 132.4 L 91.8 133.4 L 90.1 134.4 L 88.4 135.3 L 86.8 136.3 L 85.3 137.2 L 83.9 138.2 L 82.5 139.1 L 81.2 140.1 L 79.9 141.1 L 78.8 142.0 L 77.7 143.0 L 76.8 143.9 L 75.9 144.9 L 75.1 145.8 L 74.3 146.8 L 73.7 147.8 L 73.2 148.7 L 72.8 149.7 L 72.4 150.6 L 72.2 151.6 L 72.0 152.5 L 72.0 153.5 L 72.0 154.5 L 72.2 155.4 L 72.4 156.4 L 72.8 157.3 L 73.2 158.3 L 73.7 159.2 L 74.3 160.2 L 75.1 161.2 L 75.9 162.1 L 76.8 163.1 L 77.7 164.0 L 78.8 165.0 L 79.9 165.9 L 81.2 166.9 L 82.5 167.9 L 83.9 168.8 L 85.3 169.8 L 86.8 170.7 L 88.4 171.7 L 90.1 172.6 L 91.8 173.6 L 93.6 174.6 L 95.4 175.5 L 97.3 176.5 L 99.2 177.4 L 101.1 178.4 L 103.1 179.3 L 105.2 180.3 L 107.2 181.3 L 109.3 182.2 L 111.4 183.2 L 113.6 184.1 L 115.7 185.1 L 117.8 186.0 L 120.0 187.0" stroke="#d8a441" stroke-width="14.0"/><path d="M 120.0 53.0 L 117.8 54.0 L 115.7 54.9 L 113.6 55.9 L 111.4 56.8 L 109.3 57.8 L 107.2 58.7 L 105.2 59.7 L 103.1 60.7 L 101.1 61.6 L 99.2 62.6 L 97.3 63.5 L 95.4 64.5 L 93.6 65.4 L 91.8 66.4 L 90.1 67.4 L 88.4 68.3 L 86.8 69.3 L 85.3 70.2 L 83.9 71.2 L 82.5 72.1 L 81.2 73.1 L 79.9 74.1 L 78.8 75.0 L 77.7 76.0 L 76.8 76.9 L 75.9 77.9 L 75.1 78.8 L 74.3 79.8 L 73.7 80.8 L 73.2 81.7 L 72.8 82.7 L 72.4 83.6 L 72.2 84.6 L 72.0 85.5 L 72.0 86.5 L 72.0 87.5 L 72.2 88.4 L 72.4 89.4 L 72.8 90.3 L 73.2 91.3 L 73.7 92.2 L 74.3 93.2 L 75.1 94.2 L 75.9 95.1 L 76.8 96.1 L 77.7 97.0 L 78.8 98.0 L 79.9 98.9 L 81.2 99.9 L 82.5 100.9 L 83.9 101.8 L 85.3 102.8 L 86.8 103.7 L 88.4 104.7 L 90.1 105.6 L 91.8 106.6 L 93.6 107.6 L 95.4 108.5 L 97.3 109.5 L 99.2 110.4 L 101.1 111.4 L 103.1 112.3 L 105.2 113.3 L 107.2 114.3 L 109.3 115.2 L 111.4 116.2 L 113.6 117.1 L 115.7 118.1 L 117.8 119.0 L 120.0 120.0 L 122.2 121.0 L 124.3 121.9 L 126.4 122.9 L 128.6 123.8 L 130.7 124.8 L 132.8 125.7 L 134.8 126.7 L 136.9 127.7 L 138.9 128.6 L 140.8 129.6 L 142.7 130.5 L 144.6 131.5 L 146.4 132.4 L 148.2 133.4 L 149.9 134.4 L 151.6 135.3 L 153.2 136.3 L 154.7 137.2 L 156.1 138.2 L 157.5 139.1 L 158.8 140.1 L 160.1 141.1 L 161.2 142.0 L 162.3 143.0 L 163.2 143.9 L 164.1 144.9 L 164.9 145.8 L 165.7 146.8 L 166.3 147.8 L 166.8 148.7 L 167.2 149.7 L 167.6 150.6 L 167.8 151.6 L 168.0 152.5 L 168.0 153.5 L 168.0 154.5 L 167.8 155.4 L 167.6 156.4 L 167.2 157.3 L 166.8 158.3 L 166.3 159.2 L 165.7 160.2 L 164.9 161.2 L 164.1 162.1 L 163.2 163.1 L 162.3 164.0 L 161.2 165.0 L 160.1 165.9 L 158.8 166.9 L 157.5 167.9 L 156.1 168.8 L 154.7 169.8 L 153.2 170.7 L 151.6 171.7 L 149.9 172.6 L 148.2 173.6 L 146.4 174.6 L 144.6 175.5 L 142.7 176.5 L 140.8 177.4 L 138.9 178.4 L 136.9 179.3 L 134.8 180.3 L 132.8 181.3 L 130.7 182.2 L 128.6 183.2 L 126.4 184.1 L 124.3 185.1 L 122.2 186.0 L 120.0 187.0" stroke="#6ee7c4" stroke-width="14.0"/><polygon points="120.0,96.0 125.1,114.9 144.0,120.0 125.1,125.1 120.0,144.0 114.9,125.1 96.0,120.0 114.9,114.9" fill="#f6d678"/></g></svg><span>SPARK SCIENCE</span></div>
+    </figure>
+    <figure class="sc-card">
+      <div class="sc-front">      <div class="sc-float">
+        <div class="sc-media"><img src="assets/award-pesti-169.webp" width="1080" height="605" data-i18n-alt="sc.alt.pesti" alt="輔導隊伍 PestiGuard 於 iGEM 2025 奪得金獎並躋身全球高中組前十的合照"></div>
+        <figcaption data-i18n="sc.cap.pesti">iGEM 2025 金獎・PestiGuard（全球高中組前十）</figcaption>
+      </div>
+      <div class="sc-dim"></div>
+      <div class="shine"></div>
+    
+      </div>
+      <div class="sc-back" aria-hidden="true"><svg viewBox="0 0 240 240"><g fill="none" stroke-linecap="round"><path d="M 120.0 53.0 L 122.2 54.0 L 124.3 54.9 L 126.4 55.9 L 128.6 56.8 L 130.7 57.8 L 132.8 58.7 L 134.8 59.7 L 136.9 60.7 L 138.9 61.6 L 140.8 62.6 L 142.7 63.5 L 144.6 64.5 L 146.4 65.4 L 148.2 66.4 L 149.9 67.4 L 151.6 68.3 L 153.2 69.3 L 154.7 70.2 L 156.1 71.2 L 157.5 72.1 L 158.8 73.1 L 160.1 74.1 L 161.2 75.0 L 162.3 76.0 L 163.2 76.9 L 164.1 77.9 L 164.9 78.8 L 165.7 79.8 L 166.3 80.8 L 166.8 81.7 L 167.2 82.7 L 167.6 83.6 L 167.8 84.6 L 168.0 85.5 L 168.0 86.5 L 168.0 87.5 L 167.8 88.4 L 167.6 89.4 L 167.2 90.3 L 166.8 91.3 L 166.3 92.2 L 165.7 93.2 L 164.9 94.2 L 164.1 95.1 L 163.2 96.1 L 162.3 97.0 L 161.2 98.0 L 160.1 98.9 L 158.8 99.9 L 157.5 100.9 L 156.1 101.8 L 154.7 102.8 L 153.2 103.7 L 151.6 104.7 L 149.9 105.6 L 148.2 106.6 L 146.4 107.6 L 144.6 108.5 L 142.7 109.5 L 140.8 110.4 L 138.9 111.4 L 136.9 112.3 L 134.8 113.3 L 132.8 114.3 L 130.7 115.2 L 128.6 116.2 L 126.4 117.1 L 124.3 118.1 L 122.2 119.0 L 120.0 120.0 L 117.8 121.0 L 115.7 121.9 L 113.6 122.9 L 111.4 123.8 L 109.3 124.8 L 107.2 125.7 L 105.2 126.7 L 103.1 127.7 L 101.1 128.6 L 99.2 129.6 L 97.3 130.5 L 95.4 131.5 L 93.6 132.4 L 91.8 133.4 L 90.1 134.4 L 88.4 135.3 L 86.8 136.3 L 85.3 137.2 L 83.9 138.2 L 82.5 139.1 L 81.2 140.1 L 79.9 141.1 L 78.8 142.0 L 77.7 143.0 L 76.8 143.9 L 75.9 144.9 L 75.1 145.8 L 74.3 146.8 L 73.7 147.8 L 73.2 148.7 L 72.8 149.7 L 72.4 150.6 L 72.2 151.6 L 72.0 152.5 L 72.0 153.5 L 72.0 154.5 L 72.2 155.4 L 72.4 156.4 L 72.8 157.3 L 73.2 158.3 L 73.7 159.2 L 74.3 160.2 L 75.1 161.2 L 75.9 162.1 L 76.8 163.1 L 77.7 164.0 L 78.8 165.0 L 79.9 165.9 L 81.2 166.9 L 82.5 167.9 L 83.9 168.8 L 85.3 169.8 L 86.8 170.7 L 88.4 171.7 L 90.1 172.6 L 91.8 173.6 L 93.6 174.6 L 95.4 175.5 L 97.3 176.5 L 99.2 177.4 L 101.1 178.4 L 103.1 179.3 L 105.2 180.3 L 107.2 181.3 L 109.3 182.2 L 111.4 183.2 L 113.6 184.1 L 115.7 185.1 L 117.8 186.0 L 120.0 187.0" stroke="#d8a441" stroke-width="14.0"/><path d="M 120.0 53.0 L 117.8 54.0 L 115.7 54.9 L 113.6 55.9 L 111.4 56.8 L 109.3 57.8 L 107.2 58.7 L 105.2 59.7 L 103.1 60.7 L 101.1 61.6 L 99.2 62.6 L 97.3 63.5 L 95.4 64.5 L 93.6 65.4 L 91.8 66.4 L 90.1 67.4 L 88.4 68.3 L 86.8 69.3 L 85.3 70.2 L 83.9 71.2 L 82.5 72.1 L 81.2 73.1 L 79.9 74.1 L 78.8 75.0 L 77.7 76.0 L 76.8 76.9 L 75.9 77.9 L 75.1 78.8 L 74.3 79.8 L 73.7 80.8 L 73.2 81.7 L 72.8 82.7 L 72.4 83.6 L 72.2 84.6 L 72.0 85.5 L 72.0 86.5 L 72.0 87.5 L 72.2 88.4 L 72.4 89.4 L 72.8 90.3 L 73.2 91.3 L 73.7 92.2 L 74.3 93.2 L 75.1 94.2 L 75.9 95.1 L 76.8 96.1 L 77.7 97.0 L 78.8 98.0 L 79.9 98.9 L 81.2 99.9 L 82.5 100.9 L 83.9 101.8 L 85.3 102.8 L 86.8 103.7 L 88.4 104.7 L 90.1 105.6 L 91.8 106.6 L 93.6 107.6 L 95.4 108.5 L 97.3 109.5 L 99.2 110.4 L 101.1 111.4 L 103.1 112.3 L 105.2 113.3 L 107.2 114.3 L 109.3 115.2 L 111.4 116.2 L 113.6 117.1 L 115.7 118.1 L 117.8 119.0 L 120.0 120.0 L 122.2 121.0 L 124.3 121.9 L 126.4 122.9 L 128.6 123.8 L 130.7 124.8 L 132.8 125.7 L 134.8 126.7 L 136.9 127.7 L 138.9 128.6 L 140.8 129.6 L 142.7 130.5 L 144.6 131.5 L 146.4 132.4 L 148.2 133.4 L 149.9 134.4 L 151.6 135.3 L 153.2 136.3 L 154.7 137.2 L 156.1 138.2 L 157.5 139.1 L 158.8 140.1 L 160.1 141.1 L 161.2 142.0 L 162.3 143.0 L 163.2 143.9 L 164.1 144.9 L 164.9 145.8 L 165.7 146.8 L 166.3 147.8 L 166.8 148.7 L 167.2 149.7 L 167.6 150.6 L 167.8 151.6 L 168.0 152.5 L 168.0 153.5 L 168.0 154.5 L 167.8 155.4 L 167.6 156.4 L 167.2 157.3 L 166.8 158.3 L 166.3 159.2 L 165.7 160.2 L 164.9 161.2 L 164.1 162.1 L 163.2 163.1 L 162.3 164.0 L 161.2 165.0 L 160.1 165.9 L 158.8 166.9 L 157.5 167.9 L 156.1 168.8 L 154.7 169.8 L 153.2 170.7 L 151.6 171.7 L 149.9 172.6 L 148.2 173.6 L 146.4 174.6 L 144.6 175.5 L 142.7 176.5 L 140.8 177.4 L 138.9 178.4 L 136.9 179.3 L 134.8 180.3 L 132.8 181.3 L 130.7 182.2 L 128.6 183.2 L 126.4 184.1 L 124.3 185.1 L 122.2 186.0 L 120.0 187.0" stroke="#6ee7c4" stroke-width="14.0"/><polygon points="120.0,96.0 125.1,114.9 144.0,120.0 125.1,125.1 120.0,144.0 114.9,125.1 96.0,120.0 114.9,114.9" fill="#f6d678"/></g></svg><span>SPARK SCIENCE</span></div>
+    </figure>
+    <figure class="sc-card">
+      <div class="sc-front">      <div class="sc-float">
+        <div class="sc-media"><img style="object-position:center 35%" src="assets/award-mentoring.webp" width="1080" height="748" data-i18n-alt="sc.alt.mentor" alt="導師團隊輔導香港中學學生隊伍的合照"></div>
+        <figcaption data-i18n="sc.cap.mentor">輔導 9 間香港中學團隊</figcaption>
+      </div>
+      <div class="sc-dim"></div>
+      <div class="shine"></div>
+    
+      </div>
+      <div class="sc-back" aria-hidden="true"><svg viewBox="0 0 240 240"><g fill="none" stroke-linecap="round"><path d="M 120.0 53.0 L 122.2 54.0 L 124.3 54.9 L 126.4 55.9 L 128.6 56.8 L 130.7 57.8 L 132.8 58.7 L 134.8 59.7 L 136.9 60.7 L 138.9 61.6 L 140.8 62.6 L 142.7 63.5 L 144.6 64.5 L 146.4 65.4 L 148.2 66.4 L 149.9 67.4 L 151.6 68.3 L 153.2 69.3 L 154.7 70.2 L 156.1 71.2 L 157.5 72.1 L 158.8 73.1 L 160.1 74.1 L 161.2 75.0 L 162.3 76.0 L 163.2 76.9 L 164.1 77.9 L 164.9 78.8 L 165.7 79.8 L 166.3 80.8 L 166.8 81.7 L 167.2 82.7 L 167.6 83.6 L 167.8 84.6 L 168.0 85.5 L 168.0 86.5 L 168.0 87.5 L 167.8 88.4 L 167.6 89.4 L 167.2 90.3 L 166.8 91.3 L 166.3 92.2 L 165.7 93.2 L 164.9 94.2 L 164.1 95.1 L 163.2 96.1 L 162.3 97.0 L 161.2 98.0 L 160.1 98.9 L 158.8 99.9 L 157.5 100.9 L 156.1 101.8 L 154.7 102.8 L 153.2 103.7 L 151.6 104.7 L 149.9 105.6 L 148.2 106.6 L 146.4 107.6 L 144.6 108.5 L 142.7 109.5 L 140.8 110.4 L 138.9 111.4 L 136.9 112.3 L 134.8 113.3 L 132.8 114.3 L 130.7 115.2 L 128.6 116.2 L 126.4 117.1 L 124.3 118.1 L 122.2 119.0 L 120.0 120.0 L 117.8 121.0 L 115.7 121.9 L 113.6 122.9 L 111.4 123.8 L 109.3 124.8 L 107.2 125.7 L 105.2 126.7 L 103.1 127.7 L 101.1 128.6 L 99.2 129.6 L 97.3 130.5 L 95.4 131.5 L 93.6 132.4 L 91.8 133.4 L 90.1 134.4 L 88.4 135.3 L 86.8 136.3 L 85.3 137.2 L 83.9 138.2 L 82.5 139.1 L 81.2 140.1 L 79.9 141.1 L 78.8 142.0 L 77.7 143.0 L 76.8 143.9 L 75.9 144.9 L 75.1 145.8 L 74.3 146.8 L 73.7 147.8 L 73.2 148.7 L 72.8 149.7 L 72.4 150.6 L 72.2 151.6 L 72.0 152.5 L 72.0 153.5 L 72.0 154.5 L 72.2 155.4 L 72.4 156.4 L 72.8 157.3 L 73.2 158.3 L 73.7 159.2 L 74.3 160.2 L 75.1 161.2 L 75.9 162.1 L 76.8 163.1 L 77.7 164.0 L 78.8 165.0 L 79.9 165.9 L 81.2 166.9 L 82.5 167.9 L 83.9 168.8 L 85.3 169.8 L 86.8 170.7 L 88.4 171.7 L 90.1 172.6 L 91.8 173.6 L 93.6 174.6 L 95.4 175.5 L 97.3 176.5 L 99.2 177.4 L 101.1 178.4 L 103.1 179.3 L 105.2 180.3 L 107.2 181.3 L 109.3 182.2 L 111.4 183.2 L 113.6 184.1 L 115.7 185.1 L 117.8 186.0 L 120.0 187.0" stroke="#d8a441" stroke-width="14.0"/><path d="M 120.0 53.0 L 117.8 54.0 L 115.7 54.9 L 113.6 55.9 L 111.4 56.8 L 109.3 57.8 L 107.2 58.7 L 105.2 59.7 L 103.1 60.7 L 101.1 61.6 L 99.2 62.6 L 97.3 63.5 L 95.4 64.5 L 93.6 65.4 L 91.8 66.4 L 90.1 67.4 L 88.4 68.3 L 86.8 69.3 L 85.3 70.2 L 83.9 71.2 L 82.5 72.1 L 81.2 73.1 L 79.9 74.1 L 78.8 75.0 L 77.7 76.0 L 76.8 76.9 L 75.9 77.9 L 75.1 78.8 L 74.3 79.8 L 73.7 80.8 L 73.2 81.7 L 72.8 82.7 L 72.4 83.6 L 72.2 84.6 L 72.0 85.5 L 72.0 86.5 L 72.0 87.5 L 72.2 88.4 L 72.4 89.4 L 72.8 90.3 L 73.2 91.3 L 73.7 92.2 L 74.3 93.2 L 75.1 94.2 L 75.9 95.1 L 76.8 96.1 L 77.7 97.0 L 78.8 98.0 L 79.9 98.9 L 81.2 99.9 L 82.5 100.9 L 83.9 101.8 L 85.3 102.8 L 86.8 103.7 L 88.4 104.7 L 90.1 105.6 L 91.8 106.6 L 93.6 107.6 L 95.4 108.5 L 97.3 109.5 L 99.2 110.4 L 101.1 111.4 L 103.1 112.3 L 105.2 113.3 L 107.2 114.3 L 109.3 115.2 L 111.4 116.2 L 113.6 117.1 L 115.7 118.1 L 117.8 119.0 L 120.0 120.0 L 122.2 121.0 L 124.3 121.9 L 126.4 122.9 L 128.6 123.8 L 130.7 124.8 L 132.8 125.7 L 134.8 126.7 L 136.9 127.7 L 138.9 128.6 L 140.8 129.6 L 142.7 130.5 L 144.6 131.5 L 146.4 132.4 L 148.2 133.4 L 149.9 134.4 L 151.6 135.3 L 153.2 136.3 L 154.7 137.2 L 156.1 138.2 L 157.5 139.1 L 158.8 140.1 L 160.1 141.1 L 161.2 142.0 L 162.3 143.0 L 163.2 143.9 L 164.1 144.9 L 164.9 145.8 L 165.7 146.8 L 166.3 147.8 L 166.8 148.7 L 167.2 149.7 L 167.6 150.6 L 167.8 151.6 L 168.0 152.5 L 168.0 153.5 L 168.0 154.5 L 167.8 155.4 L 167.6 156.4 L 167.2 157.3 L 166.8 158.3 L 166.3 159.2 L 165.7 160.2 L 164.9 161.2 L 164.1 162.1 L 163.2 163.1 L 162.3 164.0 L 161.2 165.0 L 160.1 165.9 L 158.8 166.9 L 157.5 167.9 L 156.1 168.8 L 154.7 169.8 L 153.2 170.7 L 151.6 171.7 L 149.9 172.6 L 148.2 173.6 L 146.4 174.6 L 144.6 175.5 L 142.7 176.5 L 140.8 177.4 L 138.9 178.4 L 136.9 179.3 L 134.8 180.3 L 132.8 181.3 L 130.7 182.2 L 128.6 183.2 L 126.4 184.1 L 124.3 185.1 L 122.2 186.0 L 120.0 187.0" stroke="#6ee7c4" stroke-width="14.0"/><polygon points="120.0,96.0 125.1,114.9 144.0,120.0 125.1,125.1 120.0,144.0 114.9,125.1 96.0,120.0 114.9,114.9" fill="#f6d678"/></g></svg><span>SPARK SCIENCE</span></div>
+    </figure>
+    </div>
+  </div>
+  <div class="sc-lead serif-d" id="scLead" data-i18n-html="lead.main">由創辦人・首席科學官 <strong>鄺緯陽博士</strong>帶領</div>
+  <button type="button" class="skip-btn" id="scSkip" data-i18n="skip">跳過 SKIP →</button>
+</div>
+
+<!-- ================= 全站綠色郁動底板 ================= -->
+<div class="site-bg" aria-hidden="true">
+  <picture>
+    <source media="(orientation: portrait)" srcset="assets/bg-phone.webp">
+    <img src="assets/bg-desktop.webp" alt="" aria-hidden="true">
+  </picture>
+  <div class="shade"></div>
+  <div class="grid-overlay"></div>
+</div>
+
+<!-- ================= 內容 ================= -->
+<div id="site" aria-hidden="true">
+  <div class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="52 36 136 168" aria-hidden="true"><g fill="none" stroke-linecap="round"><path d="M 120.0 53.0 L 122.2 54.0 L 124.3 54.9 L 126.4 55.9 L 128.6 56.8 L 130.7 57.8 L 132.8 58.7 L 134.8 59.7 L 136.9 60.7 L 138.9 61.6 L 140.8 62.6 L 142.7 63.5 L 144.6 64.5 L 146.4 65.4 L 148.2 66.4 L 149.9 67.4 L 151.6 68.3 L 153.2 69.3 L 154.7 70.2 L 156.1 71.2 L 157.5 72.1 L 158.8 73.1 L 160.1 74.1 L 161.2 75.0 L 162.3 76.0 L 163.2 76.9 L 164.1 77.9 L 164.9 78.8 L 165.7 79.8 L 166.3 80.8 L 166.8 81.7 L 167.2 82.7 L 167.6 83.6 L 167.8 84.6 L 168.0 85.5 L 168.0 86.5 L 168.0 87.5 L 167.8 88.4 L 167.6 89.4 L 167.2 90.3 L 166.8 91.3 L 166.3 92.2 L 165.7 93.2 L 164.9 94.2 L 164.1 95.1 L 163.2 96.1 L 162.3 97.0 L 161.2 98.0 L 160.1 98.9 L 158.8 99.9 L 157.5 100.9 L 156.1 101.8 L 154.7 102.8 L 153.2 103.7 L 151.6 104.7 L 149.9 105.6 L 148.2 106.6 L 146.4 107.6 L 144.6 108.5 L 142.7 109.5 L 140.8 110.4 L 138.9 111.4 L 136.9 112.3 L 134.8 113.3 L 132.8 114.3 L 130.7 115.2 L 128.6 116.2 L 126.4 117.1 L 124.3 118.1 L 122.2 119.0 L 120.0 120.0 L 117.8 121.0 L 115.7 121.9 L 113.6 122.9 L 111.4 123.8 L 109.3 124.8 L 107.2 125.7 L 105.2 126.7 L 103.1 127.7 L 101.1 128.6 L 99.2 129.6 L 97.3 130.5 L 95.4 131.5 L 93.6 132.4 L 91.8 133.4 L 90.1 134.4 L 88.4 135.3 L 86.8 136.3 L 85.3 137.2 L 83.9 138.2 L 82.5 139.1 L 81.2 140.1 L 79.9 141.1 L 78.8 142.0 L 77.7 143.0 L 76.8 143.9 L 75.9 144.9 L 75.1 145.8 L 74.3 146.8 L 73.7 147.8 L 73.2 148.7 L 72.8 149.7 L 72.4 150.6 L 72.2 151.6 L 72.0 152.5 L 72.0 153.5 L 72.0 154.5 L 72.2 155.4 L 72.4 156.4 L 72.8 157.3 L 73.2 158.3 L 73.7 159.2 L 74.3 160.2 L 75.1 161.2 L 75.9 162.1 L 76.8 163.1 L 77.7 164.0 L 78.8 165.0 L 79.9 165.9 L 81.2 166.9 L 82.5 167.9 L 83.9 168.8 L 85.3 169.8 L 86.8 170.7 L 88.4 171.7 L 90.1 172.6 L 91.8 173.6 L 93.6 174.6 L 95.4 175.5 L 97.3 176.5 L 99.2 177.4 L 101.1 178.4 L 103.1 179.3 L 105.2 180.3 L 107.2 181.3 L 109.3 182.2 L 111.4 183.2 L 113.6 184.1 L 115.7 185.1 L 117.8 186.0 L 120.0 187.0" stroke="#d8a441" stroke-width="14.0"/><path d="M 120.0 53.0 L 117.8 54.0 L 115.7 54.9 L 113.6 55.9 L 111.4 56.8 L 109.3 57.8 L 107.2 58.7 L 105.2 59.7 L 103.1 60.7 L 101.1 61.6 L 99.2 62.6 L 97.3 63.5 L 95.4 64.5 L 93.6 65.4 L 91.8 66.4 L 90.1 67.4 L 88.4 68.3 L 86.8 69.3 L 85.3 70.2 L 83.9 71.2 L 82.5 72.1 L 81.2 73.1 L 79.9 74.1 L 78.8 75.0 L 77.7 76.0 L 76.8 76.9 L 75.9 77.9 L 75.1 78.8 L 74.3 79.8 L 73.7 80.8 L 73.2 81.7 L 72.8 82.7 L 72.4 83.6 L 72.2 84.6 L 72.0 85.5 L 72.0 86.5 L 72.0 87.5 L 72.2 88.4 L 72.4 89.4 L 72.8 90.3 L 73.2 91.3 L 73.7 92.2 L 74.3 93.2 L 75.1 94.2 L 75.9 95.1 L 76.8 96.1 L 77.7 97.0 L 78.8 98.0 L 79.9 98.9 L 81.2 99.9 L 82.5 100.9 L 83.9 101.8 L 85.3 102.8 L 86.8 103.7 L 88.4 104.7 L 90.1 105.6 L 91.8 106.6 L 93.6 107.6 L 95.4 108.5 L 97.3 109.5 L 99.2 110.4 L 101.1 111.4 L 103.1 112.3 L 105.2 113.3 L 107.2 114.3 L 109.3 115.2 L 111.4 116.2 L 113.6 117.1 L 115.7 118.1 L 117.8 119.0 L 120.0 120.0 L 122.2 121.0 L 124.3 121.9 L 126.4 122.9 L 128.6 123.8 L 130.7 124.8 L 132.8 125.7 L 134.8 126.7 L 136.9 127.7 L 138.9 128.6 L 140.8 129.6 L 142.7 130.5 L 144.6 131.5 L 146.4 132.4 L 148.2 133.4 L 149.9 134.4 L 151.6 135.3 L 153.2 136.3 L 154.7 137.2 L 156.1 138.2 L 157.5 139.1 L 158.8 140.1 L 160.1 141.1 L 161.2 142.0 L 162.3 143.0 L 163.2 143.9 L 164.1 144.9 L 164.9 145.8 L 165.7 146.8 L 166.3 147.8 L 166.8 148.7 L 167.2 149.7 L 167.6 150.6 L 167.8 151.6 L 168.0 152.5 L 168.0 153.5 L 168.0 154.5 L 167.8 155.4 L 167.6 156.4 L 167.2 157.3 L 166.8 158.3 L 166.3 159.2 L 165.7 160.2 L 164.9 161.2 L 164.1 162.1 L 163.2 163.1 L 162.3 164.0 L 161.2 165.0 L 160.1 165.9 L 158.8 166.9 L 157.5 167.9 L 156.1 168.8 L 154.7 169.8 L 153.2 170.7 L 151.6 171.7 L 149.9 172.6 L 148.2 173.6 L 146.4 174.6 L 144.6 175.5 L 142.7 176.5 L 140.8 177.4 L 138.9 178.4 L 136.9 179.3 L 134.8 180.3 L 132.8 181.3 L 130.7 182.2 L 128.6 183.2 L 126.4 184.1 L 124.3 185.1 L 122.2 186.0 L 120.0 187.0" stroke="#6ee7c4" stroke-width="14.0"/><polygon points="120.0,96.0 125.1,114.9 144.0,120.0 125.1,125.1 120.0,144.0 114.9,125.1 96.0,120.0 114.9,114.9" fill="#f6d678"/></g></svg>
+        <span class="brand-lockup">
+          <span class="brand-name">Spark Science</span>
+          <span class="brand-sub" data-i18n="brand.sub">EDUCATION · 創智・未來</span>
+        </span>
+      </div>
+      <nav>
+        <a href="#courses" data-i18n="nav.courses">課程</a><a href="#team" data-i18n="nav.team">科研團隊</a><a href="#results" data-i18n="nav.results">比賽佳績</a><a href="#booking" data-i18n="nav.booking">如何預約</a><a href="#contact" data-i18n="nav.contact">聯絡我們</a>
+      </nav>
+      <div class="lang-box"><span class="lang-lab">LANGUAGE</span><select id="langSel" aria-label="Language / 語言選擇"><option value="en">English</option><option value="zh">繁體中文</option><option value="hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option></select></div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="wrap">
+      <div class="eyebrow" data-i18n="hero.eyebrow">SEC.00 // AI INNOVATION PROGRAMMES · 專為香港中學而設 · 現正接受預約</div>
+      <h1 data-i18n="hero.h1">結合學生創意與科技，締造未來</h1>
+      <p class="sub" data-i18n-html="hero.sub">iGEM 金獎導師團隊任教，學生親身走進 <b>AI 科研</b></p>
+      <figure>
+        <img src="assets/ceremony.webp" data-i18n-alt="hero.alt" alt="合作學校於 2025 香港 InnoHealth Cup 奪冠頒獎禮合照" loading="lazy" decoding="async">
+        <figcaption data-i18n="hero.cap">學生屢獲國際殊榮——合作學校勇奪 2025 香港 InnoHealth Cup 冠軍</figcaption>
+      </figure>
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="wrap">
+      <h2 class="sec-title"><span class="en" data-i18n="about.en">SEC.01 // ABOUT US — 關於我們</span><span data-i18n="about.title">校長及各位老師，您好</span></h2>
+      <div class="sec-lead">
+        <p data-i18n="about.lead">我們是 Spark Science Education（創智・未來），由 Solar Trinity Science Limited 營運。導師團隊由博士級導師領軍，並由具專業醫務化驗師背景的導師負責實驗教學。過去兩年，我們輔導的學生隊伍先後於 iGEM 全球大賽奪得金獎，合作學校亦勇奪香港 InnoHealth Cup 冠軍。</p>
+      </div>
+      <div class="tip" data-i18n-html="tip"><b>溫馨提示：</b>本課程系列符合教育局「智啟學教」撥款計劃相關要求，學校可申請該撥款資助購置，善用政府專款，毋須額外動用校內預算。課程涵蓋科學、生物、資訊科技及 STEAM 跨學科學習，並一次過為學校解決課程設計、專業導師、實驗教學與 AI 平台配套——由申請到開課，我哋全程配合學校行政需要。完成課程的學生可獲由<b>香港城市大學頒發</b>的證書。</div>
+      <div class="acc">
+        <div class="acc-label" data-i18n="acc.label">WHY US // 點解選擇我哋</div>
+        <div class="acc-item open">
+          <button class="acc-head" type="button" aria-expanded="true"><span><span class="acc-idx">01</span><span data-i18n="acc.h1">點解選擇我哋團隊</span></span><span class="acc-mark">+</span></button>
+          <div class="acc-body"><div class="acc-body-in">
+            <p data-i18n-html="acc.b1">課程由<b>博士級導師領軍</b>設計及任教，以大學科研的標準設計課程內容與評核；實驗教學由具<b>專業醫務化驗師背景</b>的導師負責，技術示範、操作規範與安全管理均由專業人員把關。團隊長期輔導中學生參加國際生物設計競賽，輔導隊伍先後於 <b>iGEM 全球大賽奪得金獎</b>，合作學校亦勇奪<b>香港 InnoHealth Cup 冠軍</b>。</p>
+          </div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" type="button" aria-expanded="false"><span><span class="acc-idx">02</span><span data-i18n="acc.h2">我哋可以幫到學生啲咩</span></span><span class="acc-mark">+</span></button>
+          <div class="acc-body"><div class="acc-body-in">
+            <p data-i18n-html="acc.b2">學生會由編程實作、平台設計到實驗驗證，<b>親身走過完整的科研流程</b>，唔再係紙上談兵。課程內容緊貼大學科研與國際競賽要求，學生所學與大學學習直接接軌；完成課程後，更可獲<b>香港城市大學頒發的證書</b>，肯定學習成果。</p>
+          </div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" type="button" aria-expanded="false"><span><span class="acc-idx">03</span><span data-i18n="acc.h3">學校最常問嘅問題</span></span><span class="acc-mark">+</span></button>
+          <div class="acc-body"><div class="acc-body-in">
+            <p data-i18n-html="acc.b3"><b>撥款點申請？</b>所有課程均符合教育局「智啟學教」撥款計劃相關要求，學校可以申請資助購置，我哋會全程配合學校行政需要。<b>點樣預約？</b>回覆電郵或按 WhatsApp 聯絡我哋，即可安排課程簡介會（到校或視像），即場示範 CodeLifeAI 平台，再按學校需要確認編排、人數及報價。</p>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="courses">
+    <div class="wrap">
+      <h2 class="sec-title"><span class="en" data-i18n="courses.en">SEC.02 // PROGRAMMES — 課程系列</span><span data-i18n="courses.title">創智・未來 AI 創新課程系列</span></h2>
+      <div class="grid c3">
+        <article class="card course">
+          <img class="cover" src="assets/course-1.webp" width="1200" height="800" data-i18n-alt="c1.alt" alt="學生親手接駁單晶片微電腦，並以手提電腦編程" loading="lazy" decoding="async">
+          <div class="body">
+            <div class="tag"><span data-i18n="c1.tag">課程一</span><span class="idx">COURSE / 01</span></div>
+            <h3 data-i18n="c1.name">讓 AI 走進生活</h3>
+            <div class="en" data-i18n="c1.sub">AI + 單晶片微電腦編程課程</div>
+            <p data-i18n="c1.p">學生親手接線及編程單晶片微電腦，並以 AI 協助構思及調試，完成可實際運作的智能裝置專題。課程包括 AI 圖像生成。</p>
+            <div class="inc"><div class="inc-h" data-i18n="inc.h">包括</div><ul><li data-i18n="inc.ai">AI 圖像生成環節</li><li data-i18n="inc.cert">完成課程可獲香港城市大學頒發證書</li><li data-i18n="inc.c1a">親手接線及編程</li><li data-i18n="inc.c1b">完成可運作的智能裝置專題</li></ul></div>
+            <div class="meta"><div class="row"><span class="k" data-i18n="meta.dur">課時</span><span class="v" data-i18n="c1.dur">2 日起</span></div><div class="row"><span class="k" data-i18n="meta.fee">學費</span><span class="v" data-i18n="c1.fee">HK$50,000 起</span></div></div>
+          </div>
+        </article>
+        <article class="card course">
+          <img class="cover" src="assets/course-2.webp" width="1200" height="675" data-i18n-alt="c2.alt" alt="學生在課室望住大屏幕上的蛋白質 3D 結構學習" loading="lazy" decoding="async">
+          <div class="body">
+            <div class="tag"><span data-i18n="c2.tag">課程二</span><span class="idx">COURSE / 02</span></div>
+            <h3 data-i18n="c2.name">當生物科技遇上 AI</h3>
+            <div class="en" data-i18n="c2.sub">AI + 創新蛋白質設計課程 ft. CodeLifeAI</div>
+            <p data-i18n="c2.p">學生在 CodeLifeAI 平台上讀懂蛋白質 3D 結構，以 AI 生成候選設計，再以結構預測及評分逐一篩選，體驗真正的生物設計流程。課程包括 AI 圖像生成。</p>
+            <div class="inc"><div class="inc-h" data-i18n="inc.h">包括</div><ul><li data-i18n="inc.ai">AI 圖像生成環節</li><li data-i18n="inc.cert">完成課程可獲香港城市大學頒發證書</li><li data-i18n="inc.c2a">CodeLifeAI 平台實作</li><li data-i18n="inc.c2b">真實生物設計流程（結構預測及評分篩選）</li></ul></div>
+            <div class="meta"><div class="row"><span class="k" data-i18n="meta.dur">課時</span><span class="v" data-i18n="c2.dur">3–4 堂起</span></div><div class="row"><span class="k" data-i18n="meta.fee">學費</span><span class="v" data-i18n="c2.fee">HK$100,000 起</span></div></div>
+            <a class="btn btn-green platform-link" href="https://codelife.ai" target="_blank" rel="noopener" data-i18n="c2.platform">進入 CodeLifeAI 平台睇睇</a>
+          </div>
+        </article>
+        <article class="card course">
+          <img class="cover" src="assets/course-3.webp" width="1200" height="675" data-i18n-alt="c3.alt" alt="實驗室內導師帶領學生使用微量移液器做實驗" loading="lazy" decoding="async">
+          <div class="body">
+            <div class="tag"><span data-i18n="c3.tag">課程三</span><span class="idx">COURSE / 03</span></div>
+            <h3 data-i18n="c3.name">培育未來生物發明家</h3>
+            <div class="en" data-i18n="c3.sub">創新蛋白質設計 + 專業導師實驗課程</div>
+            <p data-i18n="c3.p">在課程二的基礎上，學生把自己的設計帶到實驗室，由專業導師帶領親手驗證。課程包括 AI 圖像生成。</p>
+            <div class="inc"><div class="inc-h" data-i18n="inc.h">包括</div><ul><li data-i18n="inc.ai">AI 圖像生成環節</li><li data-i18n="inc.cert">完成課程可獲香港城市大學頒發證書</li><li data-i18n="inc.c3a">專業導師帶領的實驗室實作</li><li data-i18n="inc.c3b">由蛋白設計到實驗驗證的完整科研流程</li></ul></div>
+            <div class="meta"><div class="row"><span class="k" data-i18n="meta.dur">課時</span><span class="v" data-i18n="c3.dur">8 堂起</span></div><div class="row"><span class="k" data-i18n="meta.fee">學費</span><span class="v" data-i18n="c3.fee">HK$200,000 起</span></div></div>
+          </div>
+        </article>
+      </div>
+      <p class="fee-note" data-i18n="fee.note">收費以港幣計算，實際費用按學生人數及課程編排而定</p>
+      <div class="viewer">
+        <div class="v-head"><span data-i18n="viewer.head">// MODEL VIEWER // 蛋白質結構示例</span></div>
+        <div class="v-grid">
+          <figure>
+            <div class="mol3d" id="mol3d" role="img" data-i18n-aria="mol.aria" aria-label="T4 溶菌酶（PDB 2LZM）互動 3D 結構，可以拖動旋轉">
+              <img class="mol-fallback" src="assets/protein-2lzm.webp" width="800" height="800" data-i18n-alt="mol.alt" alt="T4 溶菌酶（PDB 2LZM）結構圖" loading="lazy" decoding="async">
+              <div class="mol-hint" data-i18n="mol.hint">拖動旋轉・滾輪／雙指縮放</div>
+            </div>
+          </figure>
+          <div class="v-data">
+            <h3 data-i18n="v.name">T4 溶菌酶</h3>
+            <div class="v-sub" data-i18n="v.sub">T4 Lysozyme・噬菌體 T4</div>
+            <p style="margin-top:14px;font-size:17px;line-height:1.8;color:var(--ink-soft)" data-i18n="v.intro">呢個係真實存在嘅蛋白質 3D 結構，亦係同學喺課程入面會學識點樣睇、點樣用嘅嘢。用手指或者滑鼠拖住佢，就可以轉嚟睇。</p>
+            <div class="v-points">
+              <div class="v-points-title" data-i18n="v.points.title">// 同學會學到 //</div>
+              <div class="vp"><span class="vn">01</span><p data-i18n="v.p1">讀懂真實蛋白質嘅 3D 結構</p></div>
+              <div class="vp"><span class="vn">02</span><p data-i18n="v.p2">以 AI 生成候選設計</p></div>
+              <div class="vp"><span class="vn">03</span><p data-i18n="v.p3">以結構預測及評分，逐一篩選最好嘅設計</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="team">
+    <div class="wrap">
+      <h2 class="sec-title"><span class="en" data-i18n="team.en">SEC.03 // RESEARCH TEAM — 科研團隊</span><span data-i18n="team.title">科研團隊</span></h2>
+      <figure class="team-photo">
+        <div class="sc-media"><img style="object-position:center 30%" src="assets/team-official-nostrip.webp" data-i18n-alt="team.alt" alt="Spark Science Education 科研團隊五人合照" loading="lazy" decoding="async"></div>
+      </figure>
+      <div class="team-names">
+        <div class="tn"><div class="nm" data-i18n="team.n1">林文傑教授</div><div class="ti" data-i18n="team.t1">首席科學顧問</div></div>
+        <div class="tn"><div class="nm" data-i18n="team.n2">黎卓賢博士</div><div class="ti" data-i18n="team.t2">科學主任</div></div>
+        <div class="tn"><div class="nm" data-i18n="team.n3">鄺緯陽博士</div><div class="ti" data-i18n="team.t3">創辦人・首席科學官</div></div>
+        <div class="tn"><div class="nm" data-i18n="team.n4">宋振州博士</div><div class="ti" data-i18n="team.t4">研究總監</div></div>
+        <div class="tn"><div class="nm" data-i18n="team.n5">黃桂林博士</div><div class="ti" data-i18n="team.t5">教育顧問</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="results">
+    <div class="wrap">
+      <h2 class="sec-title"><span class="en" data-i18n="res.en">SEC.04 // COMPETITION RESULTS — 比賽佳績</span><span data-i18n="res.title">比賽佳績</span></h2>
+      <p class="sec-sub serif-d" data-i18n-html="lead.main">由創辦人・首席科學官 <strong>鄺緯陽博士</strong>帶領</p>
+      <div class="sec-lead">
+        <p data-i18n="res.lead">iGEM 2024 KAPI 及 2025 PestiGuard 先後奪得全球大賽金獎，PestiGuard 更躋身全球高中組前十；合作學校九龍真光中學勇奪 2025 香港 InnoHealth Cup 冠軍。</p>
+      </div>
+      <div class="grid c3">
+        <article class="card result">
+          <div class="sc-media"><img src="assets/award-kapi-169.webp" data-i18n-alt="r1.alt" alt="iGEM 2024 輔導隊伍 KAPI" loading="lazy" decoding="async"></div>
+          <div class="body"><div class="yr">iGEM 2024</div><h3 data-i18n="r1.h">全球大賽金獎</h3><p data-i18n="r1.p">輔導隊伍 KAPI 於 iGEM 全球大賽奪得金獎。</p></div>
+        </article>
+        <article class="card result">
+          <div class="sc-media"><img src="assets/award-pesti-169.webp" data-i18n-alt="r2.alt" alt="iGEM 2025 輔導隊伍 PestiGuard" loading="lazy" decoding="async"></div>
+          <div class="body"><div class="yr">iGEM 2025</div><h3 data-i18n="r2.h">全球大賽金獎</h3><p data-i18n="r2.p">輔導隊伍 PestiGuard 於 iGEM 全球大賽奪得金獎，更躋身全球高中組前十。</p></div>
+        </article>
+        <article class="card result">
+          <div class="sc-media"><img style="object-position:center" src="assets/ceremony.webp" data-i18n-alt="r3.alt" alt="九龍真光中學勇奪 InnoHealth Cup 2025 冠軍" loading="lazy" decoding="async"></div>
+          <div class="body"><div class="yr">InnoHealth Cup 2025</div><h3 data-i18n="r3.h">冠軍</h3><p data-i18n="r3.p">合作學校九龍真光中學勇奪 2025 香港 InnoHealth Cup 冠軍。</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="booking">
+    <div class="wrap">
+      <h2 class="sec-title"><span class="en" data-i18n="book.en">SEC.05 // HOW TO BOOK — 預約流程</span><span data-i18n="book.title">如何預約</span></h2>
+      <div class="steps">
+        <div class="step"><div class="n">1</div><p data-i18n="step1">回覆電郵，或按下方 WhatsApp 按鈕聯絡我們</p></div>
+        <div class="step"><div class="n">2</div><p data-i18n="step2">安排課程簡介會（到校或視像），即場示範 CodeLifeAI 平台</p></div>
+        <div class="step"><div class="n">3</div><p data-i18n="step3">按學校需要確認課程編排、人數及報價</p></div>
+        <div class="step"><div class="n">4</div><p data-i18n="step4">完成採購程序（可配合「智啟學教」撥款申請）</p></div>
+        <div class="step"><div class="n">5</div><p data-i18n="step5">正式開課，學生獲頒香港城市大學證書</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact-box">
+        <div class="eyebrow" data-i18n="contact.eyebrow">SEC.06 // CONTACT — 聯絡我們</div>
+        <h3 style="margin-top:16px" data-i18n="contact.h">現在為您的學生開展 AI 科研之旅</h3>
+        <p data-i18n="contact.p">歡迎學校老師及科主任查詢，我們可按學校需要安排課程簡介會或平台示範。如有任何疑問，歡迎隨時聯絡我們查詢。</p>
+        <form class="enq" id="enquiryForm" novalidate>
+          <div class="enq-h" data-i18n="form.h">查詢表格</div>
+          <div class="enq-grid">
+            <label class="fld"><span data-i18n="form.school">學校名稱</span><input id="efSchool" type="text" autocomplete="organization" data-i18n-ph="form.ph.school" placeholder="例如：XX 中學"></label>
+            <label class="fld"><span data-i18n="form.name">聯絡人</span><input id="efName" type="text" autocomplete="name" data-i18n-ph="form.ph.name" placeholder="姓名及職銜"></label>
+            <label class="fld"><span data-i18n="form.contact">聯絡電話或電郵</span><input id="efContact" type="text" data-i18n-ph="form.ph.contact" placeholder="電話號碼或電郵地址"></label>
+            <label class="fld"><span data-i18n="form.course">想查詢的課程</span><select id="efCourse"><option data-i18n="form.opt.c1">課程一 — 讓 AI 走進生活</option><option data-i18n="form.opt.c2">課程二 — 當生物科技遇上 AI</option><option data-i18n="form.opt.c3">課程三 — 培育未來生物發明家</option><option data-i18n="form.opt.undecided">未定・想了解多啲</option></select></label>
+            <label class="fld wide"><span data-i18n="form.msg">留言（可選）</span><textarea id="efMsg" rows="3" data-i18n-ph="form.ph.msg" placeholder="有咩想我哋知嘅可以寫低（可選）"></textarea></label>
+          </div>
+          <p class="enq-err" id="efErr" role="alert" hidden></p>
+          <div class="enq-actions">
+            <button type="submit" class="btn btn-wa" data-i18n="form.submit">用 WhatsApp 遞交</button>
+            <button type="button" class="btn btn-mail" id="efMailBtn" data-i18n="form.mail">改用電郵遞交</button>
+          </div>
+        </form>
+        <div class="cta-row">
+          <a class="btn btn-gold mail-link" href="mailto:Sales@codelife.ai?subject=%E9%A0%90%E7%B4%84%E8%AA%B2%E7%A8%8B%E7%B0%A1%E4%BB%8B%E6%9C%83%20-%20Spark%20Science%20Education" data-i18n="cta.book">預約課程簡介</a>
+          <a class="btn btn-wa wa-link" href="https://api.whatsapp.com/send?phone=85298895833&text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E6%9F%A5%E8%A9%A2%20Spark%20Science%20Education%20%E7%9A%84%20AI%20%E5%89%B5%E6%96%B0%E8%AA%B2%E7%A8%8B%E7%B3%BB%E5%88%97%EF%BC%8C%E5%B8%8C%E6%9C%9B%E5%AE%89%E6%8E%92%E8%AA%B2%E7%A8%8B%E7%B0%A1%E4%BB%8B%E6%9C%83%E3%80%82" target="_blank" rel="noopener" data-i18n="cta.wa">WhatsApp 查詢</a>
+          <a class="btn btn-mail" href="mailto:Sales@codelife.ai">Sales@codelife.ai</a>
+        </div>
+        <p style="margin-top:14px;font-size:15px;color:#cfe3d6">WhatsApp / 電話：<a href="tel:+85298895833" style="color:#e9cf7a;text-decoration:none">+852 9889 5833</a></p>
+        <p style="margin-top:6px;font-size:15px;color:#cfe3d6">Instagram：<a href="https://www.instagram.com/sparkscience.education/" target="_blank" rel="noopener" style="color:#e9cf7a;text-decoration:none">@sparkscience.education</a></p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="fb"><svg viewBox="52 36 136 168" aria-hidden="true" style="width:22px;height:27px;vertical-align:-7px;margin-right:8px"><g fill="none" stroke-linecap="round"><path d="M 120.0 53.0 L 122.2 54.0 L 124.3 54.9 L 126.4 55.9 L 128.6 56.8 L 130.7 57.8 L 132.8 58.7 L 134.8 59.7 L 136.9 60.7 L 138.9 61.6 L 140.8 62.6 L 142.7 63.5 L 144.6 64.5 L 146.4 65.4 L 148.2 66.4 L 149.9 67.4 L 151.6 68.3 L 153.2 69.3 L 154.7 70.2 L 156.1 71.2 L 157.5 72.1 L 158.8 73.1 L 160.1 74.1 L 161.2 75.0 L 162.3 76.0 L 163.2 76.9 L 164.1 77.9 L 164.9 78.8 L 165.7 79.8 L 166.3 80.8 L 166.8 81.7 L 167.2 82.7 L 167.6 83.6 L 167.8 84.6 L 168.0 85.5 L 168.0 86.5 L 168.0 87.5 L 167.8 88.4 L 167.6 89.4 L 167.2 90.3 L 166.8 91.3 L 166.3 92.2 L 165.7 93.2 L 164.9 94.2 L 164.1 95.1 L 163.2 96.1 L 162.3 97.0 L 161.2 98.0 L 160.1 98.9 L 158.8 99.9 L 157.5 100.9 L 156.1 101.8 L 154.7 102.8 L 153.2 103.7 L 151.6 104.7 L 149.9 105.6 L 148.2 106.6 L 146.4 107.6 L 144.6 108.5 L 142.7 109.5 L 140.8 110.4 L 138.9 111.4 L 136.9 112.3 L 134.8 113.3 L 132.8 114.3 L 130.7 115.2 L 128.6 116.2 L 126.4 117.1 L 124.3 118.1 L 122.2 119.0 L 120.0 120.0 L 117.8 121.0 L 115.7 121.9 L 113.6 122.9 L 111.4 123.8 L 109.3 124.8 L 107.2 125.7 L 105.2 126.7 L 103.1 127.7 L 101.1 128.6 L 99.2 129.6 L 97.3 130.5 L 95.4 131.5 L 93.6 132.4 L 91.8 133.4 L 90.1 134.4 L 88.4 135.3 L 86.8 136.3 L 85.3 137.2 L 83.9 138.2 L 82.5 139.1 L 81.2 140.1 L 79.9 141.1 L 78.8 142.0 L 77.7 143.0 L 76.8 143.9 L 75.9 144.9 L 75.1 145.8 L 74.3 146.8 L 73.7 147.8 L 73.2 148.7 L 72.8 149.7 L 72.4 150.6 L 72.2 151.6 L 72.0 152.5 L 72.0 153.5 L 72.0 154.5 L 72.2 155.4 L 72.4 156.4 L 72.8 157.3 L 73.2 158.3 L 73.7 159.2 L 74.3 160.2 L 75.1 161.2 L 75.9 162.1 L 76.8 163.1 L 77.7 164.0 L 78.8 165.0 L 79.9 165.9 L 81.2 166.9 L 82.5 167.9 L 83.9 168.8 L 85.3 169.8 L 86.8 170.7 L 88.4 171.7 L 90.1 172.6 L 91.8 173.6 L 93.6 174.6 L 95.4 175.5 L 97.3 176.5 L 99.2 177.4 L 101.1 178.4 L 103.1 179.3 L 105.2 180.3 L 107.2 181.3 L 109.3 182.2 L 111.4 183.2 L 113.6 184.1 L 115.7 185.1 L 117.8 186.0 L 120.0 187.0" stroke="#d8a441" stroke-width="14.0"/><path d="M 120.0 53.0 L 117.8 54.0 L 115.7 54.9 L 113.6 55.9 L 111.4 56.8 L 109.3 57.8 L 107.2 58.7 L 105.2 59.7 L 103.1 60.7 L 101.1 61.6 L 99.2 62.6 L 97.3 63.5 L 95.4 64.5 L 93.6 65.4 L 91.8 66.4 L 90.1 67.4 L 88.4 68.3 L 86.8 69.3 L 85.3 70.2 L 83.9 71.2 L 82.5 72.1 L 81.2 73.1 L 79.9 74.1 L 78.8 75.0 L 77.7 76.0 L 76.8 76.9 L 75.9 77.9 L 75.1 78.8 L 74.3 79.8 L 73.7 80.8 L 73.2 81.7 L 72.8 82.7 L 72.4 83.6 L 72.2 84.6 L 72.0 85.5 L 72.0 86.5 L 72.0 87.5 L 72.2 88.4 L 72.4 89.4 L 72.8 90.3 L 73.2 91.3 L 73.7 92.2 L 74.3 93.2 L 75.1 94.2 L 75.9 95.1 L 76.8 96.1 L 77.7 97.0 L 78.8 98.0 L 79.9 98.9 L 81.2 99.9 L 82.5 100.9 L 83.9 101.8 L 85.3 102.8 L 86.8 103.7 L 88.4 104.7 L 90.1 105.6 L 91.8 106.6 L 93.6 107.6 L 95.4 108.5 L 97.3 109.5 L 99.2 110.4 L 101.1 111.4 L 103.1 112.3 L 105.2 113.3 L 107.2 114.3 L 109.3 115.2 L 111.4 116.2 L 113.6 117.1 L 115.7 118.1 L 117.8 119.0 L 120.0 120.0 L 122.2 121.0 L 124.3 121.9 L 126.4 122.9 L 128.6 123.8 L 130.7 124.8 L 132.8 125.7 L 134.8 126.7 L 136.9 127.7 L 138.9 128.6 L 140.8 129.6 L 142.7 130.5 L 144.6 131.5 L 146.4 132.4 L 148.2 133.4 L 149.9 134.4 L 151.6 135.3 L 153.2 136.3 L 154.7 137.2 L 156.1 138.2 L 157.5 139.1 L 158.8 140.1 L 160.1 141.1 L 161.2 142.0 L 162.3 143.0 L 163.2 143.9 L 164.1 144.9 L 164.9 145.8 L 165.7 146.8 L 166.3 147.8 L 166.8 148.7 L 167.2 149.7 L 167.6 150.6 L 167.8 151.6 L 168.0 152.5 L 168.0 153.5 L 168.0 154.5 L 167.8 155.4 L 167.6 156.4 L 167.2 157.3 L 166.8 158.3 L 166.3 159.2 L 165.7 160.2 L 164.9 161.2 L 164.1 162.1 L 163.2 163.1 L 162.3 164.0 L 161.2 165.0 L 160.1 165.9 L 158.8 166.9 L 157.5 167.9 L 156.1 168.8 L 154.7 169.8 L 153.2 170.7 L 151.6 171.7 L 149.9 172.6 L 148.2 173.6 L 146.4 174.6 L 144.6 175.5 L 142.7 176.5 L 140.8 177.4 L 138.9 178.4 L 136.9 179.3 L 134.8 180.3 L 132.8 181.3 L 130.7 182.2 L 128.6 183.2 L 126.4 184.1 L 124.3 185.1 L 122.2 186.0 L 120.0 187.0" stroke="#6ee7c4" stroke-width="14.0"/><polygon points="120.0,96.0 125.1,114.9 144.0,120.0 125.1,125.1 120.0,144.0 114.9,125.1 96.0,120.0 114.9,114.9" fill="#f6d678"/></g></svg>Spark Science Education · 創智・未來</div>
+      <div class="fmeta">SOLAR TRINITY SCIENCE LIMITED</div>
+      <div class="fmeta" data-i18n="foot.tags">AI 課程｜生物科技｜競賽培訓｜實驗課程</div>
+      <div class="fmeta" data-i18n="foot.copy">© 2026 Solar Trinity Science Limited · 晴曦科學有限公司</div>
+      <div style="font-size:13px;opacity:.75;margin-top:8px" data-i18n="foot.music">背景音樂：「Frozen Star」by Kevin MacLeod（incompetech.com），CC BY 授權</div>
+    </div>
+  </footer>
+</div>
+
+<div class="stickybar">
+  <a class="wa wa-link" href="https://api.whatsapp.com/send?phone=85298895833&text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E6%9F%A5%E8%A9%A2%20Spark%20Science%20Education%20%E7%9A%84%20AI%20%E5%89%B5%E6%96%B0%E8%AA%B2%E7%A8%8B%E7%B3%BB%E5%88%97%EF%BC%8C%E5%B8%8C%E6%9C%9B%E5%AE%89%E6%8E%92%E8%AA%B2%E7%A8%8B%E7%B0%A1%E4%BB%8B%E6%9C%83%E3%80%82" target="_blank" rel="noopener" data-i18n="cta.wa">WhatsApp 查詢</a>
+  <a class="bk mail-link" href="mailto:Sales@codelife.ai?subject=%E9%A0%90%E7%B4%84%E8%AA%B2%E7%A8%8B%E7%B0%A1%E4%BB%8B%E6%9C%83%20-%20Spark%20Science%20Education" data-i18n="cta.book">預約課程簡介</a>
+</div>
+
+<!-- === 課程智能問答浮窗（QA WIDGET）=== -->
+<button id="qaFab" type="button" data-i18n-aria="qa.fab.aria" aria-label="AI 課程助理：打開課程問答" aria-haspopup="dialog">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v2.6"/><circle cx="12" cy="2.6" r="1.1"/><rect x="4.5" y="6" width="15" height="11.5" rx="2.6"/><path d="M2.8 10.6v3.4M21.2 10.6v3.4"/><circle cx="9" cy="11.4" r=".4" fill="currentColor"/><circle cx="15" cy="11.4" r=".4" fill="currentColor"/><path d="M9.2 14.6c.8.7 1.7 1 2.8 1s2-.3 2.8-1"/><path d="M9 21h6"/></svg>
+  <span data-i18n="qa.fab">AI 課程助理</span><span class="dot" aria-hidden="true"></span>
+</button>
+<div id="qaHint" role="note"><span data-i18n="qa.hint">有問題？㩒呢度問 AI</span></div>
+<div id="qaPanel" role="dialog" aria-modal="false" data-i18n-aria="qa.panel.aria" aria-label="課程智能問答">
+  <div class="qa-head">
+    <div class="tt">
+      <div class="lab">// COURSE Q&amp;A //</div>
+      <h3 data-i18n="qa.title">課程智能問答</h3>
+      <p class="note" data-i18n="qa.note">以下答案全部嚟自本網站已公佈嘅課程資料；答唔到嘅問題，我會教你點樣聯絡真人同事跟進。</p>
+    </div>
+    <button class="qa-close" id="qaClose" type="button" data-i18n-aria="qa.close.aria" aria-label="關閉問答窗">✕</button>
+  </div>
+  <div class="qa-msgs" id="qaMsgs" aria-live="polite"></div>
+  <div class="qa-chips" id="qaChips"></div>
+  <form class="qa-form" id="qaForm">
+    <button class="qa-tool" id="qaMic" type="button" data-i18n-aria="qa.mic.aria" aria-label="語音輸入">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2.6" width="6" height="11.5" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18.2v3M8.8 21.4h6.4"/></svg>
+    </button>
+    <button class="qa-tool" id="qaImg" type="button" data-i18n-aria="qa.img.aria" aria-label="附加圖片">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14.5" rx="2"/><circle cx="8.6" cy="10" r="1.5"/><path d="M4 18.2 10 12.6l3.4 3.1 3-2.7L21 17.4"/></svg>
+    </button>
+    <input id="qaFile" type="file" accept="image/*" hidden>
+    <input id="qaInput" type="text" data-i18n-ph="qa.ph" placeholder="打你想問嘅問題…" autocomplete="off" data-i18n-aria="qa.input.aria" aria-label="輸入你的問題">
+    <button type="submit" data-i18n="qa.send">發問</button>
+  </form>
+</div>
+
+<audio id="bgm" src="assets/music.mp3" loop preload="auto"></audio>
+
+<script>
+(function(){
+  var intro = document.getElementById('intro');
+  var site  = document.getElementById('site');
+  var canvas = document.getElementById('introCanvas');
+  var ctx = canvas.getContext('2d');
+  var bgm = document.getElementById('bgm');
+  var W=0,H=0,cx=0,cy=0,DPR=1;
+  var entered = false, leaving = false, rafId = null, lastT = 0;
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function resize(){
+    DPR = Math.min(window.devicePixelRatio||1, 1.5);
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    canvas.width = Math.round(W*DPR); canvas.height = Math.round(H*DPR);
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    cx = W/2; cy = H/2;
+  }
+  function maxR(){ return Math.sqrt(cx*cx+cy*cy)*0.62; }
+
+  /* 光暈精靈圖：預先畫好柔和光暈再 drawImage，唔用 shadowBlur——順好多、光又柔 */
+  function makeSprite(hue){
+    var s = document.createElement('canvas'); s.width = s.height = 64;
+    var g = s.getContext('2d');
+    var grad = g.createRadialGradient(32,32,0,32,32,32);
+    grad.addColorStop(0,'hsla('+hue+',95%,88%,1)');
+    grad.addColorStop(0.25,'hsla('+hue+',90%,72%,.55)');
+    grad.addColorStop(0.6,'hsla('+hue+',85%,60%,.16)');
+    grad.addColorStop(1,'hsla('+hue+',85%,55%,0)');
+    g.fillStyle = grad; g.fillRect(0,0,64,64);
+    return s;
+  }
+  var sprites = [makeSprite(145), makeSprite(158), makeSprite(172)];
+
+  /* 光粒＝細胞：每粒有自己嘅呼吸脹縮、彎曲軌跡同停頓節奏，唔係直線均速 */
+  var P = [];
+  function spawn(p){
+    p.r = maxR()*(0.35+Math.random()*0.75);
+    p.a = Math.random()*Math.PI*2;
+    p.size = 0.7 + Math.random()*2.0;
+    p.shrink = 5 + Math.random()*9;            /* 半徑收攏基速（像素/秒），再俾節奏閘調節 */
+    p.spin = 0.05 + Math.random()*0.10;
+    p.breathPh = Math.random()*Math.PI*2;
+    p.breathSp = 0.18 + Math.random()*0.30;    /* 呼吸頻率：約 2–5 秒一脹一縮 */
+    p.wobPh1 = Math.random()*Math.PI*2;        /* 有機彎曲：兩層慢波疊埋做漂浮軌跡 */
+    p.wobPh2 = Math.random()*Math.PI*2;
+    p.wobSp1 = 0.15 + Math.random()*0.25;
+    p.wobSp2 = 0.05 + Math.random()*0.12;
+    p.gatePh = Math.random()*Math.PI*2;        /* 停頓節奏閘：速度有機起伏 */
+    p.gateSp = 0.10 + Math.random()*0.20;
+    p.sprite = sprites[(Math.random()*sprites.length)|0];
+    p.alpha = 0.30 + Math.random()*0.50;
+    p.x = null; p.y = null;                    /* 緩動平滑後嘅實際位置 */
+    return p;
+  }
+  function initParticles(){
+    P = [];
+    var n = Math.round(Math.min(120, Math.max(48, W*H/18000)));
+    for(var i=0;i<n;i++){ var p = spawn({}); p.r *= (0.25+Math.random()*0.85); P.push(p); }
+  }
+
+  function frame(t){
+    if(entered){ rafId = null; return; }
+    var dt = Math.min(0.05, (t-lastT)/1000 || 0.016); lastT = t;
+    var time = t/1000;
+    var R = maxR();
+
+    /* 穿梭期間畫布會淡出停畫（轉場由 CSS transform 主導），呢度只做正常清畫 */
+    ctx.clearRect(0,0,W,H);
+
+    for(var i=0;i<P.length;i++){
+      var p = P[i];
+      var gate = 0.35 + 0.65*(0.5 + 0.5*Math.sin(time*p.gateSp*Math.PI*2 + p.gatePh));
+      var speedMul = gate;
+      p.r -= p.shrink * speedMul * dt;
+      p.a += p.spin * dt * (1 + (1 - Math.min(1, p.r/R))*0.9);
+      if(p.r < 14){ spawn(p); continue; }
+
+      /* 目標位置：漩渦軌道 ＋ 兩層慢波嘅有機彎曲 */
+      var wobA = Math.sin(time*p.wobSp1*Math.PI*2 + p.wobPh1);
+      var wobB = Math.cos(time*p.wobSp2*Math.PI*2 + p.wobPh2);
+      var tx = cx + Math.cos(p.a)*p.r + wobA*10 + wobB*6;
+      var ty = cy + Math.sin(p.a)*p.r*0.92 + Math.cos(time*p.wobSp1*Math.PI*2 + p.wobPh1*1.7)*8 + wobA*4;
+
+      /* 絲滑關鍵：實際位置用指數緩動追目標，唔會機械硬跳 */
+      if(p.x === null){ p.x = tx; p.y = ty; }
+      var ease = 1 - Math.exp(-dt*4.2);
+      var ox = p.x, oy = p.y;
+      p.x += (tx - p.x)*ease;
+      p.y += (ty - p.y)*ease;
+
+      /* 呼吸：大小同光度一齊慢慢脹縮，閃爍柔和唔硬閃 */
+      var breath = 0.5 + 0.5*Math.sin(time*p.breathSp*Math.PI*2 + p.breathPh);
+      var bScale = 0.78 + 0.45*breath;
+      var al = p.alpha * (0.55 + 0.45*breath);
+      var d = p.size * 9 * bScale;
+
+      ctx.globalAlpha = al;
+      ctx.drawImage(p.sprite, p.x - d/2, p.y - d/2, d, d);
+      ctx.globalAlpha = 1;
+      /* 細光核：令粒細胞有實體感 */
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, Math.max(0.5, p.size*0.42*bScale), 0, Math.PI*2);
+      ctx.fillStyle = 'hsla(150,95%,90%,'+(al*0.85).toFixed(3)+')';
+      ctx.fill();
+    }
+    rafId = requestAnimationFrame(frame);
+  }
+  function startAnim(){ if(!rafId && !reduceMotion){ lastT = performance.now(); rafId = requestAnimationFrame(frame); } }
+  function stopAnim(){ if(rafId){ cancelAnimationFrame(rafId); rafId = null; } }
+
+  function drawStatic(){
+    /* reduced-motion：畫一幀靜態光粒就算 */
+    ctx.clearRect(0,0,W,H);
+    for(var i=0;i<P.length;i++){
+      var p = P[i];
+      var x = cx + Math.cos(p.a)*p.r, y = cy + Math.sin(p.a)*p.r*0.92;
+      var d = p.size*9;
+      ctx.globalAlpha = p.alpha*0.85;
+      ctx.drawImage(p.sprite, x-d/2, y-d/2, d, d);
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  resize(); initParticles();
+  if(reduceMotion){ drawStatic(); } else { startAnim(); }
+  window.addEventListener('resize', function(){ resize(); if(reduceMotion) drawStatic(); });
+
+  /* 背景音樂：瀏覽器唔俾未互動出聲，所以㩒入嗰下先播；音量校到好靜，只做隱約底蘊 */
+  if(bgm){ bgm.volume = 0.12; }
+  function startMusic(){
+    if(!bgm) return;
+    var pr = bgm.play();
+    if(pr && pr.catch){ pr.catch(function(){}); }
+  }
+
+  function showSite(){
+    document.body.classList.remove('locked');
+    site.classList.add('show');
+    site.setAttribute('aria-hidden','false');
+    window.scrollTo(0,0);
+  }
+
+  /* ---------- 展示艙：真・3D 旋轉環——五張卡排喺圓環上一齊轉 ---------- */
+  var showcase = document.getElementById('showcase');
+  var scCards = Array.prototype.slice.call(showcase.querySelectorAll('.sc-card'));
+  var scTimers = [];
+  var scDone = false;
+
+  /* 㩒入之前預載晒展示艙同內容站背景會用嘅圖，唔俾中途先載入彈出嚟 */
+  ['assets/bg-desktop.webp','assets/bg-phone.webp','assets/team-official-nostrip.webp',
+   'assets/award-innohealth.webp','assets/award-kapi.webp',
+   'assets/award-pestiguard.webp','assets/award-mentoring.webp']
+   .forEach(function(s){ var im = new Image(); im.src = s; });
+
+  function scLater(fn, ms){ scTimers.push(setTimeout(fn, ms)); }
+  function scClear(){ for(var i=0;i<scTimers.length;i++) clearTimeout(scTimers[i]); scTimers = []; }
+
+  /* 環嘅幾何：五張卡相隔 72° 排喺圓環上。半徑按最闊嗰張卡計：
+     R =（最闊卡半闊）/ tan(36°) + 少量空隙，相鄰卡啱啱唔重疊。
+     每張卡嘅 transform 順序：先對準環心 → 成環向後移 R → 轉到自己角度 → 推返出環面。
+     效果：正面嗰張返到自然大細，側面同背面嗰啲自動細啲、遠啲——真透視，唔使人手縮放。 */
+  var SC_STEP_MS = 1350;      /* 每 1.35 秒成環轉 72°，transition 1.05s 磁性緩動（轉得快、落位慢） */
+  var scRadius = 420;
+  function scMeasureRadius(){
+    var w = 0;
+    for(var i=0;i<scCards.length;i++) w = Math.max(w, scCards[i].offsetWidth);
+    if(w > 0) scRadius = Math.round((w / 2) / Math.tan(Math.PI / 5)) + 16;
+  }
+  function scRender(angle){
+    for(var i=0;i<scCards.length;i++){
+      var card = scCards[i];
+      var phi = i * 72 + angle;
+      card.style.transform = 'translate(-50%,-50%) translateZ(' + (-scRadius) + 'px) rotateY(' + phi + 'deg) translateZ(' + scRadius + 'px)';
+      /* 離正面愈遠遮罩愈深：側面輕暗；過咗 90° 正面本身已收起（見到卡背），唔再加暗 */
+      var rel = ((phi % 360) + 360) % 360;
+      var ang = Math.min(rel, 360 - rel);        /* 0=正面, 180=背面 */
+      var d = card.querySelector('.sc-dim');
+      if(d) d.style.opacity = ang <= 90 ? (ang / 90 * 0.5).toFixed(3) : 0;
+    }
+  }
+  function scSetFront(idx){
+    for(var i=0;i<scCards.length;i++){
+      var c = scCards[i];
+      if(i === idx){
+        c.classList.remove('enter');
+        void c.offsetWidth;          /* 重啟光澤掃描動畫 */
+        c.classList.add('enter');
+      } else {
+        c.classList.remove('enter');
+      }
+    }
+  }
+  function finishShowcase(fast){
+    if(scDone) return; scDone = true;
+    scClear();
+    showcase.classList.add('bye');
+    setTimeout(function(){
+      showcase.style.display = 'none';
+      showcase.setAttribute('aria-hidden','true');
+      showSite();
+    }, fast ? 380 : 560);
+  }
+  var scLead = document.getElementById('scLead');
+  function startShowcase(){
+    showcase.setAttribute('aria-hidden','false');
+    showcase.classList.add('play');
+    scMeasureRadius();
+    /* 先無動畫將成環擺去 26°，強制重排後開 transition 轉返 0°——成環順住落位，團隊卡做第一張正面 */
+    for(var i=0;i<scCards.length;i++) scCards[i].classList.add('noanim');
+    scRender(26);
+    void showcase.offsetWidth;
+    for(var j=0;j<scCards.length;j++) scCards[j].classList.remove('noanim');
+    scRender(0);
+    scSetFront(0);
+    /* 逐格轉：每 1.35s 成環轉 −72°，頭四格將四張獲獎卡逐張帶去正面；
+       最後一張獲獎卡停穩之後成組淡出，唔再轉返去團隊卡（團隊卡成個展示只出現一次） */
+    for(var k=1;k<scCards.length;k++){
+      (function(step){
+        scLater(function(){
+          scRender(-72 * step);
+          scSetFront(step % scCards.length);
+        }, SC_STEP_MS * step);
+      })(k);
+    }
+    if(scLead){
+      scLater(function(){ scLead.classList.add('on'); }, 650);
+      scLater(function(){ scLead.classList.add('off'); }, 4300);
+    }
+    /* 轉到最後一張獲獎卡（約 5.4s）再停一停，成組淡出落內容站，總長約 6.8s */
+    scLater(function(){ finishShowcase(false); }, SC_STEP_MS * (scCards.length - 1) + 800);
+  }
+  showcase.addEventListener('click', function(){ finishShowcase(true); });
+  document.getElementById('scSkip').addEventListener('click', function(e){
+    e.stopPropagation();
+    finishShowcase(true);
+  });
+
+  intro.addEventListener('click', function(){
+    if(entered || leaving) return;
+    leaving = true;
+    startMusic();
+    /* 㩒入嗰刻：帶品牌名嘅開場圖即刻淡出消失，唔俾個名旋轉住俾人睇；
+       展示艙同時淡入，兩邊重疊交接，一氣呵成冇停頓 */
+    intro.classList.add('leaving');
+    canvas.style.opacity = '0';
+    setTimeout(stopAnim, 340);
+    if(reduceMotion){
+      entered = true;
+      setTimeout(function(){ intro.style.display='none'; stopAnim(); showSite(); }, 80);
+      return;
+    }
+    startShowcase();
+    setTimeout(function(){
+      entered = true;
+      intro.style.display = 'none';
+      stopAnim();
+    }, 540);
+  });
+
+  /* 開場跳過掣：唔經展示艙，直接入內容站（同㩒入去分開，唔好誤觸） */
+  document.getElementById('introSkip').addEventListener('click', function(e){
+    e.stopPropagation();
+    if(entered || leaving) return;
+    leaving = true;
+    startMusic();
+    intro.classList.add('leaving');
+    canvas.style.opacity = '0';
+    setTimeout(stopAnim, 340);
+    setTimeout(function(){
+      entered = true;
+      intro.style.display = 'none';
+      stopAnim();
+      showSite();
+    }, 320);
+  });
+
+  /* 段落入場：柔和淡入＋輕微上移，一次過唔花（只用 transform／opacity） */
+  if(!reduceMotion && 'IntersectionObserver' in window){
+    var rvEls = document.querySelectorAll('#site section .wrap, #site .hero .wrap');
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, {threshold: 0.1});
+    rvEls.forEach(function(el){ el.classList.add('rv'); io.observe(el); });
+  }
+})();
+</script>
+<script>
+(function(){
+  /* ---------- 手風琴：點解選擇我哋 ---------- */
+  var items = document.querySelectorAll('.acc-item');
+  items.forEach(function(item){
+    var head = item.querySelector('.acc-head');
+    if(!head) return;
+    head.addEventListener('click', function(){
+      var willOpen = !item.classList.contains('open');
+      items.forEach(function(it){
+        it.classList.remove('open');
+        var h = it.querySelector('.acc-head');
+        if(h) h.setAttribute('aria-expanded','false');
+      });
+      if(willOpen){
+        item.classList.add('open');
+        head.setAttribute('aria-expanded','true');
+      }
+    });
+  });
+
+  /* ---------- 蛋白質真 3D 檢視器（3Dmol.js，懶載入 PDB 2LZM） ---------- */
+  var box = document.getElementById('mol3d');
+  if(!box) return;
+  var started = false;
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function fallback(){
+    box.classList.add('mol-failed');
+  }
+  function mixHex(c1, c2, t){
+    var r = Math.round(c1[0] + (c2[0]-c1[0])*t);
+    var g = Math.round(c1[1] + (c2[1]-c1[1])*t);
+    var b = Math.round(c1[2] + (c2[2]-c1[2])*t);
+    return '#' + ((1<<24) + (r<<16) + (g<<8) + b).toString(16).slice(1);
+  }
+  function build(pdbText){
+    var viewer = window.$3Dmol.createViewer(box, {backgroundColor:'#000000', antialias:true});
+    viewer.addModel(pdbText, 'pdb');
+    /* 品牌綠色系：薄荷綠 → 深綠，沿殘基序號漸變 */
+    viewer.setStyle({}, {cartoon:{colorfunc:function(atom){
+      var t = Math.min(1, Math.max(0, ((atom.resi||1)-1)/163));
+      return mixHex([127,200,169],[24,102,66], t);
+    }}});
+    viewer.zoomTo();
+    viewer.render();
+    box.classList.add('mol-ready');
+    /* 未有人郁之前慢慢自轉；一有人拖／縮放即刻停 */
+    if(reduceMotion) return;
+    var spinning = true;
+    function stopSpin(){ spinning = false; }
+    box.addEventListener('pointerdown', stopSpin);
+    box.addEventListener('wheel', stopSpin, {passive:true});
+    box.addEventListener('touchstart', stopSpin, {passive:true});
+    (function loop(){
+      if(!spinning) return;
+      viewer.rotate(0.55, 'y');
+      viewer.render();
+      requestAnimationFrame(loop);
+    })();
+  }
+  function init(){
+    if(started) return; started = true;
+    var timer = setTimeout(function(){
+      if(!box.classList.contains('mol-ready')) fallback();
+    }, 15000);
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/3dmol@2.4.2/build/3Dmol-min.js';
+    s.onerror = function(){ clearTimeout(timer); fallback(); };
+    s.onload = function(){
+      fetch('https://files.rcsb.org/download/2LZM.pdb')
+        .then(function(r){ if(!r.ok) throw new Error('pdb ' + r.status); return r.text(); })
+        .then(function(txt){
+          try { build(txt); clearTimeout(timer); }
+          catch(e){ clearTimeout(timer); fallback(); }
+        })
+        .catch(function(){ clearTimeout(timer); fallback(); });
+    };
+    document.head.appendChild(s);
+  }
+  if('IntersectionObserver' in window){
+    var mio = new IntersectionObserver(function(entries){
+      if(entries[0].isIntersecting){ init(); mio.disconnect(); }
+    }, {rootMargin:'320px'});
+    mio.observe(box);
+  } else {
+    init();
+  }
+})();
+</script>
+
+<script>
+/* ================= 第十輪：五種語言字典＋切換（英文預設） ================= */
+(function(){
+var I18N = {
+en: {
+"meta.title": "Spark Science Education | AI Innovation Programme Series",
+"meta.desc": "Spark Science Education, operated by Solar Trinity Science Limited, offers an AI innovation programme series designed for Hong Kong secondary schools, taught by an iGEM Gold Award mentor team — students step into AI research first-hand.",
+"wa.text": "Hello, I would like to enquire about Spark Science Education's AI Innovation Programme Series and arrange a programme briefing.",
+"mail.subject": "Programme Briefing Booking - Spark Science Education",
+"intro.aria": "Enter the Spark Science Education website",
+"intro.hint": "T A P   T O   E N T E R",
+"skip": "SKIP →",
+"showcase.aria": "Research team and competition results showcase",
+"sc.team.title": "Research Team",
+"sc.mem1": "林文傑教授 · Chief Scientific Advisor",
+"sc.mem2": "黎卓賢博士 · Science Officer",
+"sc.mem3": "鄺緯陽博士 · Founder & Chief Scientific Officer",
+"sc.mem4": "宋振州博士 · Research Director",
+"sc.mem5": "黃桂林博士 · Education Advisor",
+"sc.cap.inno": "InnoHealth Cup 2025 Champion (Kowloon True Light School)",
+"sc.cap.kapi": "iGEM 2024 Gold Award · KAPI (AI Anti-Cancer Peptides)",
+"sc.cap.pesti": "iGEM 2025 Gold Award · PestiGuard (Global Top 10, High School Division)",
+"sc.cap.mentor": "Mentoring teams from 9 Hong Kong secondary schools",
+"sc.alt.team": "Group photo of the five-member Spark Science Education research team",
+"sc.alt.inno": "Award ceremony photo: partner school Kowloon True Light School winning the InnoHealth Cup 2025 championship",
+"sc.alt.kapi": "News photo of mentored team KAPI winning a Gold Award at iGEM 2024",
+"sc.alt.pesti": "Group photo of mentored team PestiGuard, Gold Award winner at iGEM 2025 and global top 10 in the high school division",
+"sc.alt.mentor": "Group photo of the mentor team coaching Hong Kong secondary school student teams",
+"lead.main": "Led by <strong>Dr. Keith Wai-Yeung Kwong</strong>, our Founder & Chief Scientific Officer",
+"brand.sub": "EDUCATION · 創智・未來",
+"nav.courses": "Programmes",
+"nav.team": "Research Team",
+"nav.results": "Results",
+"nav.booking": "Booking",
+"nav.contact": "Contact",
+"hero.eyebrow": "SEC.00 // AI INNOVATION PROGRAMMES · Designed for Hong Kong secondary schools · Now open for booking",
+"hero.h1": "Combining Student Creativity with Technology to Create the Future",
+"hero.sub": "Taught by an iGEM Gold Award mentor team — students step into <b>AI research</b> first-hand",
+"hero.alt": "Partner school winning the championship at the 2025 Hong Kong InnoHealth Cup award ceremony",
+"hero.cap": "Our students keep winning international honours — partner school crowned champions of the Hong Kong InnoHealth Cup 2025",
+"about.en": "SEC.01 // ABOUT US",
+"about.title": "Dear Principals and Teachers",
+"about.lead": "We are Spark Science Education, operated by Solar Trinity Science Limited. Our teaching team is led by doctoral-level instructors, with laboratory teaching delivered by instructors with professional medical laboratory technologist backgrounds. Over the past two years, the student teams we mentored have won Gold Awards at the global iGEM competition, and our partner school was crowned champion of the Hong Kong InnoHealth Cup 2025.",
+"tip": "<b>A note on funding:</b> This programme series meets the relevant requirements of the Education Bureau's AI education funding scheme （智啟學教）, and schools may apply for the funding to procure the programmes — making good use of government funding without drawing on the school's own budget. The programmes span Science, Biology, Information Technology and cross-disciplinary STEAM learning, and cover everything in one go — programme design, professional instructors, laboratory teaching and AI platform support — from application to the first lesson, we work around the school's administrative needs throughout. Students who complete a programme receive a certificate awarded by <b>City University of Hong Kong</b>.",
+"acc.label": "WHY US",
+"acc.h1": "Why choose our team",
+"acc.h2": "What we can do for your students",
+"acc.h3": "Questions schools ask most",
+"acc.b1": "Our programmes are designed and taught by a team <b>led by doctoral-level instructors</b>, with content and assessment designed to university research standards. Laboratory teaching is delivered by instructors with <b>professional medical laboratory technologist backgrounds</b>, who oversee technical demonstrations, operating procedures and safety management. The team has long mentored secondary school students for international biodesign competitions: our mentored teams have won <b>Gold Awards at the global iGEM competition</b>, and our partner school was crowned <b>Hong Kong InnoHealth Cup champion</b>.",
+"acc.b2": "Students experience the <b>complete research process first-hand</b> — from programming in practice and platform design to laboratory validation — no longer learning on paper alone. The content aligns closely with university research and international competition requirements, so what students learn connects directly to university study. On completing a programme, students also receive a <b>certificate awarded by City University of Hong Kong</b>, recognising their learning achievements.",
+"acc.b3": "<b>How do we apply for the funding?</b> All programmes meet the relevant requirements of the Education Bureau's AI education funding scheme （智啟學教）; schools may apply for the funding to procure them, and we work around the school's administrative needs throughout. <b>How do we book?</b> Reply by email or contact us on WhatsApp, and we will arrange a programme briefing (at your school or by video call) with a live demonstration of the CodeLifeAI platform, then confirm the arrangement, student numbers and quotation based on your school's needs.",
+"courses.en": "SEC.02 // PROGRAMMES",
+"courses.title": "AI Innovation Programme Series",
+"c1.tag": "Course 1",
+"c1.name": "Bringing AI into Everyday Life",
+"c1.sub": "AI + Microcontroller Programming",
+"c1.p": "Students wire and program microcontrollers themselves, using AI to help brainstorm and debug, and complete a working smart-device project. The course includes an AI image generation session.",
+"c1.alt": "Students wiring a microcontroller and programming on a laptop",
+"c1.dur": "From 2 days",
+"c1.fee": "From HK$50,000",
+"c2.tag": "Course 2",
+"c2.name": "When Biotechnology Meets AI",
+"c2.sub": "AI + Innovative Protein Design, featuring CodeLifeAI",
+"c2.p": "On the CodeLifeAI platform, students learn to read 3D protein structures, generate candidate designs with AI, then screen them one by one using structure prediction and scoring — experiencing a genuine biodesign workflow. The course includes an AI image generation session.",
+"c2.alt": "Students in a classroom looking at a 3D protein structure on a large screen",
+"c2.dur": "From 3–4 lessons",
+"c2.fee": "From HK$100,000",
+"c2.platform": "Visit the CodeLifeAI Platform",
+"c3.tag": "Course 3",
+"c3.name": "Nurturing Future Biotech Inventors",
+"c3.sub": "Innovative Protein Design + Instructor-led Laboratory Course",
+"c3.p": "Building on Course 2, students take their own designs into the laboratory and test them hands-on, guided by professional instructors. The course includes an AI image generation session.",
+"c3.alt": "An instructor guiding students using a micropipette in a laboratory",
+"c3.dur": "From 8 lessons",
+"c3.fee": "From HK$200,000",
+"meta.dur": "Duration",
+"meta.fee": "Fees",
+"fee.note": "Fees are in Hong Kong dollars; the actual fee depends on student numbers and programme arrangement.",
+"viewer.head": "// MODEL VIEWER // Protein Structure Example",
+"mol.aria": "Interactive 3D structure of T4 Lysozyme (PDB 2LZM) — drag to rotate",
+"mol.alt": "Structure diagram of T4 Lysozyme (PDB 2LZM)",
+"mol.hint": "Drag to rotate · Scroll / pinch to zoom",
+"v.name": "T4 Lysozyme",
+"v.sub": "T4 Lysozyme · Bacteriophage T4",
+"v.intro": "This is a real protein 3D structure — the kind of thing students learn to read and use in our programmes. Drag it with your finger or mouse to rotate and explore.",
+"v.points.title": "// WHAT STUDENTS WILL LEARN //",
+"v.p1": "Read the 3D structure of a real protein",
+"v.p2": "Generate candidate designs with AI",
+"v.p3": "Screen the best designs one by one using structure prediction and scoring",
+"team.en": "SEC.03 // RESEARCH TEAM",
+"team.title": "Research Team",
+"team.alt": "Group photo of the five-member Spark Science Education research team",
+"team.n1": "林文傑教授",
+"team.t1": "Chief Scientific Advisor",
+"team.n2": "黎卓賢博士",
+"team.t2": "Science Officer",
+"team.n3": "鄺緯陽博士",
+"team.t3": "Founder & Chief Scientific Officer",
+"team.n4": "宋振州博士",
+"team.t4": "Research Director",
+"team.n5": "黃桂林博士",
+"team.t5": "Education Advisor",
+"res.en": "SEC.04 // COMPETITION RESULTS",
+"res.title": "Competition Results",
+"res.lead": "KAPI at iGEM 2024 and PestiGuard at iGEM 2025 both won Gold Awards at the global competition, with PestiGuard also placing in the global top 10 of the high school division; our partner school, Kowloon True Light School, was crowned champion of the 2025 Hong Kong InnoHealth Cup.",
+"r1.h": "Global Competition Gold Award",
+"r1.p": "Mentored team KAPI won a Gold Award at the global iGEM competition.",
+"r2.h": "Global Competition Gold Award",
+"r2.p": "Mentored team PestiGuard won a Gold Award at the global iGEM competition, and placed in the global top 10 of the high school division.",
+"r3.h": "Champion",
+"r3.p": "Partner school Kowloon True Light School was crowned champion of the 2025 Hong Kong InnoHealth Cup.",
+"r1.alt": "Mentored team KAPI at iGEM 2024",
+"r2.alt": "Mentored team PestiGuard at iGEM 2025",
+"r3.alt": "Kowloon True Light School winning the InnoHealth Cup 2025 championship",
+"book.en": "SEC.05 // HOW TO BOOK",
+"book.title": "How to Book",
+"step1": "Reply by email, or contact us via the WhatsApp button below",
+"step2": "Arrange a programme briefing (at your school or by video call), with a live demonstration of the CodeLifeAI platform",
+"step3": "Confirm the programme arrangement, student numbers and quotation based on your school's needs",
+"step4": "Complete the procurement procedures (can be aligned with the 智啟學教 funding application)",
+"step5": "The programme begins, and students are awarded City University of Hong Kong certificates",
+"contact.eyebrow": "SEC.06 // CONTACT",
+"contact.h": "Start Your Students' AI Research Journey Today",
+"contact.p": "Teachers and subject panel heads are welcome to enquire. We can arrange a programme briefing or platform demonstration tailored to your school's needs. If you have any questions, please feel free to contact us anytime.",
+"cta.book": "Book a Programme Briefing",
+"cta.wa": "WhatsApp Enquiry",
+"foot.tags": "AI Programmes | Biotechnology | Competition Coaching | Laboratory Courses",
+"foot.copy": "© 2026 Solar Trinity Science Limited",
+"foot.music": "Background music: \"Frozen Star\" by Kevin MacLeod (incompetech.com), CC BY licence",
+"qa.fab": "AI Course Assistant",
+"qa.fab.aria": "AI Course Assistant: open the course Q&A",
+"qa.hint": "Questions? Tap here to ask our AI",
+"qa.panel.aria": "Course Q&A Assistant",
+"qa.title": "Course Q&A Assistant",
+"qa.note": "Every answer here comes from the programme information published on this website. For anything I can't answer, I'll show you how to reach our team.",
+"qa.close.aria": "Close the Q&A window",
+"qa.ph": "Type your question…",
+"qa.send": "Ask",
+"qa.mic.aria": "Voice input",
+"qa.img.aria": "Attach an image",
+"qa.input.aria": "Type your question",
+"form.h": "Enquiry Form",
+"form.intro": "Hello, I would like to enquire about Spark Science Education programmes.",
+"form.school": "School name",
+"form.name": "Contact person",
+"form.contact": "Phone or email",
+"form.course": "Programme of interest",
+"form.opt.c1": "Course 1 — Bringing AI into Everyday Life",
+"form.opt.c2": "Course 2 — When Biotechnology Meets AI",
+"form.opt.c3": "Course 3 — Nurturing Future Biotech Inventors",
+"form.opt.undecided": "Not sure yet — I'd like to learn more",
+"form.msg": "Message (optional)",
+"form.ph.school": "e.g. XX Secondary School",
+"form.ph.name": "Your name and title",
+"form.ph.contact": "Phone number or email address",
+"form.ph.msg": "Anything you'd like us to know (optional)",
+"form.submit": "Send via WhatsApp",
+"form.mail": "Send by email instead",
+"form.err": "Please fill in the school name, contact person and a phone number or email, so we can get back to you.",
+"inc.h": "Includes",
+"inc.ai": "AI image generation session",
+"inc.cert": "Certificate awarded by City University of Hong Kong on completion",
+"inc.c1a": "Hands-on wiring and programming",
+"inc.c1b": "A working smart-device project",
+"inc.c2a": "Hands-on practice on the CodeLifeAI platform",
+"inc.c2b": "A real biodesign workflow — structure prediction and scoring to screen designs",
+"inc.c3a": "Laboratory sessions led by professional instructors",
+"inc.c3b": "The full research cycle — from protein design to laboratory validation",
+},
+zh: {
+"meta.title": "Spark Science Education（創智・未來）｜AI 創新課程系列",
+"meta.desc": "Spark Science Education（創智・未來）由 Solar Trinity Science Limited 營運：AI 創新課程系列，專為香港中學而設。iGEM 金獎導師團隊任教，學生親身走進 AI 科研。",
+"wa.text": "你好，我想查詢 Spark Science Education 的 AI 創新課程系列，希望安排課程簡介會。",
+"mail.subject": "預約課程簡介會 - Spark Science Education",
+"intro.aria": "進入 Spark Science Education 網站",
+"intro.hint": "㩒 一 下 進 入",
+"skip": "跳過 SKIP →",
+"showcase.aria": "科研團隊與比賽佳績展示",
+"sc.team.title": "科研團隊",
+"sc.mem1": "林文傑教授・首席科學顧問",
+"sc.mem2": "黎卓賢博士・科學主任",
+"sc.mem3": "鄺緯陽博士・創辦人・首席科學官",
+"sc.mem4": "宋振州博士・研究總監",
+"sc.mem5": "黃桂林博士・教育顧問",
+"sc.cap.inno": "InnoHealth Cup 2025 冠軍（九龍真光中學）",
+"sc.cap.kapi": "iGEM 2024 金獎・KAPI（AI 抗癌肽）",
+"sc.cap.pesti": "iGEM 2025 金獎・PestiGuard（全球高中組前十）",
+"sc.cap.mentor": "輔導 9 間香港中學團隊",
+"sc.alt.team": "Spark Science Education 科研團隊五人合照",
+"sc.alt.inno": "合作學校九龍真光中學勇奪 InnoHealth Cup 2025 冠軍頒獎禮合照",
+"sc.alt.kapi": "輔導隊伍 KAPI 於 iGEM 2024 奪得金獎的報道相片",
+"sc.alt.pesti": "輔導隊伍 PestiGuard 於 iGEM 2025 奪得金獎並躋身全球高中組前十的合照",
+"sc.alt.mentor": "導師團隊輔導香港中學學生隊伍的合照",
+"lead.main": "由創辦人・首席科學官 <strong>鄺緯陽博士</strong>帶領",
+"brand.sub": "EDUCATION · 創智・未來",
+"nav.courses": "課程",
+"nav.team": "科研團隊",
+"nav.results": "比賽佳績",
+"nav.booking": "如何預約",
+"nav.contact": "聯絡我們",
+"hero.eyebrow": "SEC.00 // AI INNOVATION PROGRAMMES · 專為香港中學而設 · 現正接受預約",
+"hero.h1": "結合學生創意與科技，締造未來",
+"hero.sub": "iGEM 金獎導師團隊任教，學生親身走進 <b>AI 科研</b>",
+"hero.alt": "合作學校於 2025 香港 InnoHealth Cup 奪冠頒獎禮合照",
+"hero.cap": "學生屢獲國際殊榮——合作學校勇奪 2025 香港 InnoHealth Cup 冠軍",
+"about.en": "SEC.01 // ABOUT US — 關於我們",
+"about.title": "校長及各位老師，您好",
+"about.lead": "我們是 Spark Science Education（創智・未來），由 Solar Trinity Science Limited 營運。導師團隊由博士級導師領軍，並由具專業醫務化驗師背景的導師負責實驗教學。過去兩年，我們輔導的學生隊伍先後於 iGEM 全球大賽奪得金獎，合作學校亦勇奪香港 InnoHealth Cup 冠軍。",
+"tip": "<b>溫馨提示：</b>本課程系列符合教育局「智啟學教」撥款計劃相關要求，學校可申請該撥款資助購置，善用政府專款，毋須額外動用校內預算。課程涵蓋科學、生物、資訊科技及 STEAM 跨學科學習，並一次過為學校解決課程設計、專業導師、實驗教學與 AI 平台配套——由申請到開課，我哋全程配合學校行政需要。完成課程的學生可獲由<b>香港城市大學頒發</b>的證書。",
+"acc.label": "WHY US // 點解選擇我哋",
+"acc.h1": "點解選擇我哋團隊",
+"acc.h2": "我哋可以幫到學生啲咩",
+"acc.h3": "學校最常問嘅問題",
+"acc.b1": "課程由<b>博士級導師領軍</b>設計及任教，以大學科研的標準設計課程內容與評核；實驗教學由具<b>專業醫務化驗師背景</b>的導師負責，技術示範、操作規範與安全管理均由專業人員把關。團隊長期輔導中學生參加國際生物設計競賽，輔導隊伍先後於 <b>iGEM 全球大賽奪得金獎</b>，合作學校亦勇奪<b>香港 InnoHealth Cup 冠軍</b>。",
+"acc.b2": "學生會由編程實作、平台設計到實驗驗證，<b>親身走過完整的科研流程</b>，唔再係紙上談兵。課程內容緊貼大學科研與國際競賽要求，學生所學與大學學習直接接軌；完成課程後，更可獲<b>香港城市大學頒發的證書</b>，肯定學習成果。",
+"acc.b3": "<b>撥款點申請？</b>所有課程均符合教育局「智啟學教」撥款計劃相關要求，學校可以申請資助購置，我哋會全程配合學校行政需要。<b>點樣預約？</b>回覆電郵或按 WhatsApp 聯絡我哋，即可安排課程簡介會（到校或視像），即場示範 CodeLifeAI 平台，再按學校需要確認編排、人數及報價。",
+"courses.en": "SEC.02 // PROGRAMMES — 課程系列",
+"courses.title": "創智・未來 AI 創新課程系列",
+"c1.tag": "課程一",
+"c1.name": "讓 AI 走進生活",
+"c1.sub": "AI + 單晶片微電腦編程課程",
+"c1.p": "學生親手接線及編程單晶片微電腦，並以 AI 協助構思及調試，完成可實際運作的智能裝置專題。課程包括 AI 圖像生成。",
+"c1.alt": "學生親手接駁單晶片微電腦，並以手提電腦編程",
+"c1.dur": "2 日起",
+"c1.fee": "HK$50,000 起",
+"c2.tag": "課程二",
+"c2.name": "當生物科技遇上 AI",
+"c2.sub": "AI + 創新蛋白質設計課程 ft. CodeLifeAI",
+"c2.p": "學生在 CodeLifeAI 平台上讀懂蛋白質 3D 結構，以 AI 生成候選設計，再以結構預測及評分逐一篩選，體驗真正的生物設計流程。課程包括 AI 圖像生成。",
+"c2.alt": "學生在課室望住大屏幕上的蛋白質 3D 結構學習",
+"c2.dur": "3–4 堂起",
+"c2.fee": "HK$100,000 起",
+"c2.platform": "進入 CodeLifeAI 平台睇睇",
+"c3.tag": "課程三",
+"c3.name": "培育未來生物發明家",
+"c3.sub": "創新蛋白質設計 + 專業導師實驗課程",
+"c3.p": "在課程二的基礎上，學生把自己的設計帶到實驗室，由專業導師帶領親手驗證。課程包括 AI 圖像生成。",
+"c3.alt": "實驗室內導師帶領學生使用微量移液器做實驗",
+"c3.dur": "8 堂起",
+"c3.fee": "HK$200,000 起",
+"meta.dur": "課時",
+"meta.fee": "學費",
+"fee.note": "收費以港幣計算，實際費用按學生人數及課程編排而定",
+"viewer.head": "// MODEL VIEWER // 蛋白質結構示例",
+"mol.aria": "T4 溶菌酶（PDB 2LZM）互動 3D 結構，可以拖動旋轉",
+"mol.alt": "T4 溶菌酶（PDB 2LZM）結構圖",
+"mol.hint": "拖動旋轉・滾輪／雙指縮放",
+"v.name": "T4 溶菌酶",
+"v.sub": "T4 Lysozyme・噬菌體 T4",
+"v.intro": "呢個係真實存在嘅蛋白質 3D 結構，亦係同學喺課程入面會學識點樣睇、點樣用嘅嘢。用手指或者滑鼠拖住佢，就可以轉嚟睇。",
+"v.points.title": "// 同學會學到 //",
+"v.p1": "讀懂真實蛋白質嘅 3D 結構",
+"v.p2": "以 AI 生成候選設計",
+"v.p3": "以結構預測及評分，逐一篩選最好嘅設計",
+"team.en": "SEC.03 // RESEARCH TEAM — 科研團隊",
+"team.title": "科研團隊",
+"team.alt": "Spark Science Education 科研團隊五人合照",
+"team.n1": "林文傑教授",
+"team.t1": "首席科學顧問",
+"team.n2": "黎卓賢博士",
+"team.t2": "科學主任",
+"team.n3": "鄺緯陽博士",
+"team.t3": "創辦人・首席科學官",
+"team.n4": "宋振州博士",
+"team.t4": "研究總監",
+"team.n5": "黃桂林博士",
+"team.t5": "教育顧問",
+"res.en": "SEC.04 // COMPETITION RESULTS — 比賽佳績",
+"res.title": "比賽佳績",
+"res.lead": "iGEM 2024 KAPI 及 2025 PestiGuard 先後奪得全球大賽金獎，PestiGuard 更躋身全球高中組前十；合作學校九龍真光中學勇奪 2025 香港 InnoHealth Cup 冠軍。",
+"r1.h": "全球大賽金獎",
+"r1.p": "輔導隊伍 KAPI 於 iGEM 全球大賽奪得金獎。",
+"r2.h": "全球大賽金獎",
+"r2.p": "輔導隊伍 PestiGuard 於 iGEM 全球大賽奪得金獎，更躋身全球高中組前十。",
+"r3.h": "冠軍",
+"r3.p": "合作學校九龍真光中學勇奪 2025 香港 InnoHealth Cup 冠軍。",
+"r1.alt": "iGEM 2024 輔導隊伍 KAPI",
+"r2.alt": "iGEM 2025 輔導隊伍 PestiGuard",
+"r3.alt": "九龍真光中學勇奪 InnoHealth Cup 2025 冠軍",
+"book.en": "SEC.05 // HOW TO BOOK — 預約流程",
+"book.title": "如何預約",
+"step1": "回覆電郵，或按下方 WhatsApp 按鈕聯絡我們",
+"step2": "安排課程簡介會（到校或視像），即場示範 CodeLifeAI 平台",
+"step3": "按學校需要確認課程編排、人數及報價",
+"step4": "完成採購程序（可配合「智啟學教」撥款申請）",
+"step5": "正式開課，學生獲頒香港城市大學證書",
+"contact.eyebrow": "SEC.06 // CONTACT — 聯絡我們",
+"contact.h": "現在為您的學生開展 AI 科研之旅",
+"contact.p": "歡迎學校老師及科主任查詢，我們可按學校需要安排課程簡介會或平台示範。如有任何疑問，歡迎隨時聯絡我們查詢。",
+"cta.book": "預約課程簡介",
+"cta.wa": "WhatsApp 查詢",
+"foot.tags": "AI 課程｜生物科技｜競賽培訓｜實驗課程",
+"foot.copy": "© 2026 Solar Trinity Science Limited · 晴曦科學有限公司",
+"foot.music": "背景音樂：「Frozen Star」by Kevin MacLeod（incompetech.com），CC BY 授權",
+"qa.fab": "AI 課程助理",
+"qa.fab.aria": "AI 課程助理：打開課程問答",
+"qa.hint": "有問題？㩒呢度問 AI",
+"qa.panel.aria": "課程智能問答",
+"qa.title": "課程智能問答",
+"qa.note": "以下答案全部嚟自本網站已公佈嘅課程資料；答唔到嘅問題，我會教你點樣聯絡真人同事跟進。",
+"qa.close.aria": "關閉問答窗",
+"qa.ph": "打你想問嘅問題…",
+"qa.send": "發問",
+"qa.mic.aria": "語音輸入",
+"qa.img.aria": "附加圖片",
+"qa.input.aria": "輸入你的問題",
+"form.h": "查詢表格",
+"form.intro": "你好，我想查詢 Spark Science Education 的課程。",
+"form.school": "學校名稱",
+"form.name": "聯絡人",
+"form.contact": "聯絡電話或電郵",
+"form.course": "想查詢的課程",
+"form.opt.c1": "課程一 — 讓 AI 走進生活",
+"form.opt.c2": "課程二 — 當生物科技遇上 AI",
+"form.opt.c3": "課程三 — 培育未來生物發明家",
+"form.opt.undecided": "未定・想了解多啲",
+"form.msg": "留言（可選）",
+"form.ph.school": "例如：XX 中學",
+"form.ph.name": "姓名及職銜",
+"form.ph.contact": "電話號碼或電郵地址",
+"form.ph.msg": "有咩想我哋知嘅可以寫低（可選）",
+"form.submit": "用 WhatsApp 遞交",
+"form.mail": "改用電郵遞交",
+"form.err": "請填寫學校名稱、聯絡人及聯絡電話或電郵，我哋先聯絡到你。",
+"inc.h": "包括",
+"inc.ai": "AI 圖像生成環節",
+"inc.cert": "完成課程可獲香港城市大學頒發證書",
+"inc.c1a": "親手接線及編程",
+"inc.c1b": "完成可運作的智能裝置專題",
+"inc.c2a": "CodeLifeAI 平台實作",
+"inc.c2b": "真實生物設計流程（結構預測及評分篩選）",
+"inc.c3a": "專業導師帶領的實驗室實作",
+"inc.c3b": "由蛋白設計到實驗驗證的完整科研流程",
+},
+hans: {
+"meta.title": "Spark Science Education（创智・未来）｜AI 创新课程系列",
+"meta.desc": "Spark Science Education（创智・未来）由 Solar Trinity Science Limited 运营：AI 创新课程系列，专为香港中学而设。iGEM 金奖导师团队任教，学生亲身走进 AI 科研。",
+"wa.text": "你好，我想咨询 Spark Science Education 的 AI 创新课程系列，希望安排课程简介会。",
+"mail.subject": "预约课程简介会 - Spark Science Education",
+"intro.aria": "进入 Spark Science Education 网站",
+"intro.hint": "点 击 进 入",
+"skip": "跳过 SKIP →",
+"showcase.aria": "科研团队与比赛佳绩展示",
+"sc.team.title": "科研团队",
+"sc.mem1": "林文杰教授・首席科学顾问",
+"sc.mem2": "黎卓贤博士・科学主任",
+"sc.mem3": "邝纬阳博士・创办人・首席科学官",
+"sc.mem4": "宋振州博士・研究总监",
+"sc.mem5": "黄桂林博士・教育顾问",
+"sc.cap.inno": "InnoHealth Cup 2025 冠军（九龙真光中学）",
+"sc.cap.kapi": "iGEM 2024 金奖・KAPI（AI 抗癌肽）",
+"sc.cap.pesti": "iGEM 2025 金奖・PestiGuard（全球高中组前十）",
+"sc.cap.mentor": "辅导 9 间香港中学团队",
+"sc.alt.team": "Spark Science Education 科研团队五人合照",
+"sc.alt.inno": "合作学校九龙真光中学勇夺 InnoHealth Cup 2025 冠军颁奖礼合照",
+"sc.alt.kapi": "辅导队伍 KAPI 于 iGEM 2024 夺得金奖的报道照片",
+"sc.alt.pesti": "辅导队伍 PestiGuard 于 iGEM 2025 夺得金奖并跻身全球高中组前十的合照",
+"sc.alt.mentor": "导师团队辅导香港中学学生队伍的合照",
+"lead.main": "由创办人・首席科学官 <strong>邝纬阳博士</strong>带领",
+"brand.sub": "EDUCATION · 创智・未来",
+"nav.courses": "课程",
+"nav.team": "科研团队",
+"nav.results": "比赛佳绩",
+"nav.booking": "如何预约",
+"nav.contact": "联系我们",
+"hero.eyebrow": "SEC.00 // AI INNOVATION PROGRAMMES · 专为香港中学而设 · 现正接受预约",
+"hero.h1": "结合学生创意与科技，缔造未来",
+"hero.sub": "iGEM 金奖导师团队任教，学生亲身走进 <b>AI 科研</b>",
+"hero.alt": "合作学校于 2025 香港 InnoHealth Cup 夺冠颁奖礼合照",
+"hero.cap": "学生屡获国际殊荣——合作学校勇夺 2025 香港 InnoHealth Cup 冠军",
+"about.en": "SEC.01 // ABOUT US — 关于我们",
+"about.title": "校长及各位老师，您好",
+"about.lead": "我们是 Spark Science Education（创智・未来），由 Solar Trinity Science Limited 运营。导师团队由博士级导师领军，并由具专业医务化验师背景的导师负责实验教学。过去两年，我们辅导的学生队伍先后于 iGEM 全球大赛夺得金奖，合作学校亦勇夺香港 InnoHealth Cup 冠军。",
+"tip": "<b>温馨提示：</b>本课程系列符合教育局「智启学教」拨款计划相关要求，学校可申请该拨款资助购置，善用政府专款，无需额外动用校内预算。课程涵盖科学、生物、信息科技及 STEAM 跨学科学习，并一次过为学校解决课程设计、专业导师、实验教学与 AI 平台配套——由申请到开课，我们全程配合学校行政需要。完成课程的学生可获由<b>香港城市大学颁发</b>的证书。",
+"acc.label": "WHY US // 为什么选择我们",
+"acc.h1": "为什么选择我们团队",
+"acc.h2": "我们可以帮到学生什么",
+"acc.h3": "学校最常问的问题",
+"acc.b1": "课程由<b>博士级导师领军</b>设计及任教，以大学科研的标准设计课程内容与评核；实验教学由具<b>专业医务化验师背景</b>的导师负责，技术示范、操作规范与安全管理均由专业人员把关。团队长期辅导中学生参加国际生物设计竞赛，辅导队伍先后于 <b>iGEM 全球大赛夺得金奖</b>，合作学校亦勇夺<b>香港 InnoHealth Cup 冠军</b>。",
+"acc.b2": "学生会由编程实作、平台设计到实验验证，<b>亲身走过完整的科研流程</b>，不再是纸上谈兵。课程内容紧贴大学科研与国际竞赛要求，学生所学与大学学习直接接轨；完成课程后，更可获<b>香港城市大学颁发的证书</b>，肯定学习成果。",
+"acc.b3": "<b>拨款怎么申请？</b>所有课程均符合教育局「智启学教」拨款计划相关要求，学校可以申请资助购置，我们会全程配合学校行政需要。<b>怎么预约？</b>回复电邮或按 WhatsApp 联系我们，即可安排课程简介会（到校或视频），即场示范 CodeLifeAI 平台，再按学校需要确认编排、人数及报价。",
+"courses.en": "SEC.02 // PROGRAMMES — 课程系列",
+"courses.title": "创智・未来 AI 创新课程系列",
+"c1.tag": "课程一",
+"c1.name": "让 AI 走进生活",
+"c1.sub": "AI + 单芯片微电脑编程课程",
+"c1.p": "学生亲手接线及编程单芯片微电脑，并以 AI 协助构思及调试，完成可实际运作的智能装置专题。课程包括 AI 图像生成。",
+"c1.alt": "学生亲手接驳单芯片微电脑，并以手提电脑编程",
+"c1.dur": "2 天起",
+"c1.fee": "HK$50,000 起",
+"c2.tag": "课程二",
+"c2.name": "当生物科技遇上 AI",
+"c2.sub": "AI + 创新蛋白质设计课程 ft. CodeLifeAI",
+"c2.p": "学生在 CodeLifeAI 平台上读懂蛋白质 3D 结构，以 AI 生成候选设计，再以结构预测及评分逐一筛选，体验真正的生物设计流程。课程包括 AI 图像生成。",
+"c2.alt": "学生在课室看着大屏幕上的蛋白质 3D 结构学习",
+"c2.dur": "3–4 堂起",
+"c2.fee": "HK$100,000 起",
+"c2.platform": "进入 CodeLifeAI 平台看看",
+"c3.tag": "课程三",
+"c3.name": "培育未来生物发明家",
+"c3.sub": "创新蛋白质设计 + 专业导师实验课程",
+"c3.p": "在课程二的基础上，学生把自己的设计带到实验室，由专业导师带领亲手验证。课程包括 AI 图像生成。",
+"c3.alt": "实验室内导师带领学生使用微量移液器做实验",
+"c3.dur": "8 堂起",
+"c3.fee": "HK$200,000 起",
+"meta.dur": "课时",
+"meta.fee": "学费",
+"fee.note": "收费以港币计算，实际费用按学生人数及课程编排而定",
+"viewer.head": "// MODEL VIEWER // 蛋白质结构示例",
+"mol.aria": "T4 溶菌酶（PDB 2LZM）互动 3D 结构，可以拖动旋转",
+"mol.alt": "T4 溶菌酶（PDB 2LZM）结构图",
+"mol.hint": "拖动旋转・滚轮／双指缩放",
+"v.name": "T4 溶菌酶",
+"v.sub": "T4 Lysozyme・噬菌体 T4",
+"v.intro": "这是真实存在的蛋白质 3D 结构，也是同学在课程中会学懂怎么看、怎么用的东西。用手指或者鼠标拖住它，就可以转着看。",
+"v.points.title": "// 同学会学到 //",
+"v.p1": "读懂真实蛋白质的 3D 结构",
+"v.p2": "以 AI 生成候选设计",
+"v.p3": "以结构预测及评分，逐一筛选最好的设计",
+"team.en": "SEC.03 // RESEARCH TEAM — 科研团队",
+"team.title": "科研团队",
+"team.alt": "Spark Science Education 科研团队五人合照",
+"team.n1": "林文杰教授",
+"team.t1": "首席科学顾问",
+"team.n2": "黎卓贤博士",
+"team.t2": "科学主任",
+"team.n3": "邝纬阳博士",
+"team.t3": "创办人・首席科学官",
+"team.n4": "宋振州博士",
+"team.t4": "研究总监",
+"team.n5": "黄桂林博士",
+"team.t5": "教育顾问",
+"res.en": "SEC.04 // COMPETITION RESULTS — 比赛佳绩",
+"res.title": "比赛佳绩",
+"res.lead": "iGEM 2024 KAPI 及 2025 PestiGuard 先后夺得全球大赛金奖，PestiGuard 更跻身全球高中组前十；合作学校九龙真光中学勇夺 2025 香港 InnoHealth Cup 冠军。",
+"r1.h": "全球大赛金奖",
+"r1.p": "辅导队伍 KAPI 于 iGEM 全球大赛夺得金奖。",
+"r2.h": "全球大赛金奖",
+"r2.p": "辅导队伍 PestiGuard 于 iGEM 全球大赛夺得金奖，更跻身全球高中组前十。",
+"r3.h": "冠军",
+"r3.p": "合作学校九龙真光中学勇夺 2025 香港 InnoHealth Cup 冠军。",
+"r1.alt": "iGEM 2024 辅导队伍 KAPI",
+"r2.alt": "iGEM 2025 辅导队伍 PestiGuard",
+"r3.alt": "九龙真光中学勇夺 InnoHealth Cup 2025 冠军",
+"book.en": "SEC.05 // HOW TO BOOK — 预约流程",
+"book.title": "如何预约",
+"step1": "回复电邮，或按下方 WhatsApp 按钮联系我们",
+"step2": "安排课程简介会（到校或视频），即场示范 CodeLifeAI 平台",
+"step3": "按学校需要确认课程编排、人数及报价",
+"step4": "完成采购程序（可配合「智启学教」拨款申请）",
+"step5": "正式开课，学生获颁香港城市大学证书",
+"contact.eyebrow": "SEC.06 // CONTACT — 联系我们",
+"contact.h": "现在为您的学生开展 AI 科研之旅",
+"contact.p": "欢迎学校老师及科主任查询，我们可按学校需要安排课程简介会或平台示范。如有任何疑问，欢迎随时联系我们查询。",
+"cta.book": "预约课程简介",
+"cta.wa": "WhatsApp 查询",
+"foot.tags": "AI 课程｜生物科技｜竞赛培训｜实验课程",
+"foot.copy": "© 2026 Solar Trinity Science Limited · 晴曦科学有限公司",
+"foot.music": "背景音乐：「Frozen Star」by Kevin MacLeod（incompetech.com），CC BY 授权",
+"qa.fab": "AI 课程助理",
+"qa.fab.aria": "AI 课程助理：打开课程问答",
+"qa.hint": "有问题？点这里问 AI",
+"qa.panel.aria": "课程智能问答",
+"qa.title": "课程智能问答",
+"qa.note": "以下答案全部来自本网站已公布的课程资料；答不到的问题，我会教你怎么联系真人同事跟进。",
+"qa.close.aria": "关闭问答窗",
+"qa.ph": "输入你想问的问题…",
+"qa.send": "提问",
+"qa.mic.aria": "语音输入",
+"qa.img.aria": "附加图片",
+"qa.input.aria": "输入你的问题",
+"form.h": "查询表格",
+"form.intro": "你好，我想咨询 Spark Science Education 的课程。",
+"form.school": "学校名称",
+"form.name": "联系人",
+"form.contact": "联系电话或电邮",
+"form.course": "想咨询的课程",
+"form.opt.c1": "课程一 — 让 AI 走进生活",
+"form.opt.c2": "课程二 — 当生物科技遇上 AI",
+"form.opt.c3": "课程三 — 培育未来生物发明家",
+"form.opt.undecided": "未定・想了解更多",
+"form.msg": "留言（可选）",
+"form.ph.school": "例如：XX 中学",
+"form.ph.name": "姓名及职称",
+"form.ph.contact": "电话号码或电邮地址",
+"form.ph.msg": "有什么想让我们知道的可以写下（可选）",
+"form.submit": "用 WhatsApp 提交",
+"form.mail": "改用电邮提交",
+"form.err": "请填写学校名称、联系人及联系电话或电邮，我们才能联系到你。",
+"inc.h": "包括",
+"inc.ai": "AI 图像生成环节",
+"inc.cert": "完成课程可获香港城市大学颁发证书",
+"inc.c1a": "亲手接线及编程",
+"inc.c1b": "完成可运作的智能装置专题",
+"inc.c2a": "CodeLifeAI 平台实作",
+"inc.c2b": "真实生物设计流程（结构预测及评分筛选）",
+"inc.c3a": "专业导师带领的实验室实作",
+"inc.c3b": "由蛋白设计到实验验证的完整科研流程",
+},
+ja: {
+"meta.title": "Spark Science Education｜AIイノベーションコースシリーズ",
+"meta.desc": "Spark Science Educationは、Solar Trinity Science Limitedが運営し、香港の中学校向けに設計されたAIイノベーションコースシリーズを提供します。iGEM金賞メンターチームが指導し、生徒が自らAI研究の世界を体験します。",
+"wa.text": "こんにちは。Spark Science EducationのAIイノベーションコースシリーズについて問い合わせたく、コース説明会の調整をお願いします。",
+"mail.subject": "コース説明会の予約 - Spark Science Education",
+"intro.aria": "Spark Science Educationのウェブサイトに入る",
+"intro.hint": "タ ッ プ し て 入 る",
+"skip": "スキップ SKIP →",
+"showcase.aria": "研究チームと大会実績のショーケース",
+"sc.team.title": "研究チーム",
+"sc.mem1": "林文傑教授 · 首席科学アドバイザー",
+"sc.mem2": "黎卓賢博士 · 科学主任",
+"sc.mem3": "鄺緯陽博士 · 創設者・首席科学責任者",
+"sc.mem4": "宋振州博士 · 研究総括",
+"sc.mem5": "黃桂林博士 · 教育アドバイザー",
+"sc.cap.inno": "InnoHealth Cup 2025 優勝（九龍真光中學）",
+"sc.cap.kapi": "iGEM 2024 金賞・KAPI（AI抗がんペプチド）",
+"sc.cap.pesti": "iGEM 2025 金賞・PestiGuard（高校部門 世界トップ10）",
+"sc.cap.mentor": "香港の中学校9校のチームを指導",
+"sc.alt.team": "Spark Science Education 研究チーム5名の集合写真",
+"sc.alt.inno": "パートナー校・九龍真光中學がInnoHealth Cup 2025で優勝した授賞式の写真",
+"sc.alt.kapi": "指導チームKAPIがiGEM 2024で金賞を受賞した報道写真",
+"sc.alt.pesti": "指導チームPestiGuardがiGEM 2025で金賞を受賞し、高校部門で世界のトップ10に入った集合写真",
+"sc.alt.mentor": "メンターチームが香港の中学生チームを指導する集合写真",
+"lead.main": "創設者・首席科学責任者 <strong>鄺緯陽博士</strong>が率いるチーム",
+"brand.sub": "EDUCATION · 創智・未來",
+"nav.courses": "コース",
+"nav.team": "研究チーム",
+"nav.results": "大会実績",
+"nav.booking": "予約方法",
+"nav.contact": "お問い合わせ",
+"hero.eyebrow": "SEC.00 // AI INNOVATION PROGRAMMES · 香港の中学校向け · 予約受付中",
+"hero.h1": "生徒の創造力とテクノロジーを結び、未来を創る",
+"hero.sub": "iGEM金賞メンターチームが指導し、生徒が自ら<b>AI研究</b>の世界へ",
+"hero.alt": "パートナー校が2025香港InnoHealth Cupで優勝した授賞式の写真",
+"hero.cap": "生徒たちは国際的な賞を受賞し続けています——パートナー校が2025香港InnoHealth Cupで優勝",
+"about.en": "SEC.01 // ABOUT US — 私たちについて",
+"about.title": "校長先生・先生方へ",
+"about.lead": "私たちはSpark Science Education（創智・未來）で、Solar Trinity Science Limitedが運営しています。講師チームは博士レベルの講師が率い、実験の指導は専門の臨床検査技師のバックグラウンドを持つ講師が担当します。過去2年間、私たちが指導した生徒チームはiGEM世界大会で金賞を受賞し、パートナー校は香港InnoHealth Cupで優勝しました。",
+"tip": "<b>資金援助について：</b>本コースシリーズは、教育局のAI教育資金援助スキーム（智啟學教）の関連要件を満たしており、学校はこの資金援助を申請してコースを調達できます。政府の専用資金を活用できるため、学校内の予算を別途使う必要はありません。コースは科学、生物、情報テクノロジー、STEAMの学際学習をカバーし、コース設計、専門講師、実験指導、AIプラットフォームの提供を一度に解決します。申請から開講まで、学校の事務手続きに全面的に協力します。コースを修了した生徒には、<b>香港城市大学（City University of Hong Kong）発行</b>の修了証が授与されます。",
+"acc.label": "WHY US // 選ばれる理由",
+"acc.h1": "私たちのチームを選ぶ理由",
+"acc.h2": "生徒のためにできること",
+"acc.h3": "学校からよくある質問",
+"acc.b1": "コースは<b>博士レベルの講師が率いるチーム</b>が設計・指導し、大学の研究水準で内容と評価を設計します。実験の指導は<b>専門の臨床検査技師のバックグラウンドを持つ講師</b>が担当し、技術デモンストレーション、操作規範、安全管理を専門スタッフが担います。チームは長年、中学生の国際バイオデザイン大会への参加を指導しており、指導チームは<b>iGEM世界大会で金賞</b>を受賞し、パートナー校は<b>香港InnoHealth Cupで優勝</b>しました。",
+"acc.b2": "生徒はプログラミング実践、プラットフォーム設計、実験検証を通じて、<b>研究の全プロセスを自ら体験</b>します。紙の上の学習だけではありません。内容は大学の研究や国際大会の要件に密接に沿っており、生徒の学びは大学での学びに直接つながります。コース修了後には、<b>香港城市大学発行の修了証</b>が授与され、学習成果が認められます。",
+"acc.b3": "<b>資金援助の申請方法は？</b>すべてのコースは教育局のAI教育資金援助スキーム（智啟學教）の関連要件を満たしており、学校は資金援助を申請して調達できます。私たちは学校の事務手続きに全面的に協力します。<b>予約方法は？</b>メールでご返信いただくか、WhatsAppでご連絡いただければ、コース説明会（学校訪問またはビデオ通話）を調整し、CodeLifeAIプラットフォームを実演したうえで、学校のニーズに合わせて編成・人数・お見積もりを確認します。",
+"courses.en": "SEC.02 // PROGRAMMES — コースシリーズ",
+"courses.title": "AIイノベーションコースシリーズ",
+"c1.tag": "コース1",
+"c1.name": "AIを暮らしの中へ",
+"c1.sub": "AI＋マイコン・プログラミングコース",
+"c1.p": "生徒が自らマイコンの配線とプログラミングを行い、AIの支援を受けながらアイデア出しとデバッグを行い、実際に動作するスマートデバイスのプロジェクトを完成させます。AI画像生成のセッションも含まれます。",
+"c1.alt": "生徒がマイコンを配線し、ノートパソコンでプログラミングする様子",
+"c1.dur": "2日間から",
+"c1.fee": "HK$50,000から",
+"c2.tag": "コース2",
+"c2.name": "バイオテクノロジーとAIの出会い",
+"c2.sub": "AI＋革新的タンパク質設計コース ft. CodeLifeAI",
+"c2.p": "CodeLifeAIプラットフォーム上で、生徒はタンパク質の3D構造を読み解き、AIで候補デザインを生成し、構造予測とスコアリングで一つずつ絞り込む、本物のバイオデザインの流れを体験します。AI画像生成のセッションも含まれます。",
+"c2.alt": "教室で大画面に映るタンパク質の3D構造を見て学ぶ生徒たち",
+"c2.dur": "3–4コマから",
+"c2.fee": "HK$100,000から",
+"c2.platform": "CodeLifeAIプラットフォームを見る",
+"c3.tag": "コース3",
+"c3.name": "未来のバイオ発明家を育てる",
+"c3.sub": "革新的タンパク質設計＋専門講師による実験コース",
+"c3.p": "コース2を土台に、生徒が自分のデザインを実験室に持ち込み、専門講師の指導のもと自らの手で検証します。AI画像生成のセッションも含まれます。",
+"c3.alt": "実験室で講師がマイクロピペットの使い方を生徒に指導する様子",
+"c3.dur": "8コマから",
+"c3.fee": "HK$200,000から",
+"meta.dur": "期間",
+"meta.fee": "受講料",
+"fee.note": "料金は香港ドル建てです。実際の料金は生徒数とコース編成により異なります。",
+"viewer.head": "// MODEL VIEWER // タンパク質構造の例",
+"mol.aria": "T4リゾチーム（PDB 2LZM）のインタラクティブ3D構造。ドラッグで回転できます",
+"mol.alt": "T4リゾチーム（PDB 2LZM）の構造図",
+"mol.hint": "ドラッグで回転・スクロール／ピンチで拡大縮小",
+"v.name": "T4リゾチーム",
+"v.sub": "T4 Lysozyme・バクテリオファージT4",
+"v.intro": "これは実在するタンパク質の3D構造で、生徒がコースで読み方と使い方を学ぶものです。指やマウスでドラッグすると、回転させて見ることができます。",
+"v.points.title": "// 生徒が学べること //",
+"v.p1": "実在するタンパク質の3D構造を読み解く",
+"v.p2": "AIで候補デザインを生成する",
+"v.p3": "構造予測とスコアリングで、最適なデザインを一つずつ絞り込む",
+"team.en": "SEC.03 // RESEARCH TEAM — 研究チーム",
+"team.title": "研究チーム",
+"team.alt": "Spark Science Education 研究チーム5名の集合写真",
+"team.n1": "林文傑教授",
+"team.t1": "首席科学アドバイザー",
+"team.n2": "黎卓賢博士",
+"team.t2": "科学主任",
+"team.n3": "鄺緯陽博士",
+"team.t3": "創設者・首席科学責任者",
+"team.n4": "宋振州博士",
+"team.t4": "研究総括",
+"team.n5": "黃桂林博士",
+"team.t5": "教育アドバイザー",
+"res.en": "SEC.04 // COMPETITION RESULTS — 大会実績",
+"res.title": "大会実績",
+"res.lead": "iGEM 2024のKAPIと2025のPestiGuardが世界大会で金賞を受賞し、PestiGuardは高校部門で世界のトップ10入りを果たしました。パートナー校の九龍真光中學は2025香港InnoHealth Cupで優勝しました。",
+"r1.h": "世界大会 金賞",
+"r1.p": "指導チームKAPIがiGEM世界大会で金賞を受賞しました。",
+"r2.h": "世界大会 金賞",
+"r2.p": "指導チームPestiGuardがiGEM世界大会で金賞を受賞し、高校部門で世界のトップ10入りを果たしました。",
+"r3.h": "優勝",
+"r3.p": "パートナー校の九龍真光中學が2025香港InnoHealth Cupで優勝しました。",
+"r1.alt": "iGEM 2024 指導チームKAPI",
+"r2.alt": "iGEM 2025 指導チームPestiGuard",
+"r3.alt": "九龍真光中學がInnoHealth Cup 2025で優勝",
+"book.en": "SEC.05 // HOW TO BOOK — 予約方法",
+"book.title": "予約方法",
+"step1": "メールでご返信いただくか、下のWhatsAppボタンからご連絡ください",
+"step2": "コース説明会（学校訪問またはビデオ通話）を調整し、CodeLifeAIプラットフォームを実演します",
+"step3": "学校のニーズに合わせて、コース編成・人数・お見積もりを確認します",
+"step4": "調達手続きを完了します（智啟學教の資金援助申請に対応可能）",
+"step5": "正式に開講し、生徒に香港城市大学の修了証が授与されます",
+"contact.eyebrow": "SEC.06 // CONTACT — お問い合わせ",
+"contact.h": "生徒たちのAI研究の旅を、今始めましょう",
+"contact.p": "学校の先生方や教科主任の先生からのお問い合わせを歓迎します。学校のニーズに合わせて、コース説明会やプラットフォームのデモンストレーションを調整いたします。ご不明な点があれば、いつでもお気軽にお問い合わせください。",
+"cta.book": "コース説明会を予約",
+"cta.wa": "WhatsAppで問い合わせ",
+"foot.tags": "AIコース｜バイオテクノロジー｜大会対策｜実験コース",
+"foot.copy": "© 2026 Solar Trinity Science Limited（晴曦科學有限公司）",
+"foot.music": "BGM：「Frozen Star」by Kevin MacLeod（incompetech.com）、CC BYライセンス",
+"qa.fab": "AIコースアシスタント",
+"qa.fab.aria": "AIコースアシスタント：コースQ&Aを開く",
+"qa.hint": "質問はここからAIへ",
+"qa.panel.aria": "コースAI Q&A",
+"qa.title": "コースAI Q&A",
+"qa.note": "以下の回答はすべて、本ウェブサイトで公開済みのコース資料に基づいています。お答えできないご質問については、スタッフへの連絡方法をご案内します。",
+"qa.close.aria": "Q&Aウィンドウを閉じる",
+"qa.ph": "質問を入力…",
+"qa.send": "質問する",
+"qa.mic.aria": "音声入力",
+"qa.img.aria": "画像を添付",
+"qa.input.aria": "質問を入力してください",
+"form.h": "お問い合わせフォーム",
+"form.intro": "こんにちは。Spark Science Educationのプログラムについて問い合わせます。",
+"form.school": "学校名",
+"form.name": "ご担当者名",
+"form.contact": "電話番号またはメール",
+"form.course": "ご希望のコース",
+"form.opt.c1": "コース1 — AIを暮らしの中へ",
+"form.opt.c2": "コース2 — バイオテクノロジーとAIの出会い",
+"form.opt.c3": "コース3 — 未来のバイオ発明家を育てる",
+"form.opt.undecided": "未定・まず詳しく知りたい",
+"form.msg": "メッセージ（任意）",
+"form.ph.school": "例：XX中学校",
+"form.ph.name": "お名前と役職",
+"form.ph.contact": "電話番号またはメールアドレス",
+"form.ph.msg": "ご要望などがあればご記入ください（任意）",
+"form.submit": "WhatsAppで送信",
+"form.mail": "メールで送信する",
+"form.err": "学校名、ご担当者名、電話番号またはメールをご記入ください。折り返しご連絡いたします。",
+"inc.h": "含まれる内容",
+"inc.ai": "AI画像生成セッション",
+"inc.cert": "修了時に香港城市大学発行の修了証を授与",
+"inc.c1a": "実際に配線・プログラミングを体験",
+"inc.c1b": "実際に動作するスマートデバイスのプロジェクトを完成",
+"inc.c2a": "CodeLifeAIプラットフォームでの実習",
+"inc.c2b": "構造予測とスコアリングで設計を選別する、実際のバイオデザイン工程",
+"inc.c3a": "専門講師が指導する実験室実習",
+"inc.c3b": "タンパク質設計から実験検証までの研究サイクル全体",
+},
+ko: {
+"meta.title": "Spark Science Education｜AI 혁신 과정 시리즈",
+"meta.desc": "Spark Science Education은 Solar Trinity Science Limited가 운영하며, 홍콩 중학교를 위해 설계된 AI 혁신 과정 시리즈를 제공합니다. iGEM 금상 멘토 팀이 지도하며, 학생이 직접 AI 연구를 경험합니다.",
+"wa.text": "안녕하세요. Spark Science Education의 AI 혁신 과정 시리즈에 대해 문의하고, 과정 설명회 일정을 잡고 싶습니다.",
+"mail.subject": "과정 설명회 예약 - Spark Science Education",
+"intro.aria": "Spark Science Education 웹사이트로 들어가기",
+"intro.hint": "눌 러 서   입 장 하 기",
+"skip": "건너뛰기 SKIP →",
+"showcase.aria": "연구팀 및 대회 성과 쇼케이스",
+"sc.team.title": "연구팀",
+"sc.mem1": "林文傑 교수 · 수석 과학 고문",
+"sc.mem2": "黎卓賢 박사 · 과학 주임",
+"sc.mem3": "鄺緯陽 박사 · 창립자・수석 과학 책임자",
+"sc.mem4": "宋振州 박사 · 연구 총괄",
+"sc.mem5": "黃桂林 박사 · 교육 고문",
+"sc.cap.inno": "InnoHealth Cup 2025 우승 (구룡진광중학)",
+"sc.cap.kapi": "iGEM 2024 금상 · KAPI (AI 항암 펩타이드)",
+"sc.cap.pesti": "iGEM 2025 금상 · PestiGuard (전 세계 고등부 Top 10)",
+"sc.cap.mentor": "홍콩 중학교 9개교 팀 멘토링",
+"sc.alt.team": "Spark Science Education 연구팀 5인의 단체 사진",
+"sc.alt.inno": "협력 학교 구룡진광중학이 InnoHealth Cup 2025에서 우승한 시상식 사진",
+"sc.alt.kapi": "멘토링 팀 KAPI가 iGEM 2024에서 금상을 수상한 보도 사진",
+"sc.alt.pesti": "멘토링 팀 PestiGuard가 iGEM 2025에서 금상을 수상하고 전 세계 고등부 Top 10에 진입한 단체 사진",
+"sc.alt.mentor": "멘토 팀이 홍콩 중학생 팀을 지도하는 단체 사진",
+"lead.main": "창립자・수석 과학 책임자 <strong>鄺緯陽 박사</strong>가 이끄는 팀",
+"brand.sub": "EDUCATION · 創智・未來",
+"nav.courses": "과정",
+"nav.team": "연구팀",
+"nav.results": "대회 성과",
+"nav.booking": "예약 방법",
+"nav.contact": "문의하기",
+"hero.eyebrow": "SEC.00 // AI INNOVATION PROGRAMMES · 홍콩 중학교를 위한 과정 · 예약 접수 중",
+"hero.h1": "학생의 창의력과 기술을 결합해 미래를 만듭니다",
+"hero.sub": "iGEM 금상 멘토 팀이 지도하며, 학생이 직접 <b>AI 연구</b>를 경험합니다",
+"hero.alt": "협력 학교가 2025 홍콩 InnoHealth Cup에서 우승한 시상식 사진",
+"hero.cap": "학생들의 국제 수상 행진 — 협력 학교가 2025 홍콩 InnoHealth Cup 우승",
+"about.en": "SEC.01 // ABOUT US — 회사 소개",
+"about.title": "교장 선생님과 선생님 여러분께",
+"about.lead": "저희는 Spark Science Education（創智・未來）이며, Solar Trinity Science Limited가 운영합니다. 강사진은 박사급 강사가 이끌고, 실험 지도는 전문 임상병리사 배경을 가진 강사가 담당합니다. 지난 2년간 저희가 멘토링한 학생 팀은 iGEM 글로벌 대회에서 금상을 수상했고, 협력 학교는 홍콩 InnoHealth Cup에서 우승했습니다.",
+"tip": "<b>자금 지원 안내:</b> 본 과정 시리즈는 교육국의 AI 교육 자금 지원 제도（智啟學教）의 관련 요건을 충족하며, 학교는 이 자금 지원을 신청해 과정을 조달할 수 있어 정부 전용 자금을 활용하므로 학교 자체 예산을 별도로 사용할 필요가 없습니다. 과정은 과학, 생물, 정보 기술, STEAM 융합 학습을 아우르며, 과정 설계, 전문 강사, 실험 지도, AI 플랫폼 제공을 한 번에 해결합니다. 신청부터 개강까지 학교 행정에 전면 협조합니다. 과정을 수료한 학생에게는 <b>홍콩성시대학(City University of Hong Kong)에서 발급하는 수료증</b>이 수여됩니다.",
+"acc.label": "WHY US // 선택받는 이유",
+"acc.h1": "저희 팀을 선택하는 이유",
+"acc.h2": "학생들에게 도움이 되는 것",
+"acc.h3": "학교에서 자주 묻는 질문",
+"acc.b1": "과정은 <b>박사급 강사가 이끄는 팀</b>이 설계하고 지도하며, 대학 연구 수준으로 내용과 평가를 설계합니다. 실험 지도는 <b>전문 임상병리사 배경을 가진 강사</b>가 담당하며, 기술 시연, 운영 규범, 안전 관리를 전문가가 맡습니다. 팀은 오랫동안 중학생들의 국제 바이오디자인 대회 참가를 멘토링해 왔으며, 멘토링 팀은 <b>iGEM 글로벌 대회에서 금상</b>을 수상했고, 협력 학교는 <b>홍콩 InnoHealth Cup에서 우승</b>했습니다.",
+"acc.b2": "학생은 프로그래밍 실습, 플랫폼 설계, 실험 검증을 통해 <b>연구의 전 과정을 직접 체험</b>합니다. 종이 위의 학습에만 그치지 않습니다. 내용은 대학 연구와 국제 대회 요건에 밀접하게 맞춰져 있어, 학생의 배움이 대학 학습으로 직접 이어집니다. 과정을 수료하면 <b>홍콩성시대학에서 발급하는 수료증</b>을 받아 학습 성과가 인정됩니다.",
+"acc.b3": "<b>자금 지원은 어떻게 신청하나요?</b> 모든 과정은 교육국의 AI 교육 자금 지원 제도（智啟學教）의 관련 요건을 충족하며, 학교는 자금 지원을 신청해 조달할 수 있고, 저희는 학교 행정에 전면 협조합니다. <b>예약은 어떻게 하나요?</b> 이메일로 회신하거나 WhatsApp으로 연락하시면 과정 설명회(학교 방문 또는 화상)를 잡고, CodeLifeAI 플랫폼을 직접 시연한 뒤, 학교의 필요에 맞춰 편성, 인원, 견적을 확인합니다.",
+"courses.en": "SEC.02 // PROGRAMMES — 과정 시리즈",
+"courses.title": "AI 혁신 과정 시리즈",
+"c1.tag": "과정 1",
+"c1.name": "AI를 생활 속으로",
+"c1.sub": "AI + 마이크로컨트롤러 프로그래밍 과정",
+"c1.p": "학생이 직접 마이크로컨트롤러를 배선하고 프로그래밍하며, AI의 도움을 받아 아이디어를 구상하고 디버깅하여 실제로 작동하는 스마트 기기 프로젝트를 완성합니다. AI 이미지 생성 세션도 포함됩니다.",
+"c1.alt": "학생이 마이크로컨트롤러를 배선하고 노트북으로 프로그래밍하는 모습",
+"c1.dur": "2일부터",
+"c1.fee": "HK$50,000부터",
+"c2.tag": "과정 2",
+"c2.name": "생명공학과 AI가 만나다",
+"c2.sub": "AI + 혁신 단백질 설계 과정 ft. CodeLifeAI",
+"c2.p": "CodeLifeAI 플랫폼에서 학생은 단백질의 3D 구조를 읽고, AI로 후보 설계를 생성한 뒤, 구조 예측과 점수 평가로 하나씩 선별하며 실제 바이오디자인 과정을 체험합니다. AI 이미지 생성 세션도 포함됩니다.",
+"c2.alt": "교실에서 대형 화면에 뜬 단백질 3D 구조를 보며 배우는 학생들",
+"c2.dur": "3–4차시부터",
+"c2.fee": "HK$100,000부터",
+"c2.platform": "CodeLifeAI 플랫폼 보러 가기",
+"c3.tag": "과정 3",
+"c3.name": "미래의 바이오 발명가 양성",
+"c3.sub": "혁신 단백질 설계 + 전문 강사 실험 과정",
+"c3.p": "과정 2를 바탕으로, 학생이 자신의 설계를 실험실로 가져가 전문 강사의 지도 아래 직접 검증합니다. AI 이미지 생성 세션도 포함됩니다.",
+"c3.alt": "실험실에서 강사가 학생에게 마이크로피펫 사용법을 지도하는 모습",
+"c3.dur": "8차시부터",
+"c3.fee": "HK$200,000부터",
+"meta.dur": "기간",
+"meta.fee": "수강료",
+"fee.note": "수강료는 홍콩 달러 기준이며, 실제 금액은 학생 수와 과정 편성에 따라 달라집니다.",
+"viewer.head": "// MODEL VIEWER // 단백질 구조 예시",
+"mol.aria": "T4 리소자임(PDB 2LZM)의 인터랙티브 3D 구조 — 드래그하여 회전할 수 있습니다",
+"mol.alt": "T4 리소자임(PDB 2LZM) 구조도",
+"mol.hint": "드래그하여 회전 · 스크롤/핀치로 확대·축소",
+"v.name": "T4 리소자임",
+"v.sub": "T4 Lysozyme · 박테리오파지 T4",
+"v.intro": "이것은 실제 단백질의 3D 구조로, 학생이 과정에서 읽는 법과 쓰는 법을 배우는 것입니다. 손가락이나 마우스로 드래그하면 돌려서 볼 수 있습니다.",
+"v.points.title": "// 학생이 배우는 것 //",
+"v.p1": "실제 단백질의 3D 구조를 읽어내기",
+"v.p2": "AI로 후보 설계 생성하기",
+"v.p3": "구조 예측과 점수 평가로 최적의 설계를 하나씩 선별하기",
+"team.en": "SEC.03 // RESEARCH TEAM — 연구팀",
+"team.title": "연구팀",
+"team.alt": "Spark Science Education 연구팀 5인의 단체 사진",
+"team.n1": "林文傑 교수",
+"team.t1": "수석 과학 고문",
+"team.n2": "黎卓賢 박사",
+"team.t2": "과학 주임",
+"team.n3": "鄺緯陽 박사",
+"team.t3": "창립자・수석 과학 책임자",
+"team.n4": "宋振州 박사",
+"team.t4": "연구 총괄",
+"team.n5": "黃桂林 박사",
+"team.t5": "교육 고문",
+"res.en": "SEC.04 // COMPETITION RESULTS — 대회 성과",
+"res.title": "대회 성과",
+"res.lead": "iGEM 2024의 KAPI와 2025의 PestiGuard가 글로벌 대회에서 금상을 수상했고, PestiGuard는 전 세계 고등부 Top 10에도 진입했습니다. 협력 학교 구룡진광중학은 2025 홍콩 InnoHealth Cup에서 우승했습니다.",
+"r1.h": "글로벌 대회 금상",
+"r1.p": "멘토링 팀 KAPI가 iGEM 글로벌 대회에서 금상을 수상했습니다.",
+"r2.h": "글로벌 대회 금상",
+"r2.p": "멘토링 팀 PestiGuard가 iGEM 글로벌 대회에서 금상을 수상했고, 전 세계 고등부 Top 10에 진입했습니다.",
+"r3.h": "우승",
+"r3.p": "협력 학교 구룡진광중학이 2025 홍콩 InnoHealth Cup에서 우승했습니다.",
+"r1.alt": "iGEM 2024 멘토링 팀 KAPI",
+"r2.alt": "iGEM 2025 멘토링 팀 PestiGuard",
+"r3.alt": "구룡진광중학이 InnoHealth Cup 2025에서 우승",
+"book.en": "SEC.05 // HOW TO BOOK — 예약 방법",
+"book.title": "예약 방법",
+"step1": "이메일로 회신하거나, 아래 WhatsApp 버튼으로 연락하세요",
+"step2": "과정 설명회(학교 방문 또는 화상)를 잡고, CodeLifeAI 플랫폼을 직접 시연합니다",
+"step3": "학교의 필요에 맞춰 과정 편성, 인원, 견적을 확인합니다",
+"step4": "조달 절차를 완료합니다（智啟學教 자금 지원 신청 대응 가능）",
+"step5": "정식 개강하며, 학생에게 홍콩성시대학 수료증이 수여됩니다",
+"contact.eyebrow": "SEC.06 // CONTACT — 문의하기",
+"contact.h": "지금 학생들의 AI 연구 여정을 시작하세요",
+"contact.p": "학교 선생님과 교과 주임 선생님의 문의를 환영합니다. 학교의 필요에 맞춰 과정 설명회나 플랫폼 시연을 잡아 드립니다. 궁금한 점이 있으면 언제든지 문의해 주세요.",
+"cta.book": "과정 설명회 예약",
+"cta.wa": "WhatsApp 문의",
+"foot.tags": "AI 과정｜생명공학｜대회 코칭｜실험 과정",
+"foot.copy": "© 2026 Solar Trinity Science Limited (晴曦科學有限公司)",
+"foot.music": "배경 음악: 「Frozen Star」 by Kevin MacLeod (incompetech.com), CC BY 라이선스",
+"qa.fab": "AI 과정 어시스턴트",
+"qa.fab.aria": "AI 과정 어시스턴트: 과정 Q&A 열기",
+"qa.hint": "궁금한 점은 여기서 AI에게 물어보세요",
+"qa.panel.aria": "과정 AI Q&A",
+"qa.title": "과정 AI Q&A",
+"qa.note": "아래 답변은 모두 이 웹사이트에 공개된 과정 자료를 바탕으로 합니다. 답변할 수 없는 질문은 담당자에게 연락하는 방법을 안내해 드립니다.",
+"qa.close.aria": "Q&A 창 닫기",
+"qa.ph": "질문을 입력하세요…",
+"qa.send": "질문하기",
+"qa.mic.aria": "음성 입력",
+"qa.img.aria": "이미지 첨부",
+"qa.input.aria": "질문을 입력하세요",
+"form.h": "문의 양식",
+"form.intro": "안녕하세요. Spark Science Education의 과정에 대해 문의합니다.",
+"form.school": "학교 이름",
+"form.name": "담당자",
+"form.contact": "연락 전화 또는 이메일",
+"form.course": "문의할 과정",
+"form.opt.c1": "과정 1 — AI를 생활 속으로",
+"form.opt.c2": "과정 2 — 생명공학과 AI가 만나다",
+"form.opt.c3": "과정 3 — 미래의 바이오 발명가 양성",
+"form.opt.undecided": "미정・더 알아보고 싶어요",
+"form.msg": "메시지 (선택)",
+"form.ph.school": "예: XX중학교",
+"form.ph.name": "이름과 직함",
+"form.ph.contact": "전화번호 또는 이메일 주소",
+"form.ph.msg": "전하고 싶은 내용이 있으면 적어 주세요 (선택)",
+"form.submit": "WhatsApp으로 보내기",
+"form.mail": "이메일로 보내기",
+"form.err": "학교 이름, 담당자, 연락 전화 또는 이메일을 입력해 주세요. 그래야 연락드릴 수 있습니다.",
+"inc.h": "포함 내용",
+"inc.ai": "AI 이미지 생성 세션",
+"inc.cert": "과정 수료 시 홍콩성시대학 수료증 수여",
+"inc.c1a": "직접 배선하고 프로그래밍하기",
+"inc.c1b": "실제로 작동하는 스마트 기기 프로젝트 완성",
+"inc.c2a": "CodeLifeAI 플랫폼 실습",
+"inc.c2b": "구조 예측과 점수 평가로 설계를 선별하는 실제 바이오디자인 과정",
+"inc.c3a": "전문 강사가 이끄는 실험실 실습",
+"inc.c3b": "단백질 설계부터 실험 검증까지 전체 연구 과정",
+}
+};
+var HTML_LANG = {en:"en", zh:"zh-Hant", hans:"zh-Hans", ja:"ja", ko:"ko"};
+var cur = "en";
+try{ var saved = localStorage.getItem("spark-lang"); if(saved && I18N[saved]) cur = saved; }catch(e){}
+function waUrl(l){ var d = I18N[l] || I18N.en; return "https://api.whatsapp.com/send?phone=85298895833&text=" + encodeURIComponent(d["wa.text"]); }
+function apply(l){
+  if(!I18N[l]) l = "en";
+  cur = l;
+  var d = I18N[l], els, i, k;
+  document.documentElement.lang = HTML_LANG[l];
+  document.title = d["meta.title"];
+  var md = document.querySelector('meta[name="description"]'); if(md) md.setAttribute("content", d["meta.desc"]);
+  var ogt = document.querySelector('meta[property="og:title"]'); if(ogt) ogt.setAttribute("content", d["meta.title"]);
+  var ogd = document.querySelector('meta[property="og:description"]'); if(ogd) ogd.setAttribute("content", d["meta.desc"]);
+  els = document.querySelectorAll("[data-i18n]");
+  for(i=0;i<els.length;i++){ k = els[i].getAttribute("data-i18n"); if(d[k] != null) els[i].textContent = d[k]; }
+  els = document.querySelectorAll("[data-i18n-html]");
+  for(i=0;i<els.length;i++){ k = els[i].getAttribute("data-i18n-html"); if(d[k] != null) els[i].innerHTML = d[k]; }
+  els = document.querySelectorAll("[data-i18n-alt]");
+  for(i=0;i<els.length;i++){ k = els[i].getAttribute("data-i18n-alt"); if(d[k] != null) els[i].setAttribute("alt", d[k]); }
+  els = document.querySelectorAll("[data-i18n-aria]");
+  for(i=0;i<els.length;i++){ k = els[i].getAttribute("data-i18n-aria"); if(d[k] != null) els[i].setAttribute("aria-label", d[k]); }
+  els = document.querySelectorAll("[data-i18n-ph]");
+  for(i=0;i<els.length;i++){ k = els[i].getAttribute("data-i18n-ph"); if(d[k] != null) els[i].setAttribute("placeholder", d[k]); }
+  var wa = waUrl(l);
+  els = document.querySelectorAll("a.wa-link");
+  for(i=0;i<els.length;i++) els[i].setAttribute("href", wa);
+  var subj = encodeURIComponent(d["mail.subject"]);
+  els = document.querySelectorAll("a.mail-link");
+  for(i=0;i<els.length;i++) els[i].setAttribute("href", "mailto:Sales@codelife.ai?subject=" + subj);
+  var sel = document.getElementById("langSel"); if(sel) sel.value = l;
+  try{ localStorage.setItem("spark-lang", l); }catch(e){}
+  window.__sparkLang = l;
+  document.dispatchEvent(new CustomEvent("spark-lang-change", {detail:{lang:l}}));
+}
+window.__sparkI18n = { dict: I18N, apply: apply, waUrl: waUrl };
+Object.defineProperty(window.__sparkI18n, "lang", { get: function(){ return cur; } });
+var langSel = document.getElementById("langSel");
+if(langSel) langSel.addEventListener("change", function(){ apply(langSel.value); });
+apply(cur);
+})();
+</script>
+<script>
+/* ================= 課程智能問答（QA WIDGET）：五種語言知識庫＋語音／圖片輸入 =================
+   接駁真 AI 的介面（之後接駁唔使改介面）：
+   - window.__sparkAttachImage(file) → 處理並附加圖片（壓細＋預覽），回傳 Promise<dataUrl|null>
+   - window.__sparkGetPendingImage() → 攞目前待發送圖片 {dataUrl} 或 null
+   - 發送時如有待發圖片：優先呼叫 window.__sparkSendChat({text, image, lang, reply})
+     或者 window.sendChat(text, imageDataUrl)（可回傳字串或 Promise<字串>）；
+     兩者都冇 → 用禮貌訊息講明圖片分析未接通，文字問題照用知識庫答。 */
+(function(){
+  var UI = {
+    en: {
+      greet: "Hello! I'm the Spark Science course Q&A assistant. Ask me about programme content, fees, durations, funding, certificates, the booking process, our teaching team and competition results — I'll answer instantly using the information published on this website. Tap a common question below, or type, speak, or attach an image to ask.",
+      fallback: "I don't have published information on that yet, so I won't guess. But I can answer course questions right away from the published information: programme content, fees, durations, funding applications, certificate arrangements, booking, the teaching team and competition results. Tap a question below, or ask our team directly.{CTA}",
+      chips: ["How much are the fees?","How does the funding work?","Is there a certificate?","How do I book?","Who teaches the programmes?","What competition results do you have?"],
+      ctaWa: "WhatsApp our team",
+      ctaMail: "Email Sales@codelife.ai",
+      voiceNo: "Sorry — voice input isn't available on this device or browser. Please type your question instead.",
+      imgReady: "Image attached — press Ask to send it with your question.",
+      imgNotReady: "Image analysis will be available once the live AI is connected; it isn't connected yet. For now, please type your question and I'll answer right away using the published programme information."
+    },
+    zh: {
+      greet: "你好！我係 Spark Science 嘅課程智能問答。你可以問我課程內容、收費、課時、撥款、證書、預約流程、導師團隊同比賽成績——我會用本網站已公佈嘅資料即時答你。㩒下面嘅常問問題，或者直接打字、㩒咪講嘢、附加圖片發問都得。",
+      fallback: "呢條問題我手頭上未有資料，唔會亂答誤導你。不過課程方面嘅問題，我有齊已公佈嘅資料可以即刻答你：課程內容、收費、課時、點申請撥款、證書安排、點預約、邊個任教、同比賽成績。你可以㩒下面啲問題，或者直接問我哋真人同事。{CTA}",
+      chips: ["課程幾錢？","點申請撥款？","有冇證書？","點預約？","邊個任教？","有咩比賽成績？"],
+      ctaWa: "WhatsApp 問真人",
+      ctaMail: "電郵 Sales@codelife.ai",
+      voiceNo: "唔好意思，呢部機／呢個瀏覽器用唔到語音輸入，麻煩你打字問我啦。",
+      imgReady: "已附加圖片，㩒「發問」就會連圖一齊送出。",
+      imgNotReady: "圖片分析要等真 AI 接通先用到，而家未接通住。你可以打字問我住先，我即刻用已公佈嘅課程資料答你。"
+    },
+    hans: {
+      greet: "你好！我是 Spark Science 的课程智能问答。你可以问我课程内容、收费、课时、拨款、证书、预约流程、导师团队和比赛成绩——我会用本网站已公布的资料即时回答你。点下面的常问问题，或者直接打字、按麦克风说话、附加图片提问都可以。",
+      fallback: "这个问题，我手头上已公布的课程资料答不到，不想乱猜误导你。你可以直接问我们真人同事，或者试试问：课程多少钱？怎么申请拨款？有没有证书？怎么预约？{CTA}",
+      chips: ["课程多少钱？","怎么申请拨款？","有没有证书？","怎么预约？","谁任教？","有什么比赛成绩？"],
+      ctaWa: "WhatsApp 问真人",
+      ctaMail: "电邮 Sales@codelife.ai",
+      voiceNo: "不好意思，这台设备／这个浏览器无法使用语音输入，请打字提问。",
+      imgReady: "已附加图片，点「提问」就会连图一起发送。",
+      imgNotReady: "图片分析要等真 AI 接通后才能使用，目前还没接通。你可以先打字提问，我马上用已公布的课程资料回答你。"
+    },
+    ja: {
+      greet: "こんにちは！Spark ScienceのコースAI Q&Aです。コース内容、受講料、期間、資金援助、修了証、予約の流れ、講師チーム、大会実績についてご質問いただけます。本ウェブサイトで公開済みの資料をもとに、すぐにお答えします。下のよくある質問をタップするか、文字入力・音声・画像の添付でもご質問いただけます。",
+      fallback: "申し訳ありませんが、そのご質問には、公開済みのコース資料ではお答えできません。誤った情報をお伝えしないためです。スタッフへ直接お問い合わせいただくか、次のようなご質問をお試しください。受講料はいくらですか？資金援助の申請方法は？修了証はありますか？予約方法は？{CTA}",
+      chips: ["受講料はいくらですか？","資金援助の申請方法は？","修了証はありますか？","予約方法は？","担当講師は誰ですか？","大会の実績は？"],
+      ctaWa: "WhatsAppでスタッフに聞く",
+      ctaMail: "メール Sales@codelife.ai",
+      voiceNo: "申し訳ありません。この端末・ブラウザでは音声入力をご利用いただけません。文字でご質問ください。",
+      imgReady: "画像を添付しました。「質問する」を押すと画像も一緒に送信されます。",
+      imgNotReady: "画像分析はAI接続後に利用可能になります。まだ接続されていないため、まずは文字でご質問ください。公開済みのコース資料をもとにすぐお答えします。"
+    },
+    ko: {
+      greet: "안녕하세요! Spark Science 과정 AI Q&A입니다. 과정 내용, 수강료, 기간, 자금 지원, 수료증, 예약 절차, 강사진, 대회 성과에 대해 물어보세요. 이 웹사이트에 공개된 자료를 바탕으로 바로 답변드립니다. 아래 자주 묻는 질문을 누르거나, 글로 입력하거나, 음성이나 이미지를 첨부해 질문할 수 있습니다.",
+      fallback: "그 질문은 지금까지 공개된 과정 자료로는 답변할 수 없어, 추측으로 잘못 안내하고 싶지 않습니다. 담당자에게 직접 문의하시거나, 다음 질문을 시도해 보세요. 수강료는 얼마인가요? 자금 지원은 어떻게 신청하나요? 수료증이 있나요? 예약은 어떻게 하나요?{CTA}",
+      chips: ["수강료는 얼마인가요?","자금 지원은 어떻게 신청하나요?","수료증이 있나요?","예약은 어떻게 하나요?","누가 가르치나요?","대회 성과가 있나요?"],
+      ctaWa: "WhatsApp으로 담당자에게 문의",
+      ctaMail: "이메일 Sales@codelife.ai",
+      voiceNo: "죄송합니다. 이 기기/브라우저에서는 음성 입력을 사용할 수 없습니다. 글로 질문해 주세요.",
+      imgReady: "이미지가 첨부되었습니다. 「질문하기」를 누르면 이미지와 함께 전송됩니다.",
+      imgNotReady: "이미지 분석은 실제 AI가 연결된 후 사용할 수 있으며, 아직 연결되지 않았습니다. 먼저 글로 질문해 주시면 공개된 과정 자료를 바탕으로 바로 답변드리겠습니다."
+    }
+  };
+
+  var KB = {
+  en: [
+    { k:["what can you answer","what can i ask","what do you know","help me","questions can"],
+      a:"I can answer these right away, all from the programme information published on this website:\n・Programme content (all three courses)\n・Fees and durations\n・How to apply for EDB funding\n・Certificate arrangements\n・The booking process\n・Our teaching team\n・Competition results\nTap a common question below, or just type your question." },
+    { k:["fee","fees","price","cost","how much","tuition","charge"],
+      a:"Programme fees (in HKD):\n・Course 1 \"Bringing AI into Everyday Life\": from HK$50,000 (from 2 days)\n・Course 2 \"When Biotechnology Meets AI\": from HK$100,000 (from 3–4 lessons)\n・Course 3 \"Nurturing Future Biotech Inventors\": from HK$200,000 (from 8 lessons)\nThe actual fee depends on student numbers and programme arrangement; we will provide a quotation tailored to your school at the programme briefing." },
+    { k:["course 1","microcontroller","everyday life","smart device"],
+      a:"Course 1 \"Bringing AI into Everyday Life\" (AI + Microcontroller Programming): students wire and program microcontrollers themselves, using AI to help brainstorm and debug, and complete a working smart-device project. The course includes an AI image generation session.\nDuration: from 2 days | Fees: from HK$50,000" },
+    { k:["course 2","biotechnology meets","protein design"],
+      a:"Course 2 \"When Biotechnology Meets AI\" (AI + Innovative Protein Design, featuring CodeLifeAI): on the CodeLifeAI platform, students learn to read 3D protein structures, generate candidate designs with AI, then screen them one by one using structure prediction and scoring — experiencing a genuine biodesign workflow. The course includes an AI image generation session.\nDuration: from 3–4 lessons | Fees: from HK$100,000" },
+    { k:["course 3","biotech inventors","inventor"],
+      a:"Course 3 \"Nurturing Future Biotech Inventors\" (Innovative Protein Design + Instructor-led Laboratory Course): building on Course 2, students take their own designs into the laboratory and test them hands-on, guided by professional instructors. The course includes an AI image generation session.\nDuration: from 8 lessons | Fees: from HK$200,000" },
+    { k:["laboratory course","lab work","hands-on experiment","experiment course"],
+      a:"For hands-on laboratory work, see Course 3 \"Nurturing Future Biotech Inventors\": building on the protein design work in Course 2, students take their designs into the laboratory and test them hands-on under the guidance of professional instructors.\nDuration: from 8 lessons | Fees: from HK$200,000\nTechnical demonstrations, operating procedures and safety management for laboratory sessions are overseen by instructors with professional medical laboratory technologist backgrounds." },
+    { k:["how to choose","which one","suitable","recommend","difference","choose"],
+      a:"The three courses form a research pathway from introductory to advanced:\n・Course 1: Programming in practice — build a working smart device\n・Course 2: Platform design — 3D protein design on the CodeLifeAI platform\n・Course 3: Laboratory validation — take your design into the lab and test it hands-on\nEvery school's needs differ, so we suggest arranging a programme briefing first; we will match the arrangement to your subjects and students' level." },
+    { k:["funding","智啟學教","subsidy","grant","government funding","apply for funding"],
+      a:"This programme series meets the relevant requirements of the Education Bureau's AI education funding scheme （智啟學教）; schools may apply for the funding to procure the programmes, making good use of government funding without drawing on the school's own budget.\nStep 4 of the booking process, \"Complete the procurement procedures\", can be aligned with the funding application, and we work around the school's administrative needs throughout, from application to the first lesson." },
+    { k:["certificate","city university","cityu","cert"],
+      a:"Yes. Students who complete a programme receive a certificate awarded by City University of Hong Kong, recognising their learning achievements; certificates are awarded when the programme begins (Step 5 of the booking process)." },
+    { k:["book","booking","briefing","enrol","sign up","how to join","process","apply"],
+      a:"Booking takes five steps:\n1. Reply by email, or contact us via the WhatsApp button\n2. Arrange a programme briefing (at your school or by video call), with a live demonstration of the CodeLifeAI platform\n3. Confirm the programme arrangement, student numbers and quotation based on your school's needs\n4. Complete the procurement procedures (can be aligned with the 智啟學教 funding application)\n5. The programme begins, and students are awarded City University of Hong Kong certificates{CTA}" },
+    { k:["teacher","teachers","instructor","who teaches","who leads","leading","led by","team","doctor","background","tutor","in charge"],
+      a:"Our research team has five specialists:\n・林文傑教授 — Chief Scientific Advisor\n・黎卓賢博士 — Science Officer\n・鄺緯陽博士 — Founder & Chief Scientific Officer\n・宋振州博士 — Research Director\n・黃桂林博士 — Education Advisor\nThe programmes are designed and taught by a team led by doctoral-level instructors, with content and assessment designed to university research standards; laboratory teaching is delivered by instructors with professional medical laboratory technologist backgrounds. The team is led by 鄺緯陽博士, our Founder & Chief Scientific Officer." },
+    { k:["results","competition","igem","award","champion","kapi","pestiguard","innohealth","achievements","led by","leading"],
+      a:"Led by our Founder & Chief Scientific Officer, 鄺緯陽博士, the team's recent results include:\n・iGEM 2024: mentored team KAPI won a Gold Award at the global competition\n・iGEM 2025: mentored team PestiGuard won a Gold Award and placed in the global top 10 of the high school division\n・InnoHealth Cup 2025: partner school Kowloon True Light School won the championship\nTo date, the team has mentored competition teams from 9 Hong Kong secondary schools." },
+    { k:["platform","codelifeai","software"],
+      a:"CodeLifeAI is the AI protein design platform used in Course 2: students read 3D protein structures on the platform, generate candidate designs with AI, then screen them using structure prediction and scoring. We demonstrate the platform live at the programme briefing.\n<br><a class=\"qa-cta\" href=\"https://codelife.ai\" target=\"_blank\" rel=\"noopener\">Visit the CodeLifeAI platform</a>" },
+    { k:["protein","lysozyme","2lzm","structure example"],
+      a:"The \"Protein Structure Example\" panel on the programme page shows a real protein, T4 Lysozyme. This is exactly what students learn in Course 2 — how to read the 3D structure of a protein. You can drag the 3D model in that panel to rotate it and examine the whole structure." },
+    { k:["contact","phone","email","whatsapp","get in touch","enquiry","enquire"],
+      a:"You can reach us in two ways:\n・Email: Sales@codelife.ai\n・WhatsApp: tap the button below to start a chat\nTeachers and subject panel heads are welcome to enquire; we can arrange a programme briefing or platform demonstration tailored to your school.{CTA}" },
+    { k:["how many lessons","duration","how long","how many days","sessions"],
+      a:"Course durations:\n・Course 1 \"Bringing AI into Everyday Life\": from 2 days\n・Course 2 \"When Biotechnology Meets AI\": from 3–4 lessons\n・Course 3 \"Nurturing Future Biotech Inventors\": from 8 lessons\nThe actual arrangement is confirmed based on your school's needs and student numbers." },
+    { k:["who are you","which company","company background","operated by","organiser","about you"],
+      a:"We are Spark Science Education, operated by Solar Trinity Science Limited. We provide AI × biotechnology programmes designed for Hong Kong secondary schools: from programming in practice and platform design to laboratory validation, students experience the complete research process first-hand, taught by a team led by doctoral-level instructors." }
+  ],
+  zh: [
+    { k:["你可以答","有咩問題","識答","可以問","咩問題","幫到我","有咩可以問"],
+      a:"我可以即刻答你呢啲，全部嚟自本網站已公佈嘅課程資料，有根有據：\n・課程內容同特色（三大課程）\n・收費同課時\n・點樣申請教育局撥款\n・證書安排\n・預約流程\n・導師團隊\n・比賽成績\n你㩒下面啲常問問題，或者直接打字問我就得。" },
+    { k:["幾錢","收費","價錢","價格","費用","學費","幾多錢","price"],
+      a:"三個課程嘅學費（港幣）如下：\n・課程一「讓 AI 走進生活」：HK$50,000 起（2 日起）\n・課程二「當生物科技遇上 AI」：HK$100,000 起（3–4 堂起）\n・課程三「培育未來生物發明家」：HK$200,000 起（8 堂起）\n實際費用按學生人數及課程編排而定，我哋會喺課程簡介會按學校需要報價。" },
+    { k:["課程一","單晶片","微電腦","走進生活","智能裝置"],
+      a:"課程一「讓 AI 走進生活」（AI + 單晶片微電腦編程課程）：學生親手接線及編程單晶片微電腦，並以 AI 協助構思及調試，完成可實際運作嘅智能裝置專題。課程包括 AI 圖像生成。\n課時：2 日起｜學費：HK$50,000 起" },
+    { k:["課程二","生物科技遇上","創新蛋白質設計"],
+      a:"課程二「當生物科技遇上 AI」（AI + 創新蛋白質設計課程 ft. CodeLifeAI）：學生喺 CodeLifeAI 平台上讀懂蛋白質 3D 結構，以 AI 生成候選設計，再以結構預測及評分逐一篩選，體驗真正嘅生物設計流程。課程包括 AI 圖像生成。\n課時：3–4 堂起｜學費：HK$100,000 起" },
+    { k:["課程三","生物發明家"],
+      a:"課程三「培育未來生物發明家」（創新蛋白質設計 + 專業導師實驗課程）：喺課程二嘅基礎上，學生將自己嘅設計帶到實驗室，由專業導師帶領親手驗證。課程包括 AI 圖像生成。\n課時：8 堂起｜學費：HK$200,000 起" },
+    { k:["實驗課程","實驗室做","落手做實驗"],
+      a:"想俾學生親手做實驗，可以睇課程三「培育未來生物發明家」：喺課程二嘅蛋白質設計基礎上，學生將設計帶到實驗室，由專業導師帶領親手驗證。\n課時：8 堂起｜學費：HK$200,000 起\n實驗課嘅技術示範、操作規範與安全管理，均由具專業醫務化驗師背景嘅導師把關。" },
+    { k:["點揀","邊個好","適合","推薦","分別","點樣揀"],
+      a:"三個課程係一條由淺入深嘅科研路：\n・課程一：編程實作——親手整出可運作嘅智能裝置\n・課程二：平台設計——喺 CodeLifeAI 平台做蛋白質 3D 設計\n・課程三：實驗驗證——將設計帶入實驗室親手驗證\n每間學校需要唔同，建議先安排一次課程簡介會，我哋會按學校嘅科目同學生程度配對編排。" },
+    { k:["撥款","智啟學教","資助","funding","政府專款","申請撥款"],
+      a:"本課程系列符合教育局「智啟學教」撥款計劃相關要求，學校可申請該撥款資助購置，善用政府專款，毋須額外動用校內預算。\n預約流程第 4 步「完成採購程序」可配合「智啟學教」撥款申請，由申請到開課，我哋全程配合學校行政需要。" },
+    { k:["證書","城大","城市大學","certificate","出席證書"],
+      a:"有嘅。所有參加者喺出席課程後，都可以獲得由香港城市大學頒發嘅證書，肯定學生嘅學習成果；預約流程最後一步亦會正式頒發。" },
+    { k:["預約","報名","簡介會","點參加","流程","點報","點買"],
+      a:"預約共五步：\n1. 回覆電郵，或按 WhatsApp 按鈕聯絡我哋\n2. 安排課程簡介會（到校或視像），即場示範 CodeLifeAI 平台\n3. 按學校需要確認課程編排、人數及報價\n4. 完成採購程序（可配合「智啟學教」撥款申請）\n5. 正式開課，學生獲頒香港城市大學證書{CTA}" },
+    { k:["導師","團隊","邊個教","邊個任教","任教","老師","博士","背景","帶領","領軍","邊個帶領"],
+      a:"科研團隊由五位專家組成：\n・林文傑教授 — 首席科學顧問\n・黎卓賢博士 — 科學主任\n・鄺緯陽博士 — 創辦人・首席科學官\n・宋振州博士 — 研究總監\n・黃桂林博士 — 教育顧問\n課程由博士級導師領軍設計及任教，以大學科研標準設計內容與評核；實驗教學由具專業醫務化驗師背景嘅導師負責。團隊由創辦人・首席科學官鄺緯陽博士帶領。" },
+    { k:["成績","比賽","igem","攞獎","冠軍","kapi","pestiguard","innohealth","佳績","帶領"],
+      a:"團隊由創辦人・首席科學官鄺緯陽博士帶領，近年成績包括：\n・iGEM 2024：輔導隊伍 KAPI 奪全球大賽金獎\n・iGEM 2025：輔導隊伍 PestiGuard 奪全球大賽金獎，更躋身全球高中組前十\n・InnoHealth Cup 2025：合作學校九龍真光中學勇奪冠軍\n團隊至今輔導過 9 間香港中學嘅參賽隊伍。" },
+    { k:["平台","codelifeai","軟件"],
+      a:"CodeLifeAI 係課程二使用嘅 AI 蛋白質設計平台：學生喺平台上讀懂蛋白質 3D 結構、以 AI 生成候選設計，再以結構預測及評分逐一篩選。課程簡介會當日會即場示範平台操作。\n<br><a class=\"qa-cta\" href=\"https://codelife.ai\" target=\"_blank\" rel=\"noopener\">進入 CodeLifeAI 平台睇睇</a>" },
+    { k:["蛋白質","溶菌酶","2lzm","protein","結構示例"],
+      a:"課程頁面入面嗰格「蛋白質結構示例」，展示嘅係真實蛋白質 T4 溶菌酶（T4 Lysozyme）。呢個正係學生喺課程二會學嘅嘢——點樣讀懂一個蛋白質嘅 3D 結構。嗰格仲可以俾人用手轉動個 3D 模型，慢慢睇清楚成個結構。" },
+    { k:["聯絡","電話","電郵","email","whatsapp","點聯絡","查詢"],
+      a:"聯絡我哋有兩個方法：\n・電郵：Sales@codelife.ai\n・WhatsApp：按下面按鈕即刻開始對話\n歡迎學校老師及科主任查詢，我哋可按學校需要安排課程簡介會或平台示範。{CTA}" },
+    { k:["幾多堂","課時","幾耐","幾多日","上幾耐","幾多節"],
+      a:"三個課程嘅課時如下：\n・課程一「讓 AI 走進生活」：2 日起\n・課程二「當生物科技遇上 AI」：3–4 堂起\n・課程三「培育未來生物發明家」：8 堂起\n實際編排會按學校需要同學生人數確認。" },
+    { k:["你哋係邊個","邊間公司","公司背景","營運","邊個主辦","邊度嚟"],
+      a:"我哋係 Spark Science Education（創智・未來），由 Solar Trinity Science Limited 營運，專為香港中學提供 AI × 生物科技課程：由編程實作、平台設計到實驗驗證，俾學生親身走過完整科研流程，並由博士級導師領軍任教。" }
+  ],
+  hans: [
+    { k:["多少钱","收费","价钱","价格","费用","学费","price"],
+      a:"三个课程的学费（港币）如下：\n・课程一「让 AI 走进生活」：HK$50,000 起（2 天起）\n・课程二「当生物科技遇上 AI」：HK$100,000 起（3–4 堂起）\n・课程三「培育未来生物发明家」：HK$200,000 起（8 堂起）\n实际费用按学生人数及课程编排而定，我们会在课程简介会按学校需要报价。" },
+    { k:["课程一","单芯片","微电脑","走进生活","智能装置"],
+      a:"课程一「让 AI 走进生活」（AI + 单芯片微电脑编程课程）：学生亲手接线及编程单芯片微电脑，并以 AI 协助构思及调试，完成可实际运作的智能装置专题。课程包括 AI 图像生成。\n课时：2 天起｜学费：HK$50,000 起" },
+    { k:["课程二","生物科技遇上","创新蛋白质设计"],
+      a:"课程二「当生物科技遇上 AI」（AI + 创新蛋白质设计课程 ft. CodeLifeAI）：学生在 CodeLifeAI 平台上读懂蛋白质 3D 结构，以 AI 生成候选设计，再以结构预测及评分逐一筛选，体验真正的生物设计流程。课程包括 AI 图像生成。\n课时：3–4 堂起｜学费：HK$100,000 起" },
+    { k:["课程三","生物发明家"],
+      a:"课程三「培育未来生物发明家」（创新蛋白质设计 + 专业导师实验课程）：在课程二的基础上，学生将自己的设计带到实验室，由专业导师带领亲手验证。课程包括 AI 图像生成。\n课时：8 堂起｜学费：HK$200,000 起" },
+    { k:["实验课程","实验室做","亲手做实验"],
+      a:"想给学生亲手做实验，可以看课程三「培育未来生物发明家」：在课程二的蛋白质设计基础上，学生将设计带到实验室，由专业导师带领亲手验证。\n课时：8 堂起｜学费：HK$200,000 起\n实验课的技术示范、操作规范与安全管理，均由具专业医务化验师背景的导师把关。" },
+    { k:["怎么选","哪个更好","适合","推荐","区别","如何选择"],
+      a:"三个课程是一条由浅入深的科研路：\n・课程一：编程实作——亲手做出可运作的智能装置\n・课程二：平台设计——在 CodeLifeAI 平台做蛋白质 3D 设计\n・课程三：实验验证——将设计带入实验室亲手验证\n每间学校需要不同，建议先安排一次课程简介会，我们会按学校的科目和学生程度配对编排。" },
+    { k:["拨款","智启学教","资助","funding","政府专款","申请拨款"],
+      a:"本课程系列符合教育局「智启学教」拨款计划相关要求，学校可申请该拨款资助购置，善用政府专款，无需额外动用校内预算。\n预约流程第 4 步「完成采购程序」可配合「智启学教」拨款申请，由申请到开课，我们全程配合学校行政需要。" },
+    { k:["证书","城大","城市大学","certificate","出席证书"],
+      a:"有的。所有参加者在出席课程后，都可以获得由香港城市大学颁发的证书，肯定学生的学习成果；预约流程最后一步亦会正式颁发。" },
+    { k:["预约","报名","简介会","怎么参加","流程","怎么报","怎么买"],
+      a:"预约共五步：\n1. 回复电邮，或按 WhatsApp 按钮联系我们\n2. 安排课程简介会（到校或视频），即场示范 CodeLifeAI 平台\n3. 按学校需要确认课程编排、人数及报价\n4. 完成采购程序（可配合「智启学教」拨款申请）\n5. 正式开课，学生获颁香港城市大学证书{CTA}" },
+    { k:["导师","团队","谁教","谁任教","任教","老师","博士","背景","带领","领军","谁带领"],
+      a:"科研团队由五位专家组成：\n・林文杰教授 — 首席科学顾问\n・黎卓贤博士 — 科学主任\n・邝纬阳博士 — 创办人・首席科学官\n・宋振州博士 — 研究总监\n・黄桂林博士 — 教育顾问\n课程由博士级导师领军设计及任教，以大学科研标准设计内容与评核；实验教学由具专业医务化验师背景的导师负责。团队由创办人・首席科学官邝纬阳博士带领。" },
+    { k:["成绩","比赛","igem","获奖","冠军","kapi","pestiguard","innohealth","佳绩","带领"],
+      a:"团队由创办人・首席科学官邝纬阳博士带领，近年成绩包括：\n・iGEM 2024：辅导队伍 KAPI 夺全球大赛金奖\n・iGEM 2025：辅导队伍 PestiGuard 夺全球大赛金奖，更跻身全球高中组前十\n・InnoHealth Cup 2025：合作学校九龙真光中学勇夺冠军\n团队至今辅导过 9 间香港中学的参赛队伍。" },
+    { k:["平台","codelifeai","软件"],
+      a:"CodeLifeAI 是课程二使用的 AI 蛋白质设计平台：学生在平台上读懂蛋白质 3D 结构、以 AI 生成候选设计，再以结构预测及评分逐一筛选。课程简介会当日会即场示范平台操作。\n<br><a class=\"qa-cta\" href=\"https://codelife.ai\" target=\"_blank\" rel=\"noopener\">进入 CodeLifeAI 平台看看</a>" },
+    { k:["蛋白质","溶菌酶","2lzm","protein","结构示例"],
+      a:"课程页面里面那格「蛋白质结构示例」，展示的是真实蛋白质 T4 溶菌酶（T4 Lysozyme）。这正是学生在课程二会学的东西——怎么读懂一个蛋白质的 3D 结构。那格还可以让人用手转动 3D 模型，慢慢看清整个结构。" },
+    { k:["联系","电话","电邮","email","whatsapp","怎么联系","查询"],
+      a:"联系我们有两个方法：\n・电邮：Sales@codelife.ai\n・WhatsApp：按下面按钮即刻开始对话\n欢迎学校老师及科主任查询，我们可按学校需要安排课程简介会或平台示范。{CTA}" },
+    { k:["多少堂","课时","多久","多少天","上多久","多少节"],
+      a:"三个课程的课时如下：\n・课程一「让 AI 走进生活」：2 天起\n・课程二「当生物科技遇上 AI」：3–4 堂起\n・课程三「培育未来生物发明家」：8 堂起\n实际编排会按学校需要和学生人数确认。" },
+    { k:["你们是谁","哪间公司","公司背景","运营","谁主办","哪里来"],
+      a:"我们是 Spark Science Education（创智・未来），由 Solar Trinity Science Limited 运营，专为香港中学提供 AI × 生物科技课程：由编程实作、平台设计到实验验证，让学生亲身走过完整科研流程，并由博士级导师领军任教。" }
+  ],
+  ja: [
+    { k:["受講料","料金","価格","費用","いくら","price"],
+      a:"3コースの受講料（香港ドル）は以下の通りです。\n・コース1「AIを暮らしの中へ」：HK$50,000から（2日間から）\n・コース2「バイオテクノロジーとAIの出会い」：HK$100,000から（3–4コマから）\n・コース3「未来のバイオ発明家を育てる」：HK$200,000から（8コマから）\n実際の料金は生徒数とコース編成により異なります。コース説明会にて、学校のニーズに合わせてお見積もりいたします。" },
+    { k:["コース1","マイコン","暮らしの中へ","スマートデバイス"],
+      a:"コース1「AIを暮らしの中へ」（AI＋マイコン・プログラミングコース）：生徒が自らマイコンの配線とプログラミングを行い、AIの支援を受けながらアイデア出しとデバッグを行い、実際に動作するスマートデバイスのプロジェクトを完成させます。AI画像生成のセッションも含まれます。\n期間：2日間から｜受講料：HK$50,000から" },
+    { k:["コース2","バイオテクノロジーとai","タンパク質設計"],
+      a:"コース2「バイオテクノロジーとAIの出会い」（AI＋革新的タンパク質設計コース ft. CodeLifeAI）：CodeLifeAIプラットフォーム上でタンパク質の3D構造を読み解き、AIで候補デザインを生成し、構造予測とスコアリングで一つずつ絞り込む、本物のバイオデザインの流れを体験します。AI画像生成のセッションも含まれます。\n期間：3–4コマから｜受講料：HK$100,000から" },
+    { k:["コース3","バイオ発明家","発明家"],
+      a:"コース3「未来のバイオ発明家を育てる」（革新的タンパク質設計＋専門講師による実験コース）：コース2を土台に、生徒が自分のデザインを実験室に持ち込み、専門講師の指導のもと自らの手で検証します。AI画像生成のセッションも含まれます。\n期間：8コマから｜受講料：HK$200,000から" },
+    { k:["実験コース","実験室","実験をしたい","実習"],
+      a:"自らの手で実験を行いたい場合は、コース3「未来のバイオ発明家を育てる」をご覧ください。コース2のタンパク質設計を土台に、生徒がデザインを実験室に持ち込み、専門講師の指導のもと自らの手で検証します。\n期間：8コマから｜受講料：HK$200,000から\n実験の技術デモンストレーション、操作規範、安全管理は、専門の臨床検査技師のバックグラウンドを持つ講師が担当します。" },
+    { k:["選び方","どれがいい","おすすめ","違い","適している","選択"],
+      a:"3つのコースは、入門から発展へと続く一本の研究の道筋です。\n・コース1：プログラミング実践——動作するスマートデバイスを作る\n・コース2：プラットフォーム設計——CodeLifeAIでタンパク質の3D設計\n・コース3：実験検証——デザインを実験室に持ち込み自らの手で検証する\n学校ごとにニーズは異なりますので、まずはコース説明会の開催をお勧めします。科目や生徒のレベルに合わせて編成をご提案します。" },
+    { k:["資金援助","智啟學教","補助","助成","申請"],
+      a:"本コースシリーズは、教育局のAI教育資金援助スキーム（智啟學教）の関連要件を満たしており、学校はこの資金援助を申請してコースを調達できます。政府の専用資金を活用できるため、学校内の予算を別途使う必要はありません。\n予約の流れのステップ4「調達手続きの完了」は、智啟學教の資金援助申請に合わせて進めることができ、申請から開講まで、学校の事務手続きに全面的に協力します。" },
+    { k:["修了証","証書","城市大学","シティユニバーシティ","certificate"],
+      a:"はい。参加者全員に、コース修了後、香港城市大学（City University of Hong Kong）が発行する修了証が授与され、学習成果が認められます。予約の流れの最終ステップでも正式に授与されます。" },
+    { k:["予約","申し込み","説明会","流れ","参加方法","手続き"],
+      a:"予約は5ステップです。\n1. メールでご返信いただくか、下のWhatsAppボタンからご連絡ください\n2. コース説明会（学校訪問またはビデオ通話）を調整し、CodeLifeAIプラットフォームを実演します\n3. 学校のニーズに合わせて、コース編成・人数・お見積もりを確認します\n4. 調達手続きを完了します（智啟學教の資金援助申請に対応可能）\n5. 正式に開講し、生徒に香港城市大学の修了証が授与されます{CTA}" },
+    { k:["講師","先生","誰が教える","担当","率いる","率い","リード","チーム","博士","背景"],
+      a:"研究チームは5名の専門家で構成されています。\n・林文傑教授 — 首席科学アドバイザー\n・黎卓賢博士 — 科学主任\n・鄺緯陽博士 — 創設者・首席科学責任者\n・宋振州博士 — 研究総括\n・黃桂林博士 — 教育アドバイザー\nコースは博士レベルの講師が率いるチームが設計・指導し、大学の研究水準で内容と評価を設計します。実験の指導は、専門の臨床検査技師のバックグラウンドを持つ講師が担当します。チームは創設者・首席科学責任者の鄺緯陽博士が率いています。" },
+    { k:["実績","大会","igem","賞","優勝","kapi","pestiguard","innohealth","成績","率いる","率い"],
+      a:"創設者・首席科学責任者の鄺緯陽博士が率いるチームの近年の実績は以下の通りです。\n・iGEM 2024：指導チームKAPIが世界大会で金賞を受賞\n・iGEM 2025：指導チームPestiGuardが世界大会で金賞を受賞し、高校部門で世界のトップ10入り\n・InnoHealth Cup 2025：パートナー校の九龍真光中學が優勝\nこれまでに香港の中学校9校の大会チームを指導してきました。" },
+    { k:["プラットフォーム","codelifeai","ソフトウェア"],
+      a:"CodeLifeAIはコース2で使用するAIタンパク質設計プラットフォームです。生徒はプラットフォーム上でタンパク質の3D構造を読み解き、AIで候補デザインを生成し、構造予測とスコアリングで絞り込みます。コース説明会では当日にプラットフォームの操作を実演します。\n<br><a class=\"qa-cta\" href=\"https://codelife.ai\" target=\"_blank\" rel=\"noopener\">CodeLifeAIプラットフォームを見る</a>" },
+    { k:["タンパク質","リゾチーム","2lzm","protein","構造の例"],
+      a:"コースページの「タンパク質構造の例」のパネルでは、実在するタンパク質「T4リゾチーム（T4 Lysozyme）」を表示しています。これはコース2で生徒が学ぶ内容そのもので、タンパク質の3D構造の読み方を学びます。そのパネルでは3Dモデルをドラッグして回転させ、構造全体をじっくり見ることができます。" },
+    { k:["連絡","電話","メール","email","whatsapp","問い合わせ"],
+      a:"お問い合わせは2つの方法があります。\n・メール：Sales@codelife.ai\n・WhatsApp：下のボタンからすぐに会話を始められます\n学校の先生方や教科主任の先生からのお問い合わせを歓迎します。学校のニーズに合わせてコース説明会やプラットフォームのデモンストレーションを調整いたします。{CTA}" },
+    { k:["何コマ","期間","何日","どれくらい","何回"],
+      a:"3コースの期間は以下の通りです。\n・コース1「AIを暮らしの中へ」：2日間から\n・コース2「バイオテクノロジーとAIの出会い」：3–4コマから\n・コース3「未来のバイオ発明家を育てる」：8コマから\n実際の編成は学校のニーズと生徒数に合わせて確認します。" },
+    { k:["どんな会社","会社概要","運営","主催","どこの"],
+      a:"私たちはSpark Science Education（創智・未來）で、Solar Trinity Science Limitedが運営しています。香港の中学校向けにAI×バイオテクノロジーのコースを提供し、プログラミング実践、プラットフォーム設計、実験検証を通じて、生徒が研究の全プロセスを自ら体験します。指導は博士レベルの講師が率いるチームが担当します。" }
+  ],
+  ko: [
+    { k:["수강료","가격","비용","얼마","price"],
+      a:"세 과정의 수강료(홍콩 달러)는 다음과 같습니다.\n・과정 1 「AI를 생활 속으로」: HK$50,000부터 (2일부터)\n・과정 2 「생명공학과 AI가 만나다」: HK$100,000부터 (3–4차시부터)\n・과정 3 「미래의 바이오 발명가 양성」: HK$200,000부터 (8차시부터)\n실제 수강료는 학생 수와 과정 편성에 따라 달라지며, 과정 설명회에서 학교의 필요에 맞춰 견적을 안내해 드립니다." },
+    { k:["과정 1","마이크로컨트롤러","생활 속으로","스마트 기기"],
+      a:"과정 1 「AI를 생활 속으로」(AI + 마이크로컨트롤러 프로그래밍 과정): 학생이 직접 마이크로컨트롤러를 배선하고 프로그래밍하며, AI의 도움을 받아 아이디어를 구상하고 디버깅하여 실제로 작동하는 스마트 기기 프로젝트를 완성합니다. AI 이미지 생성 세션도 포함됩니다.\n기간: 2일부터 | 수강료: HK$50,000부터" },
+    { k:["과정 2","생명공학과 ai","단백질 설계"],
+      a:"과정 2 「생명공학과 AI가 만나다」(AI + 혁신 단백질 설계 과정 ft. CodeLifeAI): CodeLifeAI 플랫폼에서 단백질의 3D 구조를 읽고, AI로 후보 설계를 생성한 뒤, 구조 예측과 점수 평가로 하나씩 선별하며 실제 바이오디자인 과정을 체험합니다. AI 이미지 생성 세션도 포함됩니다.\n기간: 3–4차시부터 | 수강료: HK$100,000부터" },
+    { k:["과정 3","바이오 발명가","발명가"],
+      a:"과정 3 「미래의 바이오 발명가 양성」(혁신 단백질 설계 + 전문 강사 실험 과정): 과정 2를 바탕으로, 학생이 자신의 설계를 실험실로 가져가 전문 강사의 지도 아래 직접 검증합니다. AI 이미지 생성 세션도 포함됩니다.\n기간: 8차시부터 | 수강료: HK$200,000부터" },
+    { k:["실험 과정","실험실","직접 실험","실습"],
+      a:"직접 실험해 보고 싶다면 과정 3 「미래의 바이오 발명가 양성」을 보세요. 과정 2의 단백질 설계를 바탕으로, 학생이 설계를 실험실로 가져가 전문 강사의 지도 아래 직접 검증합니다.\n기간: 8차시부터 | 수강료: HK$200,000부터\n실험의 기술 시연, 운영 규범, 안전 관리는 전문 임상병리사 배경을 가진 강사가 담당합니다." },
+    { k:["어떻게 고르","어떤 게 좋","추천","차이","적합","선택"],
+      a:"세 과정은 입문부터 심화까지 이어지는 하나의 연구 경로입니다.\n・과정 1: 프로그래밍 실습 — 작동하는 스마트 기기 만들기\n・과정 2: 플랫폼 설계 — CodeLifeAI에서 단백질 3D 설계\n・과정 3: 실험 검증 — 설계를 실험실로 가져가 직접 검증\n학교마다 필요가 다르므로, 먼저 과정 설명회를 여는 것을 권합니다. 학교의 과목과 학생 수준에 맞춰 편성을 제안해 드립니다." },
+    { k:["자금 지원","智啟學教","보조금","지원 신청","정부 자금"],
+      a:"본 과정 시리즈는 교육국의 AI 교육 자금 지원 제도（智啟學教）의 관련 요건을 충족하며, 학교는 이 자금 지원을 신청해 과정을 조달할 수 있어 정부 전용 자금을 활용하므로 학교 자체 예산을 별도로 사용할 필요가 없습니다.\n예약 절차 4단계 「조달 절차 완료」는 智啟學教 자금 지원 신청에 맞춰 진행할 수 있으며, 신청부터 개강까지 학교 행정에 전면 협조합니다." },
+    { k:["수료증","증서","시티유니버시티","도시대학","certificate"],
+      a:"있습니다. 모든 참가자는 과정 수료 후 홍콩성시대학(City University of Hong Kong)에서 발급하는 수료증을 받으며, 학습 성과가 인정됩니다. 예약 절차의 마지막 단계에서도 정식으로 수여됩니다." },
+    { k:["예약","신청","설명회","절차","참여 방법"],
+      a:"예약은 다섯 단계입니다.\n1. 이메일로 회신하거나 아래 WhatsApp 버튼으로 연락하세요\n2. 과정 설명회(학교 방문 또는 화상)를 잡고, CodeLifeAI 플랫폼을 직접 시연합니다\n3. 학교의 필요에 맞춰 과정 편성, 인원, 견적을 확인합니다\n4. 조달 절차를 완료합니다（智啟學教 자금 지원 신청 대응 가능）\n5. 정식 개강하며, 학생에게 홍콩성시대학 수료증이 수여됩니다{CTA}" },
+    { k:["강사","선생님","누가 가르","담당","이끄는","이끌","리드","팀","박사","배경"],
+      a:"연구팀은 다섯 명의 전문가로 구성되어 있습니다.\n・林文傑 교수 — 수석 과학 고문\n・黎卓賢 박사 — 과학 주임\n・鄺緯陽 박사 — 창립자・수석 과학 책임자\n・宋振州 박사 — 연구 총괄\n・黃桂林 박사 — 교육 고문\n과정은 박사급 강사가 이끄는 팀이 설계하고 지도하며, 대학 연구 수준으로 내용과 평가를 설계합니다. 실험 지도는 전문 임상병리사 배경을 가진 강사가 담당합니다. 팀은 창립자・수석 과학 책임자인 鄺緯陽 박사가 이끌고 있습니다." },
+    { k:["성과","대회","igem","수상","우승","kapi","pestiguard","innohealth","실적","이끄는","이끌"],
+      a:"창립자・수석 과학 책임자인 鄺緯陽 박사가 이끄는 팀의 최근 성과는 다음과 같습니다.\n・iGEM 2024: 멘토링 팀 KAPI가 글로벌 대회에서 금상 수상\n・iGEM 2025: 멘토링 팀 PestiGuard가 글로벌 대회에서 금상 수상, 전 세계 고등부 Top 10 진입\n・InnoHealth Cup 2025: 협력 학교 구룡진광중학 우승\n지금까지 홍콩 중학교 9개교의 대회 팀을 멘토링했습니다." },
+    { k:["플랫폼","codelifeai","소프트웨어"],
+      a:"CodeLifeAI는 과정 2에서 사용하는 AI 단백질 설계 플랫폼입니다. 학생은 플랫폼에서 단백질의 3D 구조를 읽고, AI로 후보 설계를 생성한 뒤, 구조 예측과 점수 평가로 선별합니다. 과정 설명회 당일에 플랫폼 사용법을 직접 시연합니다.\n<br><a class=\"qa-cta\" href=\"https://codelife.ai\" target=\"_blank\" rel=\"noopener\">CodeLifeAI 플랫폼 보러 가기</a>" },
+    { k:["단백질","리소자임","2lzm","protein","구조 예시"],
+      a:"과정 페이지의 「단백질 구조 예시」 패널에는 실제 단백질인 T4 리소자임(T4 Lysozyme)이 표시됩니다. 이는 과정 2에서 학생이 배우는 내용 그대로, 단백질의 3D 구조를 읽는 법을 배우는 것입니다. 그 패널에서는 3D 모델을 드래그해 회전시키며 구조 전체를 자세히 볼 수 있습니다." },
+    { k:["연락","전화","이메일","email","whatsapp","문의"],
+      a:"문의 방법은 두 가지입니다.\n・이메일: Sales@codelife.ai\n・WhatsApp: 아래 버튼을 누르면 바로 대화를 시작할 수 있습니다\n학교 선생님과 교과 주임 선생님의 문의를 환영합니다. 학교의 필요에 맞춰 과정 설명회나 플랫폼 시연을 잡아 드립니다.{CTA}" },
+    { k:["몇 차시","기간","며칠","얼마나","몇 회"],
+      a:"세 과정의 기간은 다음과 같습니다.\n・과정 1 「AI를 생활 속으로」: 2일부터\n・과정 2 「생명공학과 AI가 만나다」: 3–4차시부터\n・과정 3 「미래의 바이오 발명가 양성」: 8차시부터\n실제 편성은 학교의 필요와 학생 수에 맞춰 확인합니다." },
+    { k:["어떤 회사","회사 소개","운영","주최","어디"],
+      a:"저희는 Spark Science Education（創智・未來）이며, Solar Trinity Science Limited가 운영합니다. 홍콩 중학교를 위한 AI × 생명공학 과정을 제공하며, 프로그래밍 실습, 플랫폼 설계, 실험 검증을 통해 학생이 연구의 전 과정을 직접 체험합니다. 지도는 박사급 강사가 이끄는 팀이 담당합니다." }
+  ]
+  };
+
+  var LANG_ORDER = ["en","zh","hans","ja","ko"];
+  var SR_LANG = { en:"en-US", zh:"yue-Hant-HK", hans:"zh-CN", ja:"ja-JP", ko:"ko-KR" };
+
+  var fab = document.getElementById('qaFab');
+  var hint = document.getElementById('qaHint');
+  var panel = document.getElementById('qaPanel');
+  var msgs = document.getElementById('qaMsgs');
+  var form = document.getElementById('qaForm');
+  var input = document.getElementById('qaInput');
+  var chipsBox = document.getElementById('qaChips');
+  var micBtn = document.getElementById('qaMic');
+  var imgBtn = document.getElementById('qaImg');
+  var fileInput = document.getElementById('qaFile');
+  var greeted = false;
+  var pendingImage = null;
+
+  function lang(){ return window.__sparkLang || "en"; }
+  function ui(){ return UI[lang()] || UI.en; }
+  function waUrl(){
+    if(window.__sparkI18n && window.__sparkI18n.waUrl) return window.__sparkI18n.waUrl(lang());
+    return "https://api.whatsapp.com/send?phone=85298895833&text=" + encodeURIComponent("你好，我想查詢 Spark Science Education 的 AI 創新課程系列，希望安排課程簡介會。");
+  }
+  function ctaHtml(){
+    var u = ui();
+    return '<br><a class="qa-cta wa" href="' + waUrl() + '" target="_blank" rel="noopener">' + u.ctaWa + '</a><a class="qa-cta" href="mailto:Sales@codelife.ai">' + u.ctaMail + '</a>';
+  }
+  function fillCta(s){ return (s || "").split("{CTA}").join(ctaHtml()); }
+
+  function norm(s){
+    return (s || "").toLowerCase().replace(/[\s，。？！、,.?!：:；;「」『』（）()·・…—\-〜~／/｜|]/g, "");
+  }
+  function scoreEntry(n, entry){
+    var s = 0;
+    for(var j = 0; j < entry.k.length; j++){
+      var nk = norm(entry.k[j]);
+      if(nk && n.indexOf(nk) > -1) s += nk.length;
+    }
+    return s;
+  }
+  /* 先配對目前語言；配對唔到就跨語言搵同一條目，再用目前語言版本回答 */
+  function findAnswer(q){
+    var n = norm(q);
+    if(!n) return null;
+    var cur = lang();
+    var order = [cur].concat(LANG_ORDER.filter(function(l){ return l !== cur; }));
+    for(var oi = 0; oi < order.length; oi++){
+      var kb = KB[order[oi]];
+      if(!kb) continue;
+      var best = -1, bestScore = 0;
+      for(var i = 0; i < kb.length; i++){
+        var s = scoreEntry(n, kb[i]);
+        if(s > bestScore){ bestScore = s; best = i; }
+      }
+      if(best > -1){
+        var ansKb = KB[cur] || kb;
+        return fillCta((ansKb[best] || kb[best]).a);
+      }
+    }
+    return null;
+  }
+  function addMsg(cls, html){
+    var d = document.createElement('div');
+    d.className = 'qa-msg ' + cls;
+    d.innerHTML = html;
+    msgs.appendChild(d);
+    msgs.scrollTop = msgs.scrollHeight;
+    return d;
+  }
+  function addUser(text){
+    var d = document.createElement('div');
+    d.className = 'qa-msg user';
+    d.textContent = text;
+    msgs.appendChild(d);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+  function addUserImage(dataUrl){
+    var d = document.createElement('div');
+    d.className = 'qa-msg user';
+    var img = document.createElement('img');
+    img.className = 'qa-attached';
+    img.src = dataUrl;
+    img.alt = '';
+    d.appendChild(img);
+    var cap = document.createElement('span');
+    cap.className = 'qa-imgcap';
+    cap.textContent = ui().imgReady;
+    d.appendChild(cap);
+    msgs.appendChild(d);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  /* 真 AI 接駁點：有待發圖片時優先行呢度；未接通回傳 false */
+  function sendToAI(text, img){
+    try{
+      if(typeof window.__sparkSendChat === 'function'){
+        window.__sparkSendChat({ text: text || "", image: img ? img.dataUrl : null, lang: lang(),
+          reply: function(html){ if(html) addMsg('bot', html); } });
+        return true;
+      }
+      if(typeof window.sendChat === 'function'){
+        var r = window.sendChat(text || "", img ? img.dataUrl : null);
+        if(r && typeof r.then === 'function'){
+          r.then(function(ans){ if(ans) addMsg('bot', ans); });
+          return true;
+        }
+        if(typeof r === 'string' && r){ addMsg('bot', r); return true; }
+        return false;
+      }
+    }catch(e){ return false; }
+    return false;
+  }
+
+  function ask(q){
+    q = (q || "").replace(/^\s+|\s+$/g, "");
+    var img = pendingImage;
+    pendingImage = null;
+    if(!q && !img) return;
+    if(q) addUser(q);
+    if(typeof window.__sparkSendChat === 'function'){
+      var typing = addMsg('bot', '<span class="qa-typing-dots"><i></i><i></i><i></i></span>');
+      var settled = false;
+      window.__sparkSendChat({ text: q, image: img ? img.dataUrl : null, lang: lang(),
+        reply: function(html){
+          if(settled) return; settled = true;
+          if(html){ typing.innerHTML = html; }
+          else { typing.innerHTML = q ? (findAnswer(q) || fillCta(ui().fallback)) : ui().imgNotReady; }
+          msgs.scrollTop = msgs.scrollHeight;
+        }});
+      return;
+    }
+    if(img && sendToAI(q, img)) return;
+    if(q){
+      var ans = findAnswer(q) || fillCta(ui().fallback);
+      setTimeout(function(){ addMsg('bot', ans); }, 260);
+      if(img) setTimeout(function(){ addMsg('bot', ui().imgNotReady); }, 1000);
+    } else if(img){
+      setTimeout(function(){ addMsg('bot', ui().imgNotReady); }, 260);
+    }
+  }
+
+  function renderChips(){
+    chipsBox.innerHTML = '';
+    ui().chips.forEach(function(t){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'qa-chip';
+      b.textContent = t;
+      chipsBox.appendChild(b);
+    });
+  }
+  renderChips();
+  document.addEventListener('spark-lang-change', renderChips);
+
+  /* ---------- 提示氣泡：入站後出一次，定格，開窗即收 ---------- */
+  var hintDone = false;
+  var hintTimer = setInterval(function(){
+    if(hintDone){ clearInterval(hintTimer); return; }
+    if(!document.body.classList.contains('locked')){
+      hintDone = true;
+      clearInterval(hintTimer);
+      setTimeout(function(){
+        if(!panel.classList.contains('open')) hint.classList.add('show');
+      }, 1400);
+    }
+  }, 400);
+  setTimeout(function(){ clearInterval(hintTimer); }, 30000);
+
+  function openPanel(){
+    panel.classList.add('open');
+    hint.classList.remove('show');
+    if(!greeted){ greeted = true; addMsg('bot', ui().greet); }
+    setTimeout(function(){ try{ input.focus({preventScroll:true}); }catch(e){} }, 340);
+  }
+  function closePanel(){ panel.classList.remove('open'); }
+
+  fab.addEventListener('click', function(){
+    if(panel.classList.contains('open')) closePanel(); else openPanel();
+  });
+  document.getElementById('qaClose').addEventListener('click', closePanel);
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && panel.classList.contains('open')) closePanel();
+  });
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var v = input.value;
+    input.value = '';
+    ask(v);
+  });
+  chipsBox.addEventListener('click', function(e){
+    var b = e.target;
+    while(b && b !== chipsBox && !(b.className && ('' + b.className).indexOf('qa-chip') > -1)) b = b.parentNode;
+    if(b && b !== chipsBox) ask(b.textContent);
+  });
+
+  /* ---------- 語音輸入：① 瀏覽器辨識 ② AI 語音（錄音直送後台 AI 聽＋轉寫＋答）③ 都冇→浮動提示（唔入對話、唔重複） ---------- */
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var recog = null, listening = false;
+  var toastEl = null, toastTimer = null;
+  function voiceToast(){
+    if(!toastEl){
+      toastEl = document.createElement('div');
+      toastEl.className = 'qa-toast';
+      panel.appendChild(toastEl);
+    }
+    toastEl.textContent = ui().voiceNo;
+    toastEl.classList.add('show');
+    if(toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 3600);
+  }
+  function stopMicUI(){ listening = false; micBtn.classList.remove('listening'); }
+
+  /* AI 語音：錄音 → __sparkSendChat({audio})；轉寫做用戶訊息、答案做回覆 */
+  var rec = null, recChunks = [], recStream = null, recording = false;
+  function stopRecStream(){ if(recStream){ recStream.getTracks().forEach(function(t){ try{ t.stop(); }catch(e){} }); recStream = null; } }
+  function startRec(){
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream){
+      recStream = stream;
+      recChunks = [];
+      try{ rec = new MediaRecorder(stream); }catch(e){ stopRecStream(); voiceToast(); return; }
+      rec.ondataavailable = function(ev){ if(ev.data && ev.data.size) recChunks.push(ev.data); };
+      rec.onstop = function(){
+        stopRecStream(); stopMicUI(); recording = false;
+        var blob = new Blob(recChunks, { type: rec.mimeType || 'audio/mp4' });
+        if(!blob.size || typeof window.__sparkSendChat !== 'function'){ voiceToast(); return; }
+        var rd = new FileReader();
+        rd.onload = function(){
+          var m = /^data:([^;]+);base64,(.*)$/.exec(rd.result || '');
+          if(!m){ voiceToast(); return; }
+          var typing = addMsg('bot', '<span class="qa-typing-dots"><i></i><i></i><i></i></span>');
+          var settled = false;
+          window.__sparkSendChat({ text: '', audio: { mimeType: m[1], data: m[2] }, lang: lang(),
+            onTranscript: function(t){
+              if(!t) return;
+              var d = document.createElement('div');
+              d.className = 'qa-msg user';
+              d.textContent = t;
+              msgs.insertBefore(d, typing);
+            },
+            reply: function(html){
+              if(settled) return; settled = true;
+              if(html){ typing.innerHTML = html; }
+              else { typing.remove(); voiceToast(); }
+              msgs.scrollTop = msgs.scrollHeight;
+            }});
+        };
+        rd.readAsDataURL(blob);
+      };
+      recording = true;
+      micBtn.classList.add('listening');
+      rec.start();
+      setTimeout(function(){ if(recording && rec && rec.state === 'recording'){ try{ rec.stop(); }catch(e){} } }, 30000);
+    }).catch(function(){ voiceToast(); });
+  }
+  micBtn.addEventListener('click', function(){
+    if(recording && rec){ try{ rec.stop(); }catch(e){} return; }
+    if(listening && recog){ try{ recog.stop(); }catch(e){} return; }
+    if(!SR){
+      if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder){ startRec(); }
+      else voiceToast();
+      return;
+    }
+    try{
+      recog = new SR();
+      recog.lang = SR_LANG[lang()] || "en-US";
+      recog.interimResults = false;
+      recog.maxAlternatives = 1;
+      listening = true;
+      micBtn.classList.add('listening');
+      recog.onresult = function(ev){
+        var t = '';
+        for(var i = 0; i < ev.results.length; i++) t += ev.results[i][0].transcript;
+        input.value = t;
+      };
+      recog.onerror = function(ev){
+        stopMicUI();
+        if(ev && (ev.error === 'not-allowed' || ev.error === 'service-not-allowed' || ev.error === 'audio-capture')) voiceToast();
+      };
+      recog.onend = function(){
+        var wasListening = listening;
+        stopMicUI();
+        if(wasListening){
+          var v = input.value.replace(/^\s+|\s+$/g, '');
+          if(v){ input.value = ''; ask(v); }
+        }
+      };
+      recog.start();
+    }catch(e){
+      stopMicUI();
+      voiceToast();
+    }
+  });
+
+  /* ---------- 圖片輸入：壓細（最長邊 1024、JPEG、目標 1MB 以下）＋預覽＋待發 ---------- */
+  function processImageFile(file){
+    return new Promise(function(resolve){
+      if(!file){ resolve(null); return; }
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function(){
+        try{
+          var max = 1024;
+          var w = img.naturalWidth, h = img.naturalHeight;
+          var sc = Math.min(1, max / Math.max(w, h));
+          var cw = Math.max(1, Math.round(w * sc)), ch = Math.max(1, Math.round(h * sc));
+          var cv = document.createElement('canvas');
+          cv.width = cw; cv.height = ch;
+          cv.getContext('2d').drawImage(img, 0, 0, cw, ch);
+          URL.revokeObjectURL(url);
+          var data = cv.toDataURL('image/jpeg', 0.85);
+          if(data.length > 1400000) data = cv.toDataURL('image/jpeg', 0.6);
+          if(data.length > 1400000){
+            var cv2 = document.createElement('canvas');
+            cv2.width = Math.round(cw * 0.7); cv2.height = Math.round(ch * 0.7);
+            cv2.getContext('2d').drawImage(cv, 0, 0, cv2.width, cv2.height);
+            data = cv2.toDataURL('image/jpeg', 0.6);
+          }
+          pendingImage = { dataUrl: data };
+          addUserImage(data);
+          resolve(data);
+        }catch(e){ resolve(null); }
+      };
+      img.onerror = function(){ URL.revokeObjectURL(url); resolve(null); };
+      img.src = url;
+    });
+  }
+  window.__sparkAttachImage = function(file){
+    if(!panel.classList.contains('open')) openPanel();
+    return processImageFile(file);
+  };
+  window.__sparkGetPendingImage = function(){ return pendingImage; };
+  imgBtn.addEventListener('click', function(){ fileInput.click(); });
+  fileInput.addEventListener('change', function(){
+    var f = fileInput.files && fileInput.files[0];
+    fileInput.value = '';
+    if(f) window.__sparkAttachImage(f);
+  });
+})();
+</script>
+<script>
+/* ================= 第十一輪：聯絡區查詢表格（WhatsApp／電郵遞交） ================= */
+(function(){
+  var form = document.getElementById("enquiryForm");
+  if(!form) return;
+  function dict(){
+    var api = window.__sparkI18n;
+    if(!api) return {};
+    return api.dict[api.lang] || api.dict.en || {};
+  }
+  function val(id){ var el = document.getElementById(id); return el? el.value.trim(): ""; }
+  function msgLabel(d){
+    var s = d["form.msg"] || "Message";
+    return s.split("(")[0].split("（")[0].trim();
+  }
+  function compose(){
+    var d = dict();
+    var sel = document.getElementById("efCourse");
+    var course = sel && sel.selectedOptions && sel.selectedOptions[0]? sel.selectedOptions[0].textContent.trim(): "";
+    var lines = [
+      d["form.intro"] || "",
+      "",
+      (d["form.school"] || "School") + ": " + val("efSchool"),
+      (d["form.name"] || "Contact") + ": " + val("efName"),
+      (d["form.contact"] || "Phone / Email") + ": " + val("efContact"),
+      (d["form.course"] || "Programme") + ": " + course
+    ];
+    var m = val("efMsg");
+    if(m) lines.push(msgLabel(d) + ": " + m);
+    return lines.join("\n");
+  }
+  function validate(){
+    var ids = ["efSchool", "efName", "efContact"], first = null, i, el;
+    for(i = 0; i < ids.length; i++){
+      el = document.getElementById(ids[i]);
+      if(!el) continue;
+      if(!el.value.trim()){ el.classList.add("invalid"); if(!first) first = el; }
+      else el.classList.remove("invalid");
+    }
+    var err = document.getElementById("efErr");
+    if(first){
+      if(err){ err.textContent = dict()["form.err"] || "Please fill in the required fields."; err.hidden = false; }
+      first.focus();
+      return false;
+    }
+    if(err){ err.hidden = true; err.textContent = ""; }
+    return true;
+  }
+  ["efSchool", "efName", "efContact"].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) el.addEventListener("input", function(){ el.classList.remove("invalid"); });
+  });
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    if(!validate()) return;
+    window.open("https://api.whatsapp.com/send?phone=85298895833&text=" + encodeURIComponent(compose()), "_blank");
+  });
+  var mailBtn = document.getElementById("efMailBtn");
+  if(mailBtn) mailBtn.addEventListener("click", function(){
+    if(!validate()) return;
+    var d = dict();
+    var subj = (d["mail.subject"] || "Programme Enquiry") + " - " + val("efSchool");
+    location.href = "mailto:Sales@codelife.ai?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent(compose());
+  });
+})();
+</script>
+<script>
+/* ================= 第十一輪：訪客統計預留位（Cloudflare Web Analytics） =================
+   用法：攞到 Cloudflare Web Analytics token 之後，將下面常數填入 token 字串即可啟用。
+   token 係空字串嗰陣，本段完全唔載入任何嘢，對頁面零影響。 */
+window.__SPARK_ANALYTICS_TOKEN = "";
+(function(){
+  var t = window.__SPARK_ANALYTICS_TOKEN;
+  if(!t) return;
+  var s = document.createElement("script");
+  s.defer = true;
+  s.src = "https://static.cloudflareinsights.com/beacon.min.js";
+  s.setAttribute("data-cf-beacon", JSON.stringify({token: t}));
+  document.head.appendChild(s);
+})();
+</script>
+<script>
+/* Spark 真 AI 接駁：問答窗 → Cloudflare Worker → Gemini；任何失敗都回傳 null，問答窗自動用返內置答案庫 */
+(function(){
+  "use strict";
+  var WORKER = "https://spark-science-agent.samhui6677.workers.dev";
+  var style = document.createElement("style");
+  style.textContent = ".qa-typing-dots i{display:inline-block;width:7px;height:7px;margin-right:5px;border-radius:50%;background:#7fc8a9;animation:sparkBlink 1s infinite}.qa-typing-dots i:nth-child(2){animation-delay:.18s}.qa-typing-dots i:nth-child(3){animation-delay:.36s}@keyframes sparkBlink{0%,80%,100%{opacity:.25}40%{opacity:1}}.qa-genimg{max-width:100%;border-radius:10px;display:block}";
+  document.head.appendChild(style);
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function fmt(s){ return esc(s).replace(/\n/g,"<br>"); }
+  function isImageReq(t){
+    return /(生圖|生成圖|畫一|畫張|畫幅|整張圖|出圖|draw|generate (an? )?image|create (an? )?image|picture of|描いて|画像を生成|그려|이미지 생성)/i.test(t || "");
+  }
+  function post(path, body, ms){
+    var ctl = new AbortController();
+    var timer = setTimeout(function(){ ctl.abort(); }, ms || 20000);
+    return fetch(WORKER + path, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(body), signal: ctl.signal })
+      .then(function(r){ return r.json(); })
+      .then(function(j){ clearTimeout(timer); return j; })
+      .catch(function(e){ clearTimeout(timer); throw e; });
+  }
+  window.__sparkSendChat = function(opts){
+    var replied = false;
+    function done(html){ if(!replied){ replied = true; try{ opts.reply(html); }catch(e){} } }
+    setTimeout(function(){ done(null); }, opts.audio ? 40000 : 25000);
+    var text = opts.text || "";
+    if(opts.audio){
+      post("/chat", { message: "", audio: opts.audio, history: [], lang: opts.lang || "en" }, 35000).then(function(j){
+        if(j && j.ok && j.reply){
+          if(j.transcript && opts.onTranscript){ try{ opts.onTranscript(j.transcript); }catch(e){} }
+          done(fmt(j.reply));
+        }
+        else done(null);
+      }).catch(function(){ done(null); });
+      return;
+    }
+    if(!opts.image && isImageReq(text)){
+      post("/image", { prompt: text }, 45000).then(function(j){
+        if(j && j.ok && j.image) done('<img class="qa-genimg" alt="" src="data:' + (j.mimeType || "image/png") + ";base64," + j.image + '">');
+        else done(null);
+      }).catch(function(){ done(null); });
+      return;
+    }
+    var body = { message: text, history: [], lang: opts.lang || "en" };
+    if(opts.image){
+      var m = /^data:([^;]+);base64,(.*)$/.exec(opts.image);
+      if(m) body.image = { mimeType: m[1], data: m[2] };
+    }
+    post("/chat", body, 20000).then(function(j){
+      if(j && j.ok && j.reply) done(fmt(j.reply));
+      else done(null);
+    }).catch(function(){ done(null); });
+  };
+})();
+</script>
+<style>
+/* QA 版面修正（用戶 2026-11-23 實測回報）：預設問題改細粒橫排、答案區攞返空間 */
+#qaPanel{height:min(620px,calc(100dvh - 110px));bottom:84px}
+.qa-msgs{min-height:0}
+#qaPanel .qa-chips{flex-direction:row;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;padding:8px 12px;gap:7px;scrollbar-width:none}
+#qaPanel .qa-chips::-webkit-scrollbar{display:none}
+#qaPanel .qa-chip{width:auto;min-height:38px;flex:0 0 auto;display:inline-flex;align-items:center;font-size:13.5px;padding:7px 12px;white-space:nowrap;line-height:1.3}
+.course p{flex:0 0 auto}
+.course .inc{margin-top:auto}
+.qa-toast{position:absolute;left:50%;bottom:88px;transform:translateX(-50%) translateY(8px);background:#123f31;color:#eafff3;border:1px solid rgba(126,255,196,.45);padding:9px 14px;border-radius:10px;font-size:13.5px;line-height:1.45;max-width:88%;text-align:center;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:6}
+.qa-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</body>
+</html>
